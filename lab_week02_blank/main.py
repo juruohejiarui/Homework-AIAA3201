@@ -64,7 +64,7 @@ def run_part2():
     # 2. Median Filter on S&P (Result: clean removal)
     restored_sp_by_median = denoise_image(noisy_sp, 'median', kernel_size=5)
 
-    # Save results 
+    # Save results
     cv2.imwrite(os.path.join(OUTPUT_DIR, 'task2_B_noisy_sp.jpg'), noisy_sp)
     cv2.imwrite(os.path.join(OUTPUT_DIR, 'task2_B_restore_by_gaussian.jpg'), restored_sp_by_gauss)
     cv2.imwrite(os.path.join(OUTPUT_DIR, 'task2_B_restore_by_median.jpg'), restored_sp_by_median)

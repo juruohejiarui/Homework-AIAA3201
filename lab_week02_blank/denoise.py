@@ -31,13 +31,18 @@ def denoise_image(noisy_image, filter_type, kernel_size=3):
     Returns:
         Denoised image.
     """
+    # TODO: Students need to fill in the API calls here
     if filter_type == 'gaussian':
         # Apply Gaussian Blur
-        return cv2.GaussianBlur(noisy_image, (kernel_size, kernel_size), 0)
+        # Hint: cv2.GaussianBlur(src, ksize, sigmaX)
+        #       Set sigmaX to 0 so it is calculated from the kernel size.
+        pass  # TODO: return the blurred image
 
     elif filter_type == 'median':
         # Apply Median Blur
-        return cv2.medianBlur(noisy_image, kernel_size)
+        # Hint: cv2.medianBlur(src, ksize)
+        #       Effective for removing salt-and-pepper noise.
+        pass  # TODO: return the denoised image
 
     else:
         raise ValueError("Unsupported filter type")

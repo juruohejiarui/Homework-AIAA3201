@@ -24,21 +24,26 @@ def my_imfilter(image, kernel):
     # 1. Padding
     # We use 'reflect' padding as suggested in the lecture slides
     # to handle boundaries.
+    # TODO: Students need to write this line
+    # Hint: np.pad(array, pad_width, mode='reflect')
+    #       For a color image, pad the height and width axes only,
+    #       not the channel axis.
     if len(image.shape) == 2:
-        padded_image = np.pad(image, ((pad_h, pad_h), (pad_w, pad_w)), mode='reflect')
+        padded_image = None  # TODO: pad the grayscale image
         output = np.zeros_like(image)
     else:
-        padded_image = np.pad(image, ((pad_h, pad_h), (pad_w, pad_w), (0, 0)), mode='reflect')
+        padded_image = None  # TODO: pad the color image
         output = np.zeros_like(image)
 
     # 2. Convolution Loop
     # Slide the kernel over the image and compute the weighted sum (dot product).
+    # TODO: Students need to implement this double loop
     for y in range(i_h):
         for x in range(i_w):
-            region = padded_image[y:y+k_h, x:x+k_w]
-            if len(image.shape) == 2:
-                output[y, x] = np.sum(region * kernel)
-            else:
-                output[y, x, :] = np.sum(region * kernel[:, :, None], axis=(0, 1))
+            # TODO: For each output pixel, take the (k_h x k_w) region of
+            #       padded_image that starts at (y, x), multiply it
+            #       element-wise with the kernel, and store the sum in output.
+            #       For color images, do this for every channel independently.
+            pass
 
     return output
