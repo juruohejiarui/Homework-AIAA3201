@@ -1,0 +1,17 @@
+Document Scanner Test
+========================================
+
+Test Case 1: asset/case1.png
+✓ Processing successful, result saved to: output/result_1.png
+  Output dimensions: (572, 578, 3)
+
+Test Case 2: asset/case2.png
+✓ Processing successful, result saved to: output/result_2.png
+  Output dimensions: (1247, 773, 3)
+
+Test Case 3: asset/case3.png
+✓ Processing successful, result saved to: output/result_3.png
+  Output dimensions: (991, 699, 3)
+
+========================================
+Testing completed! Please check if TODO sections have been correctly implemented.
