@@ -123,6 +123,136 @@ class DocumentScanner:
 
         return document_contour.reshape(4, 2)
 
+    def _quad_from_contour(self, contour):
+        """Fit a 4-gon: tighten approxPolyDP, else min-area rectangle."""
+        peri = cv2.arcLength(contour, True)
+        for eps_f in (0.02, 0.03, 0.04, 0.05, 0.06, 0.08):
+            approx = cv2.approxPolyDP(contour, eps_f * peri, True)
+            if len(approx) == 4:
+                return approx.reshape(4, 2).astype(np.float32)
+        box = cv2.boxPoints(cv2.minAreaRect(contour))
+        return box.astype(np.float32)
+
+    def expand_to_color_quad(self, image, inner_pts):
+        """
+        Grow from the Canny 4-gon into a same-color region (case 2 wood
+        outside the engraved frame). Used only when the new quad is larger.
+        """
+        h, w = image.shape[:2]
+        poly = inner_pts.reshape(-1, 1, 2).astype(np.int32)
+        interior = np.zeros((h, w), dtype=np.uint8)
+        cv2.fillConvexPoly(interior, poly, 255)
+        hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+        samples = hsv[interior > 0]
+        if samples.size == 0:
+            return inner_pts
+
+        med = np.median(samples, axis=0)
+        lo = np.array([
+            max(0, med[0] - 12),
+            max(0, med[1] - 50),
+            max(0, med[2] - 50),
+        ], dtype=np.uint8)
+        hi = np.array([
+            min(180, med[0] + 12),
+            min(255, med[1] + 50),
+            min(255, med[2] + 50),
+        ], dtype=np.uint8)
+        color_mask = cv2.inRange(hsv, lo, hi)
+        kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (9, 9))
+        color_mask = cv2.morphologyEx(color_mask, cv2.MORPH_CLOSE, kernel)
+        # Keep only the blob that touches the inner page/plaque, not the ground.
+        n_labels, labels = cv2.connectedComponents(color_mask)
+        seed_ids = set(np.unique(labels[interior > 0]))
+        seed_ids.discard(0)
+        if not seed_ids:
+            return inner_pts
+        grown = np.isin(labels, list(seed_ids)).astype(np.uint8) * 255
+
+        contours, _ = cv2.findContours(
+            grown, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE
+        )
+        if not contours:
+            return inner_pts
+
+        largest = max(contours, key=cv2.contourArea)
+        inner_area = cv2.contourArea(inner_pts.astype(np.float32))
+        grown_area = cv2.contourArea(largest)
+        if inner_area < 1.0 or grown_area < 1.05 * inner_area:
+            return inner_pts
+
+        # Grow each inner corner along the ray from the centroid until the
+        # color blob ends (outer wood). Avoid minAreaRect, which swallows hands.
+        outer = self._expand_corners_on_mask(inner_pts, grown)
+        outer[:, 0] = np.clip(outer[:, 0], 0, w - 1)
+        outer[:, 1] = np.clip(outer[:, 1], 0, h - 1)
+        outer_area = cv2.contourArea(outer.astype(np.float32))
+        if outer_area < 1.05 * inner_area or outer_area > 1.45 * inner_area:
+            return inner_pts
+        return outer
+
+    def _expand_corners_on_mask(self, inner_pts, mask):
+        h, w = mask.shape[:2]
+        center = inner_pts.mean(axis=0)
+        expanded = []
+        for p in inner_pts.astype(np.float32):
+            vec = p - center
+            nrm = np.linalg.norm(vec)
+            if nrm < 1:
+                expanded.append(p)
+                continue
+            unit = vec / nrm
+            last = p.copy()
+            for step in range(1, int(0.35 * nrm) + 1):
+                q = p + unit * step
+                x, y = int(round(q[0])), int(round(q[1]))
+                if x < 0 or y < 0 or x >= w or y >= h:
+                    break
+                if mask[y, x] == 0:
+                    break
+                last = q
+            expanded.append(last)
+        return np.array(expanded, dtype=np.float32)
+
+    def trim_foreign_borders(self, image, ref_offset=12, max_frac=0.03, thresh=28.0):
+        """Drop a thin leftover strip on a side that does not match the inward color."""
+        out = image
+        h0, w0 = out.shape[:2]
+        max_h = max(2, int(h0 * max_frac))
+        max_w = max(2, int(w0 * max_frac))
+
+        def _mean(strip):
+            return strip.reshape(-1, 3).mean(axis=0)
+
+        def _far(a, b):
+            return np.linalg.norm(a.astype(np.float32) - b.astype(np.float32)) >= thresh
+
+        n = 0
+        while n < max_h and out.shape[0] > ref_offset + 4:
+            if not _far(_mean(out[0:2, :, :]), _mean(out[ref_offset:ref_offset + 3, :, :])):
+                break
+            out = out[1:, :, :]
+            n += 1
+        n = 0
+        while n < max_h and out.shape[0] > ref_offset + 4:
+            if not _far(_mean(out[-2:, :, :]), _mean(out[-(ref_offset + 3):-ref_offset, :, :])):
+                break
+            out = out[:-1, :, :]
+            n += 1
+        n = 0
+        while n < max_w and out.shape[1] > ref_offset + 4:
+            if not _far(_mean(out[:, 0:2, :]), _mean(out[:, ref_offset:ref_offset + 3, :])):
+                break
+            out = out[:, 1:, :]
+            n += 1
+        n = 0
+        while n < max_w and out.shape[1] > ref_offset + 4:
+            if not _far(_mean(out[:, -2:, :]), _mean(out[:, -(ref_offset + 3):-ref_offset, :])):
+                break
+            out = out[:, :-1, :]
+            n += 1
+        return out
+
     def order_points(self, pts):
         """
         Sort four vertices: top-left, top-right, bottom-right, bottom-left
@@ -162,24 +292,9 @@ class DocumentScanner:
         Returns:
             numpy.ndarray: Corrected document image
         """
-        # Sort vertices
+        # Sort vertices (no uniform inset: that ate case 2's outer wood
+        # and case 3's own blue cover). Leftover strips are trimmed after warp.
         ordered_pts = self.order_points(pts)
-
-        # Inset each side so anti-aliased / leftover background on an
-        # exposed edge (case3 right/bottom) is not included in the warp.
-        def _unit(a, b):
-            vec = b - a
-            n = np.linalg.norm(vec)
-            return vec / n if n > 1e-6 else vec
-
-        tl, tr, br, bl = ordered_pts
-        inset_px = 10.0
-        ordered_pts = np.array([
-            tl + _unit(tl, tr) * inset_px + _unit(tl, bl) * inset_px,
-            tr + _unit(tr, tl) * inset_px + _unit(tr, br) * inset_px,
-            br + _unit(br, tr) * inset_px + _unit(br, bl) * inset_px,
-            bl + _unit(bl, tl) * inset_px + _unit(bl, br) * inset_px,
-        ], dtype=np.float32)
 
         # Calculate target image dimensions
         # Use maximum values of document width and height as target dimensions
@@ -202,6 +317,7 @@ class DocumentScanner:
         src = ordered_pts.astype(np.float32)
         M = cv2.getPerspectiveTransform(src, dst)
         warped = cv2.warpPerspective(image, M, (max_width, max_height))
+        warped = self.trim_foreign_borders(warped)
 
         return warped
 
@@ -237,6 +353,7 @@ class DocumentScanner:
             edges = self.detect_edges(preprocessed, close_gaps=True)
             document_pts = self.find_document_contour(edges)
 
+        document_pts = self.expand_to_color_quad(padded, document_pts)
         document_pts = document_pts - pad
 
         # 5. Perspective correction on the original (unpadded) image
@@ -319,7 +436,7 @@ def main():
             result = scanner.scan_document(test_case, show_intermediate=False)
 
             # Save result
-            output_path = f'output/result_{i}.png'
+            output_path = f'output/result_{i}_tryfix.png'
             cv2.imwrite(output_path, result)
 
             print(f"✓ Processing successful, result saved to: {output_path}")
