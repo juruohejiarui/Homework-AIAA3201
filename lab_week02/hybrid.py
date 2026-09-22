@@ -39,12 +39,19 @@ def create_hybrid_image(image1, image2, cutoff_frequency):
     k_size = int(cutoff_frequency * 4) * 2 + 1
 
     # 1. Get Low Frequency of Image 1
-    low_frequencies = cv2.GaussianBlur(image1, (k_size, k_size), cutoff_frequency)
+    # TODO: Students implement Low-pass filtering
+    # Hint: Use cv2.GaussianBlur(image, ksize=(width, height), sigmaX=value)
+    #       k_size is already calculated for you above, and the cutoff
+    #       frequency is the sigma value.
+    low_frequencies = cv2.GaussianBlur(
+        image1.astype(np.float64), (k_size, k_size), cutoff_frequency
+    )
 
     # 2. Get High Frequency of Image 2
     # High Freq = Original - Low Freq (Smoothed)
-    low_freq_2 = cv2.GaussianBlur(image2, (k_size, k_size), cutoff_frequency)
-    high_frequencies = image2 - low_freq_2
+    image2_f = image2.astype(np.float64)
+    low_freq_2 = cv2.GaussianBlur(image2_f, (k_size, k_size), cutoff_frequency)
+    high_frequencies = image2_f - low_freq_2
 
     # 3. Combine them
     hybrid_image = low_frequencies + high_frequencies
