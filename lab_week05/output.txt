@@ -1,0 +1,191 @@
+============================================================
+Lab 5: Linear Classifier & Multiclass SVM
+============================================================
+
+1. Loading and preprocessing CIFAR-10 data...
+Training set: 49000 samples, feature dimension: 3072
+Validation set: 1000 samples, feature dimension: 3072
+Test set: 1000 samples, feature dimension: 3072
+
+Applying Bias Trick: append constant 1 to each sample vector...
+Feature dimension after Bias Trick: 3073 (originally 3072 + 1)
+
+2. Comparing performance of Naive and Vectorized SVM loss functions...
+Testing Naive version (using for-loops)...
+loss: 9.013322
+time: 0.0393
+
+Testing Vectorized version (Numpy vectorization)...
+loss: 9.013322
+time: 0.0027
+
+Results comparison:
+loss difference: 0.000000
+grad difference: 0.000000
+speedup factor: 14.43x
+✓ Naive and Vectorized versions produce consistent results!
+
+3. Training with LinearSVM...
+iteration 0 / 1500: loss 8.996101
+iteration 100 / 1500: loss 8.986154
+iteration 200 / 1500: loss 8.979673
+iteration 300 / 1500: loss 8.969398
+iteration 400 / 1500: loss 8.994334
+iteration 500 / 1500: loss 8.983102
+iteration 600 / 1500: loss 8.978878
+iteration 700 / 1500: loss 8.986033
+iteration 800 / 1500: loss 8.977911
+iteration 900 / 1500: loss 8.970312
+iteration 1000 / 1500: loss 8.980422
+iteration 1100 / 1500: loss 8.983582
+iteration 1200 / 1500: loss 8.967340
+iteration 1300 / 1500: loss 8.987643
+iteration 1400 / 1500: loss 8.969412
+
+Preliminary training results:
+Training accuracy: 0.1414
+Validation accuracy: 0.1380
+
+4. Performing hyperparameter tuning (grid search)...
+Training SVM with lr=1.0e-07, reg=1.0e-07
+  train accuracy: 0.1641, val accuracy: 0.1580
+Training SVM with lr=1.0e-07, reg=5.0e-05
+  train accuracy: 0.1171, val accuracy: 0.1200
+Training SVM with lr=1.0e-07, reg=1.0e-04
+  train accuracy: 0.0969, val accuracy: 0.0850
+Training SVM with lr=1.0e-07, reg=5.0e-04
+  train accuracy: 0.1294, val accuracy: 0.1450
+Training SVM with lr=1.0e-07, reg=1.0e-03
+  train accuracy: 0.1092, val accuracy: 0.1270
+Training SVM with lr=1.0e-07, reg=5.0e-03
+  train accuracy: 0.1031, val accuracy: 0.0920
+Training SVM with lr=1.0e-07, reg=1.0e-02
+  train accuracy: 0.1568, val accuracy: 0.1700
+Training SVM with lr=5.0e-05, reg=1.0e-07
+  train accuracy: 0.3042, val accuracy: 0.3240
+Training SVM with lr=5.0e-05, reg=5.0e-05
+  train accuracy: 0.3022, val accuracy: 0.3190
+Training SVM with lr=5.0e-05, reg=1.0e-04
+  train accuracy: 0.3022, val accuracy: 0.3200
+Training SVM with lr=5.0e-05, reg=5.0e-04
+  train accuracy: 0.3032, val accuracy: 0.3200
+Training SVM with lr=5.0e-05, reg=1.0e-03
+  train accuracy: 0.3036, val accuracy: 0.3230
+Training SVM with lr=5.0e-05, reg=5.0e-03
+  train accuracy: 0.3030, val accuracy: 0.3230
+Training SVM with lr=5.0e-05, reg=1.0e-02
+  train accuracy: 0.3047, val accuracy: 0.3190
+Training SVM with lr=1.0e-04, reg=1.0e-07
+  train accuracy: 0.3298, val accuracy: 0.3460
+Training SVM with lr=1.0e-04, reg=5.0e-05
+  train accuracy: 0.3304, val accuracy: 0.3460
+Training SVM with lr=1.0e-04, reg=1.0e-04
+  train accuracy: 0.3277, val accuracy: 0.3410
+Training SVM with lr=1.0e-04, reg=5.0e-04
+  train accuracy: 0.3272, val accuracy: 0.3440
+Training SVM with lr=1.0e-04, reg=1.0e-03
+  train accuracy: 0.3300, val accuracy: 0.3430
+Training SVM with lr=1.0e-04, reg=5.0e-03
+  train accuracy: 0.3276, val accuracy: 0.3410
+Training SVM with lr=1.0e-04, reg=1.0e-02
+  train accuracy: 0.3312, val accuracy: 0.3440
+Training SVM with lr=5.0e-04, reg=1.0e-07
+  train accuracy: 0.3706, val accuracy: 0.3880
+Training SVM with lr=5.0e-04, reg=5.0e-05
+  train accuracy: 0.3706, val accuracy: 0.3790
+Training SVM with lr=5.0e-04, reg=1.0e-04
+  train accuracy: 0.3696, val accuracy: 0.3880
+Training SVM with lr=5.0e-04, reg=5.0e-04
+  train accuracy: 0.3712, val accuracy: 0.3810
+Training SVM with lr=5.0e-04, reg=1.0e-03
+  train accuracy: 0.3703, val accuracy: 0.3880
+Training SVM with lr=5.0e-04, reg=5.0e-03
+  train accuracy: 0.3712, val accuracy: 0.3840
+Training SVM with lr=5.0e-04, reg=1.0e-02
+  train accuracy: 0.3697, val accuracy: 0.3870
+Training SVM with lr=1.0e-03, reg=1.0e-07
+  train accuracy: 0.3831, val accuracy: 0.3910
+Training SVM with lr=1.0e-03, reg=5.0e-05
+  train accuracy: 0.3804, val accuracy: 0.3870
+Training SVM with lr=1.0e-03, reg=1.0e-04
+  train accuracy: 0.3825, val accuracy: 0.3950
+Training SVM with lr=1.0e-03, reg=5.0e-04
+  train accuracy: 0.3826, val accuracy: 0.3860
+Training SVM with lr=1.0e-03, reg=1.0e-03
+  train accuracy: 0.3810, val accuracy: 0.3960
+Training SVM with lr=1.0e-03, reg=5.0e-03
+  train accuracy: 0.3803, val accuracy: 0.3960
+Training SVM with lr=1.0e-03, reg=1.0e-02
+  train accuracy: 0.3810, val accuracy: 0.3940
+Training SVM with lr=5.0e-03, reg=1.0e-07
+  train accuracy: 0.4010, val accuracy: 0.3980
+Training SVM with lr=5.0e-03, reg=5.0e-05
+  train accuracy: 0.4015, val accuracy: 0.4120
+Training SVM with lr=5.0e-03, reg=1.0e-04
+  train accuracy: 0.4032, val accuracy: 0.3970
+Training SVM with lr=5.0e-03, reg=5.0e-04
+  train accuracy: 0.4037, val accuracy: 0.3930
+Training SVM with lr=5.0e-03, reg=1.0e-03
+  train accuracy: 0.3994, val accuracy: 0.3990
+Training SVM with lr=5.0e-03, reg=5.0e-03
+  train accuracy: 0.4008, val accuracy: 0.3990
+Training SVM with lr=5.0e-03, reg=1.0e-02
+  train accuracy: 0.3991, val accuracy: 0.3960
+
+==================================================
+Best hyperparameter combination:
+lr=5.0e-03, reg=5.0e-05
+Validation accuracy: 0.4120
+
+Results for all hyperparameter combinations:
+lr		reg		train_acc	val_acc
+--------------------------------------------------
+1.0e-07	1.0e-07	0.1641		0.1580
+1.0e-07	5.0e-05	0.1171		0.1200
+1.0e-07	1.0e-04	0.0969		0.0850
+1.0e-07	5.0e-04	0.1294		0.1450
+1.0e-07	1.0e-03	0.1092		0.1270
+1.0e-07	5.0e-03	0.1031		0.0920
+1.0e-07	1.0e-02	0.1568		0.1700
+5.0e-05	1.0e-07	0.3042		0.3240
+5.0e-05	5.0e-05	0.3022		0.3190
+5.0e-05	1.0e-04	0.3022		0.3200
+5.0e-05	5.0e-04	0.3032		0.3200
+5.0e-05	1.0e-03	0.3036		0.3230
+5.0e-05	5.0e-03	0.3030		0.3230
+5.0e-05	1.0e-02	0.3047		0.3190
+1.0e-04	1.0e-07	0.3298		0.3460
+1.0e-04	5.0e-05	0.3304		0.3460
+1.0e-04	1.0e-04	0.3277		0.3410
+1.0e-04	5.0e-04	0.3272		0.3440
+1.0e-04	1.0e-03	0.3300		0.3430
+1.0e-04	5.0e-03	0.3276		0.3410
+1.0e-04	1.0e-02	0.3312		0.3440
+5.0e-04	1.0e-07	0.3706		0.3880
+5.0e-04	5.0e-05	0.3706		0.3790
+5.0e-04	1.0e-04	0.3696		0.3880
+5.0e-04	5.0e-04	0.3712		0.3810
+5.0e-04	1.0e-03	0.3703		0.3880
+5.0e-04	5.0e-03	0.3712		0.3840
+5.0e-04	1.0e-02	0.3697		0.3870
+1.0e-03	1.0e-07	0.3831		0.3910
+1.0e-03	5.0e-05	0.3804		0.3870
+1.0e-03	1.0e-04	0.3825		0.3950
+1.0e-03	5.0e-04	0.3826		0.3860
+1.0e-03	1.0e-03	0.3810		0.3960
+1.0e-03	5.0e-03	0.3803		0.3960
+1.0e-03	1.0e-02	0.3810		0.3940
+5.0e-03	1.0e-07	0.4010		0.3980
+5.0e-03	5.0e-05	0.4015		0.4120
+5.0e-03	1.0e-04	0.4032		0.3970
+5.0e-03	5.0e-04	0.4037		0.3930
+5.0e-03	1.0e-03	0.3994		0.3990
+5.0e-03	5.0e-03	0.4008		0.3990
+5.0e-03	1.0e-02	0.3991		0.3960
+
+5. Evaluating best model on test set...
+Test accuracy: 0.3900
+Validation accuracy: 0.4120
+
+Lab completed!
+============================================================

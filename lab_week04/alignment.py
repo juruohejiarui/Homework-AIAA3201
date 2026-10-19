@@ -38,8 +38,8 @@ def align_and_stitch(img_path_a, img_path_b, output_dir):
     # HINT: Ensure the shape is (-1, 1, 2) and type is np.float32 for findHomography
     # ==========================================
     
-    src_pts = None # Replace
-    dst_pts = None # Replace
+    src_pts = np.float32([kp1[m.queryIdx].pt for m in good]).reshape(-1, 1, 2)
+    dst_pts = np.float32([kp2[m.trainIdx].pt for m in good]).reshape(-1, 1, 2)
     
     
 
@@ -48,7 +48,7 @@ def align_and_stitch(img_path_a, img_path_b, output_dir):
     # HINT: Use cv2.findHomography with cv2.RANSAC and a threshold (e.g., 5.0)
     # ==========================================
 
-    H, mask = None, None # Replace
+    H, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC, 5.0)
     
     
     
@@ -67,8 +67,8 @@ def align_and_stitch(img_path_a, img_path_b, output_dir):
     # HINT: Use cv2.warpPerspective and cv2.addWeighted
     # ==========================================
     h, w = img2.shape[:2]
-    img1_warped = None # Replace
-    overlay = None # Replace
+    img1_warped = cv2.warpPerspective(img1, H, (w, h))
+    overlay = cv2.addWeighted(img2, 0.5, img1_warped, 0.5, 0)
     
     cv2.imwrite(os.path.join(output_dir, "task3_warped_img1.jpg"), img1_warped)
     cv2.imwrite(os.path.join(output_dir, "task3_final_overlay.jpg"), overlay)

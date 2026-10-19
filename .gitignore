@@ -222,5 +222,6 @@ __marimo__/
 # output
 lab_week*/output/
 *_hand/
+*_gpt/
 lab_week*/*.zip
 lab_week*/*.pdf

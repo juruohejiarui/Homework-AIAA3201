@@ -30,7 +30,13 @@ def explore_harris_parameters(img_path, output_dir):
         # HINT: Pass the parameters from the 'scenarios' dictionary.
         # ==========================================
         
-        corners = None # Replace this line with your implementation
+        corners = cv2.goodFeaturesToTrack(
+            gray,
+            maxCorners=0,
+            qualityLevel=params["qualityLevel"],
+            minDistance=params["minDistance"],
+            useHarrisDetector=True,
+        )
         
         img_draw = img.copy()
         if corners is not None:

@@ -32,7 +32,8 @@ def experiment_ratio_test(img_path_a, img_path_b, output_dir):
         # HINT: For each pair of matches (m, n), check if m.distance < thresh * n.distance
         # ==========================================
         for m, n in knn_matches:
-            pass # Replace this with your implementation
+            if m.distance < thresh * n.distance:
+                good_matches.append(m)
                 
                 
         match_counts.append(len(good_matches))
