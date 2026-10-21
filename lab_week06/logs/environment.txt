@@ -1,0 +1,7 @@
+Conda environment: aiaa3201
+Python executable: /Users/juruohjr/miniconda3/envs/aiaa3201/bin/python
+Python: 3.13.14 | packaged by Anaconda, Inc. | (main, Jul  9 2026, 14:28:57) [Clang 20.1.8 ]
+torch==2.14.1
+numpy==2.5.3
+matplotlib==3.11.1
+scikit-learn==1.9.1

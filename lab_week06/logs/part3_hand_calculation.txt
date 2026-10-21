@@ -1,0 +1,6 @@
+Part 3 independent calculation (before implementing nn.Conv2d)
+Seed: 42; settings in original selection order: [32, 1, 64, 5, 1, 1]
+N=32, C_in=1, C_out=64, F=5, stride=1, padding=1
+H_out = W_out = floor((32 + 2*1 - 5) / 1) + 1 = 30
+Parameters = 64 * (1 * 5 * 5 + 1) = 1664
+Bias included. Expected tensor shape: [1, 64, 30, 30].

@@ -1,0 +1,74 @@
+{
+  "todo_markers_preserved": 10,
+  "gradient_max_absolute_error": 1.682297731363789e-11,
+  "five_iteration_losses": [
+    0.14314993280407956,
+    0.1417243693210894,
+    0.14038149469309005,
+    0.13912114084726473,
+    0.13794236023628761
+  ],
+  "update_8303_max_error": 0.1000098392584916,
+  "update_8304_max_error": 0.09999131050526633,
+  "cnn_cases": [
+    {
+      "settings": [
+        32,
+        1,
+        64,
+        5,
+        1,
+        1
+      ],
+      "shape": [
+        1,
+        64,
+        30,
+        30
+      ],
+      "parameters": 1664
+    },
+    {
+      "settings": [
+        32,
+        3,
+        16,
+        5,
+        2,
+        0
+      ],
+      "shape": [
+        1,
+        16,
+        14,
+        14
+      ],
+      "parameters": 1216
+    },
+    {
+      "settings": [
+        64,
+        3,
+        32,
+        7,
+        2,
+        3
+      ],
+      "shape": [
+        1,
+        32,
+        32,
+        32
+      ],
+      "parameters": 4736
+    }
+  ],
+  "original_archive_sha256": {
+    "lab_week6_slide.pptx": "6b4789f6df96f487328d488980880b608a6446eae0c9f229500b1f1e95a0218c",
+    "readme.md": "0500b0b09165d832459e4e1aeb9bf5e19d9eb0097be8b2bdf7d0a166bb1a12f3",
+    "main.py": "6ef58c34b9c7d7f0389cbdcf8d9c94bc00c403893df15c12960e94b4aecdf817",
+    "part1_numpy_backprop.py": "31ba64f79968a6ab3c4657b41ea951ce19fb864e7976488b51d5f6da815be0f3",
+    "part2_pytorch_activations.py": "37ac5975a6a74cf3473e1b4dc80effdf872d9b054b35388ea484b314d0facd73",
+    "part3_cnn_dimensions.py": "0be3d8a52d9db83e5fce308bdf91bbd9418bfa65f3ac5ad0bcf3e45b57716f36"
+  }
+}

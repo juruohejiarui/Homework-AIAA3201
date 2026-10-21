@@ -1,0 +1,18 @@
+==================================================
+CNN Dimension & Parameter Calculator (Verification Tool)
+==================================================
+Given the following input and convolutional layer settings:
+- Input Image Size:  32x32
+- Input Channels:    1
+- Output Channels:   64
+- Filter Size (FxF): 5x5
+- Stride:            1
+- Padding:           1
+--------------------------------------------------
+STOP! Before looking at the output below, hand-calculate:
+1. The spatial dimensions of the output feature map. Formula: (N + 2P - F) / stride + 1
+2. The total number of parameters in this layer (including bias).
+Once calculated, run this script to verify your answers.
+--------------------------------------------------
+[!] conv_layer is not instantiated. Complete the TODO to see verification results.
+==================================================
