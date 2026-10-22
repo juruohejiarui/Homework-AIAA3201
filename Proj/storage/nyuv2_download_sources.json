@@ -1,0 +1,44 @@
+{
+  "review_date": "2026-10-23",
+  "labeled": {
+    "path": "nyu_depth_v2_labeled.mat",
+    "bytes": 2972037809,
+    "sha256": "2d724b0c0ab358aa1ce5df855e5bd14a2279ab7202efe22f32a30d612dcb86aa",
+    "urls": ["https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/nyu_depth_v2_labeled.mat"]
+  },
+  "split": {
+    "path": "splits.mat",
+    "bytes": 2626,
+    "sha256": "6e081404491a8bfba2f066beaa9713ef6046f9007aa5f799f2a350506a580cee",
+    "urls": ["https://raw.githubusercontent.com/cleinc/bts/5e3406b35d1497b2e55d2dd600524d1f4efacaed/utils/splits.mat"]
+  },
+  "toolbox": {
+    "path": "toolbox/toolbox_nyu_depth_v2.zip",
+    "urls": ["https://cs.nyu.edu/~fergus/datasets/toolbox_nyu_depth_v2.zip"]
+  },
+  "prepared": {
+    "repo": "sayakpaul/nyu_depth_v2",
+    "revision": "50579a0b591445f91bf7269b28611ad1cc6a05d2",
+    "fallback_repo": "heuliuh/nyu_depth_v2",
+    "fallback_revision": "2417527acfbc40025d8e041ebbd06f6982bb94e4",
+    "format": "FastDepth H5 files in TAR shards; not the complete Raw collection",
+    "card_train_images": 47584,
+    "card_eval_images": 654,
+    "shards": [
+      {"name": "train-000000.tar", "bytes": 3003340800, "sha256": "9a6a59407fa909a8ae70ffa8495893ef818bf6f349d0d2e486dd10333ddf256a"},
+      {"name": "train-000001.tar", "bytes": 3003658240, "sha256": "717ea0c58afdd747dfaf73e592f87fcf0261c62c39a5c2b39dd10f67952ca1e3"},
+      {"name": "train-000002.tar", "bytes": 3003586560, "sha256": "2530c35ecb55e64bb7fdfae9e1ddddfaa339555e37dc19d74d98048c896ec409"},
+      {"name": "train-000003.tar", "bytes": 3002982400, "sha256": "ad08e48ffffda394095e7bb9785b5cc89fe50421486bb784dd086639c65a5099"},
+      {"name": "train-000004.tar", "bytes": 3003443200, "sha256": "942896ecb705f3f791d1d313121f8700a192e54dfbf091312cacbd6adbeb5563"},
+      {"name": "train-000005.tar", "bytes": 3003064320, "sha256": "c6363a837492be5325a1d8e2989fa2947f588949b0f5a9818bb65504907cad64"},
+      {"name": "train-000006.tar", "bytes": 3002992640, "sha256": "77500df4b84d8af2aa87ba503a767ce0a8a693bfd32486d9b688b66cdfb172b4"},
+      {"name": "train-000007.tar", "bytes": 3003289600, "sha256": "b1aa7e0787d6fe9b160de213815566a40288da40106be8d5099e301936e347d1"},
+      {"name": "train-000008.tar", "bytes": 3003443200, "sha256": "ef9fa6bfeee9a8b150cd28837261e879ed1075c4b11d06c31792af0079861610"},
+      {"name": "train-000009.tar", "bytes": 3003064320, "sha256": "8cd051a16f763a0c40f3a5c7e5d720d6eb6566fb9553bd58ddeb9ae7923cad39"},
+      {"name": "train-000010.tar", "bytes": 3003217920, "sha256": "602109f56d08318ec20e496fc161c5ba1b5a25a506b048a54f5778e19194e0a6"},
+      {"name": "train-000011.tar", "bytes": 1098700800, "sha256": "4ef8723b66e1c09010f8c5305b5c7b9c526d455cd943aeac0280556fc3c5ede3"},
+      {"name": "val-000000.tar", "bytes": 1001553920, "sha256": "a75d57458afe063e6d9158a6cb3f41eabd859699f46043b0b8def2e2995049bb"},
+      {"name": "val-000001.tar", "bytes": 14786560, "sha256": "92dc10ad1b799fb810011fcf5e85b017f949baae919903d66612e32d37e40bf2"}
+    ]
+  }
+}

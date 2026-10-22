@@ -30,11 +30,13 @@ conda run -n aiaa3201 python -m pip install --no-deps --no-build-isolation -e Pr
 
 - [运行指南](GUIDE_zh.md)：各独立入口及输入输出。
 - [下载交接](download_data_zh.md)：完整 NYUv2 Raw、KITTI、ScanNet 及已下载数据。
+- [NYUv2 下载](nyuv2_download_zh.md)：完整 Raw、官方 labeled 与 HF 预处理训练镜像。
+- [多数据集训练](multi_dataset_training_zh.md)：KITTI/NYUv2、扩展数据与混合训练工作量。
 - [论文复现记录](paper_reproduction_zh.md)：实测值、论文参考值与协议差异。
 - [Part 3 指南](part3_guidance_zh.md)：后续改进、消融和应用评价。
 - [首轮历史记录](FIRST_RUN_zh.md)：重写前的完整实验结果，仍保留在 `outputs/first_round`。
 
-共享数据位于 `~/Documents/ResourcesLow/Datasets`，实际目录为 `/media/hjr/新加卷/Resources/Datasets`；按原始数据集命名。权重位于 `checkpoints`，本项目结果位于 `outputs`。已有数据、模型和结果不因代码重写而删除。
+共享数据位于 `~/Documents/ResourcesLow/Datasets`；实际挂载路径以当前链接解析结果为准，不在新下载脚本中写死。按原始数据集命名，权重位于 `checkpoints`，本项目结果位于 `outputs`。已有数据、模型和结果不因代码重写而删除。
 
 ## 官方依赖
 

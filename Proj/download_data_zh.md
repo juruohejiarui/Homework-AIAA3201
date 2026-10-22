@@ -1,130 +1,62 @@
 # 数据下载交接
 
-## 1. 需要你下载的内容
+2026-10-23 更新。数据使用共享路径 `~/Documents/ResourcesLow/Datasets`，实际挂载位置由链接解析，不再写死历史挂载点。
 
-| 数据 | 当前状态 | 需要的内容 |
+## 1. 当前安排
+
+| 数据 | 当前状态 | 后续操作 |
 |---|---|---|
-| NYUv2 Raw | 旧的选择性下载已删除；完整下载未启动 | 38个官方 ZIP，421,539,441,278 字节，约421.54GB；均附官方 MD5 |
-| KITTI | ModelScope 深度包已整理，验证集已展开；Raw 下载正在进行 | 13个验证序列的 synced+rectified Raw RGB；缺失清单见 `storage/kitti_val_raw_urls.txt` |
-| ScanNet v2 | 待授权与下载 | 冻结扫描名单对应的 `.sens`，包含颜色、深度、内参和位姿 |
-| Bonn | 已完整下载并解压 | 无需重下；16.4GB 原包与 HF 镜像 SHA256 完全一致 |
-| Sintel | RGB、深度均已下载 | 无需重下 |
-| NYUv2 labeled、Middlebury、模型权重 | 已保留 | 无需重下 |
+| NYUv2 完整 Raw | 完整清单38个 ZIP，共421.54GB；此次未启动下载 | 使用下方新入口，由你运行 |
+| NYUv2 labeled | 完整1449对 MAT 已有，含795训练/654测试划分 | 直接复用，无需重下 |
+| NYUv2 预处理训练镜像 | 已冻结公开 HF 的14个 TAR，35.15GB | 需要时用 prepared 模式，与完整 Raw 分开保存 |
+| KITTI | 已完成论文相关验证实验，已有 Raw 和深度包 | 不再按历史缺失清单重复下载；训练标注从已有包展开 |
+| ScanNet v2 | 仍需官方授权 | 取得授权后下载冻结名单的 .sens |
+| Bonn / Sintel / Middlebury / 权重 | 已有 | 无需重新下载 |
 
-当前 `~/Documents/ResourcesLow` 指向 `/media/hjr/新加卷/Resources`，共享数据根目录为 `~/Documents/ResourcesLow/Datasets`。保留 `Resources` 拼写。项目入口与默认路径已按此布局调整；下载前确认新加卷已挂载即可。
+## 2. NYUv2：新的下载入口
 
-## 2. 完整 NYUv2 Raw
-
-已从[官方页面](https://cs.nyu.edu/~fergus/datasets/nyu_depth_v2.html)列出的分包及官方服务器的 classrooms 包生成完整清单，并取得38份 MD5。官方页面的约428GB与当前实际分包字节数有差别，以冻结清单为准。尚未找到可验证的完整 Raw HF/ModelScope 镜像；常见 NYUv2 镜像是 labeled 或抽样图像集，不能替代连续视频。
-
-安装 aria2（如果尚未安装），从仓库根目录下载：
+完整 Raw + labeled，默认复用已有文件，未完成包续传：
 
 ```bash
-sudo apt install aria2
-cd /home/hjr/Documents/Projects/Homework-AIAA3201
-
-aria2c -c -j 3 -x 4 -s 4 \
-  --file-allocation=none \
-  --auto-file-renaming=false \
-  -i Proj/storage/nyuv2_raw_aria2.txt
+bash /home/hjr/Documents/Projects/Homework-AIAA3201/Proj/download_nyuv2.sh
 ```
 
-目标目录已写入清单，不需要另传 `-d`：
-
-```text
-/media/hjr/新加卷/Resources/Datasets/nyu_depth_v2/archives/raw/
-```
-
-清单每项都包含官方 MD5，由 aria2 在下载完成时核对。中断后重复同一命令续传，保留 `.aria2` 文件；不要重新运行清单探测，也不要删除已完成 ZIP。
-
-若不安装 aria2，可用现有 curl 顺序续传，并在每个包完成后核对一次 MD5：
+HF 预处理训练子集 + labeled（这是35.15GB的抽样训练数据，不是完整 Raw）：
 
 ```bash
-conda run --no-capture-output -n aiaa3201 python -m depth_project.storage.download nyuv2-raw
+bash /home/hjr/Documents/Projects/Homework-AIAA3201/Proj/download_nyuv2.sh --mode prepared
 ```
 
-完成下载后再解压，ZIP 和原始场景分别保留：
+只查看默认完整清单，不下载：
 
 ```bash
-conda run --no-capture-output -n aiaa3201 python -m depth_project.storage.extract \
-  --archives /media/hjr/新加卷/Resources/Datasets/nyu_depth_v2/archives/raw/*.zip \
-  --output /media/hjr/新加卷/Resources/Datasets/nyu_depth_v2/raw/scenes
+bash /home/hjr/Documents/Projects/Homework-AIAA3201/Proj/download_nyuv2.sh --plan
 ```
 
-解压过程中 ZIP 库核对 CRC；不用在解压前后额外重复全量扫描。预计需同时容纳约422GB压缩包及展开文件；本机先前确认约2.7TB可用。
+新下载入口使用现有 conda aiaa3201 与系统 aria2，Raw 下载完成时核对官方 MD5，HF 分片核对冻结的 SHA256。完整 Raw 尚未发现可确认等价的 HF/ModelScope 镜像，预处理训练数据优先走 HF。
 
-论文评价仍只导出指定八场景，不改变测试名单：
+解压使用系统 unzip / tar。目录布局、各模式、镜像核查、解压指令及训练划分见 [NYUv2 完整指南](nyuv2_download_zh.md)。**不要继续使用旧 nyuv2_raw_aria2.txt**：它包含历史固定挂载路径。
+
+现有 `depth_project.data.nyuv2_raw` 只准备 VDA 的八个评价场景，不是全部 Raw 训练预处理器；完整下载后仍需建立训练场景同步、投影和 split。
+
+## 3. KITTI 与其他训练数据
+
+现有 `KITTI/archives/data_depth_annotated.zip` 已包含训练标注，无需重新下载。使用系统 unzip 展开：
 
 ```bash
-conda run -n aiaa3201 python -m depth_project.data.nyuv2_raw \
-  --source /media/hjr/新加卷/Resources/Datasets/nyu_depth_v2/raw/scenes \
-  --output /media/hjr/新加卷/Resources/Datasets/nyu_depth_v2/exported_toolbox_python_v1
+dataset="$HOME/Documents/ResourcesLow/Datasets/KITTI"
+unzip -q -n "$dataset/archives/data_depth_annotated.zip" 'train/*' -d "$dataset/depth"
 ```
 
-这一步包含字节转换、时间戳同步和标定投影。Python 投影移植尚未完成与 MATLAB 的逐像素对照，报告会保留该限制。Raw PGM 不可以直接按毫米或米使用。
+训练 RGB 使用现有 Raw 对应 drive/camera/frame。当前论文 val drive 继续保留评价，不混进训练。旧 downloader/repair 清单是历史下载记录，不表示现在仍然缺少这些包。
 
-## 3. KITTI
-
-1. 已下载 [ModelScope 镜像](https://modelscope.cn/datasets/OmniData/KITTI_depth_completion)，完整包位于 `~/Documents/ResourcesLow/Datasets/KITTI/depth_completion/raw/KITTI_depth_completion.tar.gz`，无需重新下载深度标注。
-2. 已提取 `KITTI/archives/data_depth_annotated.zip`，并展开完整 `val/` 到 `KITTI/depth/val/`：13个序列，左相机3426张 GT。训练集保留在 ZIP 中，需要训练时再展开。用户已确认外层包 SHA256 正确，不重复校验。`depth_completion/sample/image` 中的抽样图片不能替代连续 Raw RGB。
-3. 在[Raw 页面](https://www.cvlibs.net/datasets/kitti/raw_data.php)下载这些 val drive 对应的 **synced+rectified** 包和标定。解压后应为 `KITTI/raw/<date>/<drive>/image_02/data/*.png`，帧名与 GT 一致。无需下载无关 Raw drives。
-
-当前已有 Raw `2011_09_26_drive_0001_sync`，但它不属于上述验证集；`drive_0002` 的 ZIP 正在由用户启动的全量 `downloader.sh` 下载。此次未中断该下载器，也未移动它正在写入的文件。
-
-核对时，验证集3426张左相机 GT 尚无匹配的已展开 RGB。缺失清单包含13个 Raw drive ZIP，以及另外4个日期的标定包；`2011_09_26` 标定已存在。详细帧数见 `outputs/kitti_data_inventory.json`。
-
-若只复现当前验证集，可在原下载终端按 Ctrl+C 停止全量下载器，再从仓库根目录改用以下清单。不要与原下载器同时写同一个文件。目标仍为现有 `KITTI/raw`，以便续传当前 `drive_0002` ZIP；保留下载包。
-
-```bash
-cd /home/hjr/Documents/Projects/Homework-AIAA3201
-aria2c -c -j 2 -x 4 -s 4 \
-  --file-allocation=none \
-  --auto-file-renaming=false \
-  -d ~/Documents/ResourcesLow/Datasets/KITTI/raw \
-  -i Proj/storage/kitti_val_raw_urls.txt
-```
-
-下载全部完成后解压，不删除 ZIP：
-
-```bash
-for archive in ~/Documents/ResourcesLow/Datasets/KITTI/raw/*.zip; do
-  unzip -q -n "$archive" -d ~/Documents/ResourcesLow/Datasets/KITTI/raw
-done
-```
-
-验证集的完整 drive 名称也可直接列出：
-
-```bash
-find ~/Documents/ResourcesLow/Datasets/KITTI/depth/val -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort
-```
-
-全部准备好后：
-
-```bash
-conda run -n aiaa3201 python -m depth_project.data.benchmark \
-  --dataset kitti --source ~/Documents/ResourcesLow/Datasets/KITTI/raw \
-  --depth-root ~/Documents/ResourcesLow/Datasets/KITTI/depth/val
-```
-
-不把第三方不同 split 的 KITTI 包混入该目录。网站登录、条款确认由你完成，凭据不写入仓库。
-
-补下载包的批量解压入口（从任意目录执行）：
+原有补包解压工具仍保留为需要恢复时的入口：
 
 ```bash
 bash /home/hjr/Documents/Projects/Homework-AIAA3201/Proj/extract_kitti_recovery.sh
 ```
 
-此入口读取 `storage/kitti_repair_urls.txt` 的全部条目，自动跳过未下载、带 `.aria2` 或被下载/解压进程使用的包。使用系统 `unzip -q -o` 直接解压到 `KITTI/raw/<date>/<drive>_sync/`，由 unzip 在解压时核对 CRC。完成后只对照子目录、文件路径和大小，不解码图片、不额外计算 SHA256。
-
-已有正确目录会跳过；已有异常目录先改名保留到 `KITTI/recovery_backups/`，随后直接解压到正式位置，不再暂存解压后整目录复制。ZIP 和旧目录备份均保留；之前产生的暂存副本不会自动删除。某个包失败不会阻止继续处理其他包，末尾打印通过、跳过和失败计数。
-
-只查看当前状态、不解压时使用：
-
-```bash
-bash /home/hjr/Documents/Projects/Homework-AIAA3201/Proj/extract_kitti_recovery.sh --check-only
-```
-
-后续下载完成，再运行同一入口即可。
+多数据集训练不限于 NYUv2。已有 KITTI、NYUv2，加上 Virtual KITTI 2、DIODE 及带位姿 RGB-D 数据的用途、体积、划分与资源压力见 [多数据集说明](multi_dataset_training_zh.md)。这里不自动启动额外下载。
 
 ## 4. ScanNet v2
 
