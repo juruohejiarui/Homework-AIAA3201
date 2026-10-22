@@ -1,0 +1,273 @@
+{
+  "archives": [
+    {
+      "url": "https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/basements.zip",
+      "name": "basements.zip",
+      "bytes": 1816744380,
+      "etag": "\"6c4951bc-4c3167d8e0980\"",
+      "md5": "58c333f15aa9cebf8a2352b3cb4f2d43"
+    },
+    {
+      "url": "https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/bathrooms_part1.zip",
+      "name": "bathrooms_part1.zip",
+      "bytes": 6225226736,
+      "etag": "\"1730d6bf0-4c316e769a580\"",
+      "md5": "4e80f930dde31dee152dd9d32403a8b3"
+    },
+    {
+      "url": "https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/bathrooms_part2.zip",
+      "name": "bathrooms_part2.zip",
+      "bytes": 4998239141,
+      "etag": "\"129eb13a5-4c3172c9d19c0\"",
+      "md5": "def395eb1b5df7ef83c7fbf2c500a0cc"
+    },
+    {
+      "url": "https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/bathrooms_part3.zip",
+      "name": "bathrooms_part3.zip",
+      "bytes": 5946554920,
+      "etag": "\"162713a28-4c3175bf09440\"",
+      "md5": "2f8bce64ddf15e13c4fc37e24b30a48d"
+    },
+    {
+      "url": "https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/bathrooms_part4.zip",
+      "name": "bathrooms_part4.zip",
+      "bytes": 4780749628,
+      "etag": "\"11cf4733c-4c31782810400\"",
+      "md5": "97f4457d84c55a4dcded325f9fb1d0d9"
+    },
+    {
+      "url": "https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/bedrooms_part1.zip",
+      "name": "bedrooms_part1.zip",
+      "bytes": 15476165396,
+      "etag": "\"39a738b14-4c31aaeea4f80\"",
+      "md5": "a11340a9d54f94d33923c24a0e7ccb5e"
+    },
+    {
+      "url": "https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/bedrooms_part2.zip",
+      "name": "bedrooms_part2.zip",
+      "bytes": 11716352371,
+      "etag": "\"2ba595973-4c31b2179b400\"",
+      "md5": "7d056d8afb9cab6fa31540eb0b0b82bb"
+    },
+    {
+      "url": "https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/bedrooms_part3.zip",
+      "name": "bedrooms_part3.zip",
+      "bytes": 12498752054,
+      "etag": "\"2e8fbd236-4c31b8b184700\"",
+      "md5": "0da1905fee72d46daa093b32496ee890"
+    },
+    {
+      "url": "https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/bedrooms_part4.zip",
+      "name": "bedrooms_part4.zip",
+      "bytes": 11895171075,
+      "etag": "\"2c501e803-4c31bf2a0cb40\"",
+      "md5": "d827c5e2dba83ef80473395aa79e8c4d"
+    },
+    {
+      "url": "https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/bedrooms_part5.zip",
+      "name": "bedrooms_part5.zip",
+      "bytes": 10612070217,
+      "etag": "\"278875749-4c31c4c73ca00\"",
+      "md5": "f600b6830205f3a9be7df6265f0d494c"
+    },
+    {
+      "url": "https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/bedrooms_part6.zip",
+      "name": "bedrooms_part6.zip",
+      "bytes": 11140872434,
+      "etag": "\"2980c38f2-4c31caf1915c0\"",
+      "md5": "5e63705cb433ef07c13b18dcde9405c0"
+    },
+    {
+      "url": "https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/bedrooms_part7.zip",
+      "name": "bedrooms_part7.zip",
+      "bytes": 10787704276,
+      "etag": "\"282ff4dd4-4c31d10e8c200\"",
+      "md5": "72123044c9ed2695159fb227deeedff3"
+    },
+    {
+      "url": "https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/bookstore_part1.zip",
+      "name": "bookstore_part1.zip",
+      "bytes": 9344396129,
+      "etag": "\"22cf82b61-4c34d0b75a4c0\"",
+      "md5": "b1cdfd341dd7bb5ae23047d4daa25da5"
+    },
+    {
+      "url": "https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/bookstore_part2.zip",
+      "name": "bookstore_part2.zip",
+      "bytes": 7664532335,
+      "etag": "\"1c8d77b6f-4c34d4e83c800\"",
+      "md5": "cd55333d35803bfba29b902063cc24a3"
+    },
+    {
+      "url": "https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/bookstore_part3.zip",
+      "name": "bookstore_part3.zip",
+      "bytes": 7634354862,
+      "etag": "\"1c70b02ae-4c34d9e34c840\"",
+      "md5": "d99054d5c12b1e02d7e58373a64b50c3"
+    },
+    {
+      "url": "https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/cafe.zip",
+      "name": "cafe.zip",
+      "bytes": 1666625650,
+      "etag": "\"6356b072-4c35133670740\"",
+      "md5": "0b0eab478a2b0566073f3c9d3b43bcb5"
+    },
+    {
+      "url": "https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/classrooms.zip",
+      "name": "classrooms.zip",
+      "bytes": 13980594300,
+      "etag": "\"3414ef07c-4c351aa228940\"",
+      "md5": "0390ad513df6234481196c17efdf0eaf"
+    },
+    {
+      "url": "https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/dining_rooms_part1.zip",
+      "name": "dining_rooms_part1.zip",
+      "bytes": 18115180929,
+      "etag": "\"437bfb981-4c38c3319a8c0\"",
+      "md5": "163e52a8b516882444da42acb11e1db8"
+    },
+    {
+      "url": "https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/dining_rooms_part2.zip",
+      "name": "dining_rooms_part2.zip",
+      "bytes": 23251138897,
+      "etag": "\"569e03951-4c38d05536880\"",
+      "md5": "16b9129333eda898dd8df2faf988f251"
+    },
+    {
+      "url": "https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/furniture_stores.zip",
+      "name": "furniture_stores.zip",
+      "bytes": 9677553069,
+      "etag": "\"240d3bdad-4c38e8e6b1f40\"",
+      "md5": "4ba2d7e455cccaeb896d1a759ce9e03e"
+    },
+    {
+      "url": "https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/home_offices.zip",
+      "name": "home_offices.zip",
+      "bytes": 10188575807,
+      "etag": "\"25f49543f-4cb2d4d60d0c0\"",
+      "md5": "05ef7df2691d2b59d67e65fea95f2b38"
+    },
+    {
+      "url": "https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/kitchens_part1.zip",
+      "name": "kitchens_part1.zip",
+      "bytes": 14826649765,
+      "etag": "\"373bcb8a5-4cb3f19cbafc0\"",
+      "md5": "37310e9f07c9d0d14775789bb3e74059"
+    },
+    {
+      "url": "https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/kitchens_part2.zip",
+      "name": "kitchens_part2.zip",
+      "bytes": 23412399934,
+      "etag": "\"5737cdf3e-4cb40522f0000\"",
+      "md5": "0b0e97f722decb929c10fb191117d632"
+    },
+    {
+      "url": "https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/kitchens_part3.zip",
+      "name": "kitchens_part3.zip",
+      "bytes": 21297079136,
+      "etag": "\"4f567a360-4cb412a031340\"",
+      "md5": "d9bcc08c30b11077916a09930df129f5"
+    },
+    {
+      "url": "https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/libraries.zip",
+      "name": "libraries.zip",
+      "bytes": 14611206974,
+      "etag": "\"366e5533e-4cb41b1ac1440\"",
+      "md5": "9f6a75d7700a7a498e5dd35c0d21cb19"
+    },
+    {
+      "url": "https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/living_rooms_part1.zip",
+      "name": "living_rooms_part1.zip",
+      "bytes": 13846507601,
+      "etag": "\"33950f051-4cb424e132440\"",
+      "md5": "a7772aaf40a76f22ed8ab668d70e41e4"
+    },
+    {
+      "url": "https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/living_rooms_part2.zip",
+      "name": "living_rooms_part2.zip",
+      "bytes": 17546829585,
+      "etag": "\"415df5f11-4cb4308385700\"",
+      "md5": "db9dc3d60eb8dc5f9a840cfcb8d9415a"
+    },
+    {
+      "url": "https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/living_rooms_part3.zip",
+      "name": "living_rooms_part3.zip",
+      "bytes": 22995277640,
+      "etag": "\"55aa01748-4cb43f647f180\"",
+      "md5": "f6574489c244cef358e5cd005320d4af"
+    },
+    {
+      "url": "https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/living_rooms_part4.zip",
+      "name": "living_rooms_part4.zip",
+      "bytes": 27052381731,
+      "etag": "\"64c729623-4cb451ae156c0\"",
+      "md5": "baea4dc8e95012431dd2bf0419b2e18b"
+    },
+    {
+      "url": "https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/misc_part1.zip",
+      "name": "misc_part1.zip",
+      "bytes": 7147275204,
+      "etag": "\"1aa02c3c4-4c38e3877f2c0\"",
+      "md5": "0499651a3f299d74686590b520146532"
+    },
+    {
+      "url": "https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/misc_part2.zip",
+      "name": "misc_part2.zip",
+      "bytes": 3869171640,
+      "etag": "\"e69edfb8-4cb468deb4d00\"",
+      "md5": "dde92b6ec7ac1c404ad743d465a4ebf8"
+    },
+    {
+      "url": "https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/office_kitchens.zip",
+      "name": "office_kitchens.zip",
+      "bytes": 2404051613,
+      "etag": "\"8f4aea9d-4cb4629b946c0\"",
+      "md5": "c9999d0fa1d6dcb31bdf23087925c268"
+    },
+    {
+      "url": "https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/offices_part1.zip",
+      "name": "offices_part1.zip",
+      "bytes": 15124083917,
+      "etag": "\"3857734cd-4cb45b246a9c0\"",
+      "md5": "72797f07892d6019a39c29943b636397"
+    },
+    {
+      "url": "https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/offices_part2.zip",
+      "name": "offices_part2.zip",
+      "bytes": 8366174503,
+      "etag": "\"1f2a9b127-4cb460eb90b80\"",
+      "md5": "d2929513a2c82a7992fd21197da12d01"
+    },
+    {
+      "url": "https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/playrooms.zip",
+      "name": "playrooms.zip",
+      "bytes": 5606424074,
+      "etag": "\"14e2b3e0a-4cb4663e5dac0\"",
+      "md5": "9dbe5b5694e09d389ec089f9f96acf0c"
+    },
+    {
+      "url": "https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/reception_rooms.zip",
+      "name": "reception_rooms.zip",
+      "bytes": 3351040400,
+      "etag": "\"c7bcd190-4cc41e5ab6c40\"",
+      "md5": "97da580c999a6cc8596f6112ce05fe7f"
+    },
+    {
+      "url": "https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/studies.zip",
+      "name": "studies.zip",
+      "bytes": 3078235222,
+      "etag": "\"b77a2456-4cc420b47b800\"",
+      "md5": "b64d36fe741f04699ac61418d618260d"
+    },
+    {
+      "url": "https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/study_rooms.zip",
+      "name": "study_rooms.zip",
+      "bytes": 7587097733,
+      "etag": "\"1c439ec85-4cc4251600e00\"",
+      "md5": "291cd53d9f022b01bea54848d6c742e7"
+    }
+  ],
+  "total_archive_bytes": 421539441278,
+  "available_bytes": 2775072202752,
+  "source": "Official NYUv2 page plus verified official classrooms.zip; all raw categories, not an eight-scene subset"
+}

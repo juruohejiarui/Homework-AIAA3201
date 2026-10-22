@@ -225,3 +225,14 @@ lab_week*/output/
 *_gpt/
 lab_week*/*.zip
 lab_week*/*.pdf
+
+# AIAA3201 Project 3 local artifacts
+/Proj/data
+/Proj/checkpoints/
+/Proj/outputs/
+/Proj/logs/
+/Proj/third_party/**/checkpoints/
+/Proj/.env.local
+/Proj/storage/migration_state.json
+/Proj/storage/migration_state.json.tmp
+/Proj/storage/.migration.lock

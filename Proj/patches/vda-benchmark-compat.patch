@@ -1,0 +1,87 @@
+diff --git a/benchmark/dataset_extract/dataset_extract_nyuv2.py b/benchmark/dataset_extract/dataset_extract_nyuv2.py
+index b25bf5b..c07dacc 100644
+--- a/benchmark/dataset_extract/dataset_extract_nyuv2.py
++++ b/benchmark/dataset_extract/dataset_extract_nyuv2.py
+@@ -55,7 +55,7 @@ def extract_nyuv2(
+                     depth_path=depth_path,
+                     out_img_path=out_img_path,
+                     out_depth_path=out_depth_path,
+-                    dataset=dataset_name,
++                    dataset=datatset_name,
+                 )
+ 
+     #~500 frames in paper
+@@ -68,7 +68,7 @@ def extract_nyuv2(
+ if __name__ == "__main__":
+     # we use matlab to extract 8 scenes from NYUv2
+     #--basement_0001a, bookstore_0001a, cafe_0001a, classroom_0001a, kitchen_0003, office_0004, playroom_0002, study_0002
+-    extract_scannet(
++    extract_nyuv2(
+         root="path/to/nyuv2",
+         saved_dir="./benchmark/datasets/",
+         sample_len=-1,
+diff --git a/benchmark/dataset_extract/dataset_extract_scannet.py b/benchmark/dataset_extract/dataset_extract_scannet.py
+index 61553b3..afee02e 100644
+--- a/benchmark/dataset_extract/dataset_extract_scannet.py
++++ b/benchmark/dataset_extract/dataset_extract_scannet.py
+@@ -78,7 +78,7 @@ def extract_scannet(
+ 
+                 cv2.imwrite(
+                     out_img_origin_path,
+-                    origin_img,
++                    cv2.cvtColor(origin_img, cv2.COLOR_RGB2BGR),
+                 )
+                 shutil.copyfile(pose_path, out_pose_path)
+             
+diff --git a/benchmark/dataset_extract/eval_utils.py b/benchmark/dataset_extract/eval_utils.py
+index 68b108b..9f2dfea 100644
+--- a/benchmark/dataset_extract/eval_utils.py
++++ b/benchmark/dataset_extract/eval_utils.py
+@@ -134,7 +134,7 @@ def copy_crop_files(im_path, depth_path, out_img_path, out_depth_path, dataset):
+     os.makedirs(osp.dirname(out_depth_path), exist_ok=True)
+     cv2.imwrite(
+         out_img_path,
+-        img,
++        cv2.cvtColor(img, cv2.COLOR_RGB2BGR),
+     )
+     shutil.copyfile(depth_path, out_depth_path)
+     
+\ No newline at end of file
+diff --git a/benchmark/eval/eval_tae.py b/benchmark/eval/eval_tae.py
+index 11b044c..9a0bcd4 100644
+--- a/benchmark/eval/eval_tae.py
++++ b/benchmark/eval/eval_tae.py
+@@ -236,7 +236,7 @@ if __name__ == '__main__':
+ 
+         file = open(results_save_path, 'a')
+         if dataset == 'scannet':
+-            args.json_file = os.path.join(args.benchmark_path,'scannet/scannet_video.json')
++            args.json_file = os.path.join(args.benchmark_path,'scannet/scannet_video_tae.json')
+             args.root_path = os.path.join(args.benchmark_path, 'scannet/')
+             args.max_depth_eval = 10.0
+             args.min_depth_eval = 0.1
+diff --git a/benchmark/eval/metric.py b/benchmark/eval/metric.py
+index 6cfd410..611174d 100644
+--- a/benchmark/eval/metric.py
++++ b/benchmark/eval/metric.py
+@@ -66,16 +66,16 @@ def threshold_percentage(output, target, threshold_val, valid_mask=None):
+     d1 = output / target
+     d2 = target / output
+     max_d1_d2 = torch.max(d1, d2)
+-    zero = torch.zeros(*output.shape)
+-    one = torch.ones(*output.shape)
+-    bit_mat = torch.where(max_d1_d2.cpu() < threshold_val, one, zero)
++    zero = torch.zeros_like(output)
++    one = torch.ones_like(output)
++    bit_mat = torch.where(max_d1_d2 < threshold_val, one, zero)
+     if valid_mask is not None:
+         bit_mat[~valid_mask] = 0
+         n = valid_mask.sum((-1, -2))
+     else:
+         n = output.shape[-1] * output.shape[-2]
+     count_mat = torch.sum(bit_mat, (-1, -2))
+-    threshold_mat = count_mat / n.cpu()
++    threshold_mat = count_mat / n
+     return threshold_mat.mean()
+ 
+ def delta1_acc(pred, gt, valid_mask):

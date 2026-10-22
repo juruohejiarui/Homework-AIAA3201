@@ -1,0 +1,14 @@
+diff --git a/pyproject.toml b/pyproject.toml
+index 51cb67a..f1ac3d4 100644
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -7,7 +7,8 @@ dependencies = [
+     "torch",
+     "torchvision",
+     "timm",
+-    "numpy<2",
++    "numpy>=2; python_version >= '3.13'",
++    "numpy<2; python_version < '3.13'",
+     "pillow_heif",
+     "matplotlib",
+ ]

@@ -1,0 +1,9 @@
+--- /etc/fstab
++++ fstab.proposed
+@@ -14,3 +14,6 @@
+ 
+ UUID=E41632181631EBE4	/media/hjr/Windows	ntfs	defaults,utf8,uid=1000,gid=1000,dmask=022,fmask=133	0	0
+ UUID=24FA6F6BFA6F37E6   /media/hjr/Data		ntfs	defaults,utf8,uid=1000,gid=1000,dmask=022,fmask=133     0       0
++
++# Shared dataset volume; reviewed manually before applying.
++UUID=9E04A88104A85DD1 /media/hjr/新加卷 ntfs-3g defaults,nofail,uid=1000,gid=1000,dmask=022,fmask=133,x-systemd.device-timeout=10s 0 0

@@ -1,0 +1,37 @@
+[
+  {
+    "path": "checkpoints/video_depth_anything_vits.pth",
+    "bytes": 116440756,
+    "sha256": "13379300b739e659f076a59d52e9801bd8d38c541a7e71f73bbca4dcfb013609"
+  },
+  {
+    "path": "checkpoints/depth_pro.pt",
+    "bytes": 1904446787,
+    "sha256": "3eb35ca68168ad3d14cb150f8947a4edf85589941661fdb2686259c80685c0ce"
+  },
+  {
+    "path": "checkpoints/depth_anything_v2_vits.pth",
+    "bytes": 99218434,
+    "sha256": "715fade13be8f229f8a70cc02066f656f2423a59effd0579197bbf57860e1378"
+  },
+  {
+    "path": "data/nyuv2/nyu_depth_v2_labeled.mat",
+    "bytes": 2972037809,
+    "sha256": "2d724b0c0ab358aa1ce5df855e5bd14a2279ab7202efe22f32a30d612dcb86aa"
+  },
+  {
+    "path": "data/nyuv2/splits.mat",
+    "bytes": 2626,
+    "sha256": "6e081404491a8bfba2f066beaa9713ef6046f9007aa5f799f2a350506a580cee"
+  },
+  {
+    "path": "data/middlebury/gt-Q.zip",
+    "bytes": 13555667,
+    "sha256": "489b6a4015951a3c865aa54c0f37dcb648b5d0efad8019264e22499cef35ca45"
+  },
+  {
+    "path": "data/middlebury/inputs-Q.zip",
+    "bytes": 30937533,
+    "sha256": "a1411f283b523541e0d2e8b3a1dd6618974a0e539aea0122490791a041fffc09"
+  }
+]

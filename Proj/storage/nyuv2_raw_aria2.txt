@@ -1,0 +1,152 @@
+https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/basements.zip
+  dir=/media/hjr/新加卷/Resouces/Datasets/nyu_depth_v2/archives/raw
+  out=basements.zip
+  checksum=md5=58c333f15aa9cebf8a2352b3cb4f2d43
+https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/bathrooms_part1.zip
+  dir=/media/hjr/新加卷/Resouces/Datasets/nyu_depth_v2/archives/raw
+  out=bathrooms_part1.zip
+  checksum=md5=4e80f930dde31dee152dd9d32403a8b3
+https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/bathrooms_part2.zip
+  dir=/media/hjr/新加卷/Resouces/Datasets/nyu_depth_v2/archives/raw
+  out=bathrooms_part2.zip
+  checksum=md5=def395eb1b5df7ef83c7fbf2c500a0cc
+https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/bathrooms_part3.zip
+  dir=/media/hjr/新加卷/Resouces/Datasets/nyu_depth_v2/archives/raw
+  out=bathrooms_part3.zip
+  checksum=md5=2f8bce64ddf15e13c4fc37e24b30a48d
+https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/bathrooms_part4.zip
+  dir=/media/hjr/新加卷/Resouces/Datasets/nyu_depth_v2/archives/raw
+  out=bathrooms_part4.zip
+  checksum=md5=97f4457d84c55a4dcded325f9fb1d0d9
+https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/bedrooms_part1.zip
+  dir=/media/hjr/新加卷/Resouces/Datasets/nyu_depth_v2/archives/raw
+  out=bedrooms_part1.zip
+  checksum=md5=a11340a9d54f94d33923c24a0e7ccb5e
+https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/bedrooms_part2.zip
+  dir=/media/hjr/新加卷/Resouces/Datasets/nyu_depth_v2/archives/raw
+  out=bedrooms_part2.zip
+  checksum=md5=7d056d8afb9cab6fa31540eb0b0b82bb
+https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/bedrooms_part3.zip
+  dir=/media/hjr/新加卷/Resouces/Datasets/nyu_depth_v2/archives/raw
+  out=bedrooms_part3.zip
+  checksum=md5=0da1905fee72d46daa093b32496ee890
+https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/bedrooms_part4.zip
+  dir=/media/hjr/新加卷/Resouces/Datasets/nyu_depth_v2/archives/raw
+  out=bedrooms_part4.zip
+  checksum=md5=d827c5e2dba83ef80473395aa79e8c4d
+https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/bedrooms_part5.zip
+  dir=/media/hjr/新加卷/Resouces/Datasets/nyu_depth_v2/archives/raw
+  out=bedrooms_part5.zip
+  checksum=md5=f600b6830205f3a9be7df6265f0d494c
+https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/bedrooms_part6.zip
+  dir=/media/hjr/新加卷/Resouces/Datasets/nyu_depth_v2/archives/raw
+  out=bedrooms_part6.zip
+  checksum=md5=5e63705cb433ef07c13b18dcde9405c0
+https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/bedrooms_part7.zip
+  dir=/media/hjr/新加卷/Resouces/Datasets/nyu_depth_v2/archives/raw
+  out=bedrooms_part7.zip
+  checksum=md5=72123044c9ed2695159fb227deeedff3
+https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/bookstore_part1.zip
+  dir=/media/hjr/新加卷/Resouces/Datasets/nyu_depth_v2/archives/raw
+  out=bookstore_part1.zip
+  checksum=md5=b1cdfd341dd7bb5ae23047d4daa25da5
+https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/bookstore_part2.zip
+  dir=/media/hjr/新加卷/Resouces/Datasets/nyu_depth_v2/archives/raw
+  out=bookstore_part2.zip
+  checksum=md5=cd55333d35803bfba29b902063cc24a3
+https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/bookstore_part3.zip
+  dir=/media/hjr/新加卷/Resouces/Datasets/nyu_depth_v2/archives/raw
+  out=bookstore_part3.zip
+  checksum=md5=d99054d5c12b1e02d7e58373a64b50c3
+https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/cafe.zip
+  dir=/media/hjr/新加卷/Resouces/Datasets/nyu_depth_v2/archives/raw
+  out=cafe.zip
+  checksum=md5=0b0eab478a2b0566073f3c9d3b43bcb5
+https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/classrooms.zip
+  dir=/media/hjr/新加卷/Resouces/Datasets/nyu_depth_v2/archives/raw
+  out=classrooms.zip
+  checksum=md5=0390ad513df6234481196c17efdf0eaf
+https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/dining_rooms_part1.zip
+  dir=/media/hjr/新加卷/Resouces/Datasets/nyu_depth_v2/archives/raw
+  out=dining_rooms_part1.zip
+  checksum=md5=163e52a8b516882444da42acb11e1db8
+https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/dining_rooms_part2.zip
+  dir=/media/hjr/新加卷/Resouces/Datasets/nyu_depth_v2/archives/raw
+  out=dining_rooms_part2.zip
+  checksum=md5=16b9129333eda898dd8df2faf988f251
+https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/furniture_stores.zip
+  dir=/media/hjr/新加卷/Resouces/Datasets/nyu_depth_v2/archives/raw
+  out=furniture_stores.zip
+  checksum=md5=4ba2d7e455cccaeb896d1a759ce9e03e
+https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/home_offices.zip
+  dir=/media/hjr/新加卷/Resouces/Datasets/nyu_depth_v2/archives/raw
+  out=home_offices.zip
+  checksum=md5=05ef7df2691d2b59d67e65fea95f2b38
+https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/kitchens_part1.zip
+  dir=/media/hjr/新加卷/Resouces/Datasets/nyu_depth_v2/archives/raw
+  out=kitchens_part1.zip
+  checksum=md5=37310e9f07c9d0d14775789bb3e74059
+https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/kitchens_part2.zip
+  dir=/media/hjr/新加卷/Resouces/Datasets/nyu_depth_v2/archives/raw
+  out=kitchens_part2.zip
+  checksum=md5=0b0e97f722decb929c10fb191117d632
+https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/kitchens_part3.zip
+  dir=/media/hjr/新加卷/Resouces/Datasets/nyu_depth_v2/archives/raw
+  out=kitchens_part3.zip
+  checksum=md5=d9bcc08c30b11077916a09930df129f5
+https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/libraries.zip
+  dir=/media/hjr/新加卷/Resouces/Datasets/nyu_depth_v2/archives/raw
+  out=libraries.zip
+  checksum=md5=9f6a75d7700a7a498e5dd35c0d21cb19
+https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/living_rooms_part1.zip
+  dir=/media/hjr/新加卷/Resouces/Datasets/nyu_depth_v2/archives/raw
+  out=living_rooms_part1.zip
+  checksum=md5=a7772aaf40a76f22ed8ab668d70e41e4
+https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/living_rooms_part2.zip
+  dir=/media/hjr/新加卷/Resouces/Datasets/nyu_depth_v2/archives/raw
+  out=living_rooms_part2.zip
+  checksum=md5=db9dc3d60eb8dc5f9a840cfcb8d9415a
+https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/living_rooms_part3.zip
+  dir=/media/hjr/新加卷/Resouces/Datasets/nyu_depth_v2/archives/raw
+  out=living_rooms_part3.zip
+  checksum=md5=f6574489c244cef358e5cd005320d4af
+https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/living_rooms_part4.zip
+  dir=/media/hjr/新加卷/Resouces/Datasets/nyu_depth_v2/archives/raw
+  out=living_rooms_part4.zip
+  checksum=md5=baea4dc8e95012431dd2bf0419b2e18b
+https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/misc_part1.zip
+  dir=/media/hjr/新加卷/Resouces/Datasets/nyu_depth_v2/archives/raw
+  out=misc_part1.zip
+  checksum=md5=0499651a3f299d74686590b520146532
+https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/misc_part2.zip
+  dir=/media/hjr/新加卷/Resouces/Datasets/nyu_depth_v2/archives/raw
+  out=misc_part2.zip
+  checksum=md5=dde92b6ec7ac1c404ad743d465a4ebf8
+https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/office_kitchens.zip
+  dir=/media/hjr/新加卷/Resouces/Datasets/nyu_depth_v2/archives/raw
+  out=office_kitchens.zip
+  checksum=md5=c9999d0fa1d6dcb31bdf23087925c268
+https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/offices_part1.zip
+  dir=/media/hjr/新加卷/Resouces/Datasets/nyu_depth_v2/archives/raw
+  out=offices_part1.zip
+  checksum=md5=72797f07892d6019a39c29943b636397
+https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/offices_part2.zip
+  dir=/media/hjr/新加卷/Resouces/Datasets/nyu_depth_v2/archives/raw
+  out=offices_part2.zip
+  checksum=md5=d2929513a2c82a7992fd21197da12d01
+https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/playrooms.zip
+  dir=/media/hjr/新加卷/Resouces/Datasets/nyu_depth_v2/archives/raw
+  out=playrooms.zip
+  checksum=md5=9dbe5b5694e09d389ec089f9f96acf0c
+https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/reception_rooms.zip
+  dir=/media/hjr/新加卷/Resouces/Datasets/nyu_depth_v2/archives/raw
+  out=reception_rooms.zip
+  checksum=md5=97da580c999a6cc8596f6112ce05fe7f
+https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/studies.zip
+  dir=/media/hjr/新加卷/Resouces/Datasets/nyu_depth_v2/archives/raw
+  out=studies.zip
+  checksum=md5=b64d36fe741f04699ac61418d618260d
+https://horatio.cs.nyu.edu/mit/silberman/nyu_depth_v2/study_rooms.zip
+  dir=/media/hjr/新加卷/Resouces/Datasets/nyu_depth_v2/archives/raw
+  out=study_rooms.zip
+  checksum=md5=291cd53d9f022b01bea54848d6c742e7
