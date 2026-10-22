@@ -32,6 +32,7 @@ def main():
     parser.add_argument("--model", choices=["vda", "da2"], required=True)
     parser.add_argument("--setting", choices=SETTINGS, default="long")
     parser.add_argument("--precision", choices=["fp32", "fp16"], default="fp32")
+    parser.add_argument("--resolution", choices=["upstream", "short-side-518"], default="upstream")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     manifest = read_json(args.manifest)
@@ -39,6 +40,8 @@ def main():
     args.output.mkdir(parents=True, exist_ok=True)
     identity = {"manifest": manifest, "model": args.model,
                 "setting": args.setting, "precision": args.precision}
+    if args.resolution != "upstream":
+        identity["resolution"] = args.resolution
     run_path = args.output / "run.json"
     if run_path.exists() and read_json(run_path) != identity:
         raise ValueError("Output directory belongs to a different experiment")
@@ -52,14 +55,21 @@ def main():
                 print(f"Reuse {sequence['name']}", flush=True)
                 continue
             images = sequence_images(sequence, manifest["dataset"], args.setting, manifest["config"]["crop"])
-            if args.model == "da2":
-                ratio = max(images.shape[1:3]) / min(images.shape[1:3])
+            ratio = max(images.shape[1:3]) / min(images.shape[1:3])
+            if args.resolution == "short-side-518":
+                # Compensate the upstream VDA wide-frame limiter, without changing its code.
+                adapter.input_size = 518
+                if args.model == "vda" and ratio > 1.78:
+                    adapter.input_size = int(np.ceil(518 * ratio / 1.777))
+            elif args.model == "da2":
                 adapter.input_size = round(int(518 * 1.777 / ratio) / 14) * 14 if ratio > 1.78 else 518
             depths, profile = predict(adapter, images)
             output.mkdir(exist_ok=True)
             for index, depth in enumerate(depths):
                 np.save(output / f"{index:06d}.npy", depth)
             profile["source_indices"] = [frame["source_index"] for frame in sequence["frames"]]
+            profile["resolution_policy"] = args.resolution
+            profile["adapter_input_size"] = adapter.input_size
             write_json(complete, profile)
             print(sequence["name"], profile["frames"], profile["seconds"], flush=True)
 

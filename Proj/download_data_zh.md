@@ -11,7 +11,7 @@
 | Sintel | RGB、深度均已下载 | 无需重下 |
 | NYUv2 labeled、Middlebury、模型权重 | 已保留 | 无需重下 |
 
-当前 `~/Documents/ResourcesLow` 指向 `/media/hjr/新加卷/Resouces`，共享数据根目录为 `~/Documents/ResourcesLow/Datasets`。保留 `Resouces` 拼写。项目入口与默认路径已按此布局调整；下载前确认新加卷已挂载即可。
+当前 `~/Documents/ResourcesLow` 指向 `/media/hjr/新加卷/Resources`，共享数据根目录为 `~/Documents/ResourcesLow/Datasets`。保留 `Resources` 拼写。项目入口与默认路径已按此布局调整；下载前确认新加卷已挂载即可。
 
 ## 2. 完整 NYUv2 Raw
 
@@ -32,7 +32,7 @@ aria2c -c -j 3 -x 4 -s 4 \
 目标目录已写入清单，不需要另传 `-d`：
 
 ```text
-/media/hjr/新加卷/Resouces/Datasets/nyu_depth_v2/archives/raw/
+/media/hjr/新加卷/Resources/Datasets/nyu_depth_v2/archives/raw/
 ```
 
 清单每项都包含官方 MD5，由 aria2 在下载完成时核对。中断后重复同一命令续传，保留 `.aria2` 文件；不要重新运行清单探测，也不要删除已完成 ZIP。
@@ -47,8 +47,8 @@ conda run --no-capture-output -n aiaa3201 python -m depth_project.storage.downlo
 
 ```bash
 conda run --no-capture-output -n aiaa3201 python -m depth_project.storage.extract \
-  --archives /media/hjr/新加卷/Resouces/Datasets/nyu_depth_v2/archives/raw/*.zip \
-  --output /media/hjr/新加卷/Resouces/Datasets/nyu_depth_v2/raw/scenes
+  --archives /media/hjr/新加卷/Resources/Datasets/nyu_depth_v2/archives/raw/*.zip \
+  --output /media/hjr/新加卷/Resources/Datasets/nyu_depth_v2/raw/scenes
 ```
 
 解压过程中 ZIP 库核对 CRC；不用在解压前后额外重复全量扫描。预计需同时容纳约422GB压缩包及展开文件；本机先前确认约2.7TB可用。
@@ -57,8 +57,8 @@ conda run --no-capture-output -n aiaa3201 python -m depth_project.storage.extrac
 
 ```bash
 conda run -n aiaa3201 python -m depth_project.data.nyuv2_raw \
-  --source /media/hjr/新加卷/Resouces/Datasets/nyu_depth_v2/raw/scenes \
-  --output /media/hjr/新加卷/Resouces/Datasets/nyu_depth_v2/exported_toolbox_python_v1
+  --source /media/hjr/新加卷/Resources/Datasets/nyu_depth_v2/raw/scenes \
+  --output /media/hjr/新加卷/Resources/Datasets/nyu_depth_v2/exported_toolbox_python_v1
 ```
 
 这一步包含字节转换、时间戳同步和标定投影。Python 投影移植尚未完成与 MATLAB 的逐像素对照，报告会保留该限制。Raw PGM 不可以直接按毫米或米使用。
@@ -107,6 +107,24 @@ conda run -n aiaa3201 python -m depth_project.data.benchmark \
 ```
 
 不把第三方不同 split 的 KITTI 包混入该目录。网站登录、条款确认由你完成，凭据不写入仓库。
+
+补下载包的批量解压入口（从任意目录执行）：
+
+```bash
+bash /home/hjr/Documents/Projects/Homework-AIAA3201/Proj/extract_kitti_recovery.sh
+```
+
+此入口读取 `storage/kitti_repair_urls.txt` 的全部条目，自动跳过未下载、带 `.aria2` 或被下载/解压进程使用的包。使用系统 `unzip -q -o` 直接解压到 `KITTI/raw/<date>/<drive>_sync/`，由 unzip 在解压时核对 CRC。完成后只对照子目录、文件路径和大小，不解码图片、不额外计算 SHA256。
+
+已有正确目录会跳过；已有异常目录先改名保留到 `KITTI/recovery_backups/`，随后直接解压到正式位置，不再暂存解压后整目录复制。ZIP 和旧目录备份均保留；之前产生的暂存副本不会自动删除。某个包失败不会阻止继续处理其他包，末尾打印通过、跳过和失败计数。
+
+只查看当前状态、不解压时使用：
+
+```bash
+bash /home/hjr/Documents/Projects/Homework-AIAA3201/Proj/extract_kitti_recovery.sh --check-only
+```
+
+后续下载完成，再运行同一入口即可。
 
 ## 4. ScanNet v2
 

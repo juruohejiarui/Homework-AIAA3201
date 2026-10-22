@@ -4,7 +4,7 @@
 
 ## 存储与运行环境
 
-数据完整性迁移已经完成，4,167,446,009 字节逐文件校验通过后删除旧目录。见 [迁移报告](storage/migration_report_zh.md)。共享数据按原始数据集名称位于 `/media/hjr/新加卷/Resouces/Datasets`；`~/Documents/ResourcesLow` 指向该目录，`Proj/data` 是兼容入口目录。项目视频缓存位于 `Proj/outputs/prepared_videos`。
+数据完整性迁移已经完成，4,167,446,009 字节逐文件校验通过后删除旧目录。见 [迁移报告](storage/migration_report_zh.md)。当前共享数据位于 `~/Documents/ResourcesLow/Datasets`，实际目录为 `/media/hjr/新加卷1/Resources/Datasets`；`Proj/data` 提供按数据集命名的入口。项目视频缓存位于 `Proj/outputs/prepared_videos`。
 
 保持 Python 3.13 / PyTorch 2.12；权重、代码和模型结果保留在项目中。VDA-S 与 DA-V2-S 使用同一组 RGB、帧索引和输入宽高比规则；FP32 默认，FP16 独立目录。新入口记录模型、精度和采样清单，源码排版变化不再使运行凭证失效。历史结果不覆盖。
 
@@ -14,7 +14,7 @@ VDA-S 参数量29,035,137，权重116,440,756字节；DA-V2-S 参数量24,785,08
 
 | 数据集 | 数据/管线状态 |
 |---|---|
-| KITTI | 待用户完成官方授权与下载；不代申请、不使用替代数据 |
+| KITTI | 已使用下载的数据完成13个验证序列的长、短视频实验及518短边长视频对照；本轮未额外校验数据完整性 |
 | ScanNet | 待用户完成官方授权与下载；不代申请、不使用替代数据 |
 | Bonn-RGBD | 官方公开压缩包下载/解压中；以下载日志和 verified/extraction receipt 为准 |
 | nyu_depth_v2 | labeled 654 图像基准已保留；八场景 raw 视频另行下载/投影，不能用 labeled 代替 |
@@ -26,7 +26,7 @@ VDA-S 参数量29,035,137，权重116,440,756字节；DA-V2-S 参数量24,785,08
 
 | 数据集 | 论文 AbsRel / δ1 | 实测 AbsRel / δ1 | 差值 AbsRel / δ1 | 帧数 | 精度 |
 |---|---|---|---|---:|---|
-| kitti | 0.086 / 0.942 | 待完成 | — | — | FP32 |
+| kitti | 0.086 / 0.942 | 0.085675 / 0.941888 | −0.000325 / −0.000112 | 2806 | FP32，短边518 |
 | scannet | 0.110 / 0.876 | 待完成 | — | — | FP32 |
 | bonn | 0.083 / 0.950 | 待完成 | — | — | FP32 |
 | nyuv2 | 0.077 / 0.959 | 待完成 | — | — | FP32 |
@@ -40,8 +40,26 @@ VDA-S 参数量29,035,137，权重116,440,756字节；DA-V2-S 参数量24,785,08
 | sintel | long | vda Small | fp32 | 23 / 1064 | {"abs_rel": 0.3521193130954613, "rmse": 6.896128067559545, "delta1": 0.5916672391557712} |
 | sintel | short | da2 Small | fp32 | 23 / 1064 | {"abs_rel": 0.4276502138140012, "rmse": 7.177313643411607, "delta1": 0.5390019801167952} |
 | sintel | short | vda Small | fp32 | 23 / 1064 | {"abs_rel": 0.3521193130954613, "rmse": 6.896128067559545, "delta1": 0.5916672391557712} |
+| kitti | long，上游宽画幅规则 | vda Small | fp32 | 13 / 2806 | AbsRel=0.091166606，RMSE=3.660852283，δ1=0.930680002 |
+| kitti | long，上游宽画幅规则 | da2 Small | fp32 | 13 / 2806 | AbsRel=0.128544232，RMSE=4.235744080，δ1=0.835726612 |
+| kitti | short，上游宽画幅规则 | vda Small | fp32 | 13 / 1269 | AbsRel=0.088668111，RMSE=3.627506061，δ1=0.937952051 |
+| kitti | short，上游宽画幅规则 | da2 Small | fp32 | 13 / 1269 | AbsRel=0.121144844，RMSE=4.068729516，δ1=0.862959455 |
+| kitti | long，短边518 | vda Small | fp32 | 13 / 2806 | AbsRel=0.085675412，RMSE=3.573112474，δ1=0.941888295 |
+| kitti | long，短边518 | da2 Small | fp32 | 13 / 2806 | AbsRel=0.130532115，RMSE=4.166974620，δ1=0.842160696 |
 
 ScanNet 原始 TAE 的论文 VDA-S 参考值为 **0.703**；未获得 ScanNet 数据前，实测和差值留空。单位遵循官方 evaluator 的 `×100` 输出。DA-V2-S 是本项目同尺寸对照，不能拿论文中的 DA-V2-L 行作为其复现目标。
+
+## KITTI 本轮结论（2026-10-22）
+
+**VDA-S 长视频的两项指标，在论文报告的三位小数精度上已复现：AbsRel=0.086，δ1=0.942。** 完整数值为0.0856754119960932和0.9418882950630797。该结果使用短边518的输入；原始上游宽画幅设置的结果也完整保留，未覆盖。
+
+本轮固定使用 annotated depth 的13个 val 序列，按日期、drive、相机和同名帧号读取 `image_02` RGB/GT。长视频每序列最多500帧，共2806帧；短视频每序列最多110帧，共1269帧。GT 除以256转换为米，评价裁剪为 `[0:374, 0:1242]`，有效深度上限80米。对齐、指标定义和逐序列等权平均直接使用官方评价器。没有额外运行数据哈希、解压检查或小型测试。
+
+上游 `infer_video_depth` 对宽高比大于1.78的输入会缩小短边；KITTI 在名义 `input_size=518` 下实际约为280。因此增加明确的 `--resolution short-side-518` 设置，仅调整输入分辨率，VDA 与 DA-V2 保持相同实际短边。新设置没有修改权重、帧名单、长视频拼接策略或评价公式。上游默认四组位于 `outputs/paper/official_code/kitti/`，518短边的两组完整长视频位于 `outputs/paper/short_side_518/kitti/`；各模型目录含逐帧 NPY、`run.json`、各序列 `complete.json` 和 `metrics.json`。
+
+论文短视频 Table 7 只列 VDA-L，没有 VDA-S；其 KITTI 0.079/0.950不能作为本轮 Small 短视频的同模型复现目标。论文单图 Table 2 同样使用 Large，本轮保持既定 Small 模型范围。长度变化实验使用 Bonn/ScanNet/NYUv2，原始 TAE 使用 ScanNet，均不是本轮 KITTI 实验。
+
+结论限于数值一致：公开代码选择规则下的13序列名单已冻结，但论文原始逐序列清单未单独核实。全部运行使用 RTX 4090 D 与 FP32；推理记录包含预处理和传输，不能据此宣称复现论文 A100、518×518 的延迟表。五套 benchmark 总体仍未完成。
 
 ## 协议审计与已知差异
 
@@ -71,6 +89,19 @@ conda run -n aiaa3201 python -m depth_project.evaluation.video \
   --manifest Proj/data/sintel/prepared/vda_protocol_v2/manifest.json \
   --predictions Proj/outputs/benchmarks/sintel/vda-long --setting long \
   --output Proj/outputs/benchmarks/sintel/vda-long/metrics.json
+```
+
+KITTI 的518短边长视频结果可用以下入口恢复运行；将 `--model vda` 和输出目录中的 `vda` 改为 `da2` 可运行同尺寸对照：
+
+```bash
+conda run --no-capture-output -n aiaa3201 python -m depth_project.inference.benchmark \
+  --manifest Proj/data/kitti/prepared/vda_protocol_v2/manifest.json \
+  --model vda --setting long --precision fp32 --resolution short-side-518 \
+  --output Proj/outputs/paper/short_side_518/kitti/long/vda-fp32
+conda run --no-capture-output -n aiaa3201 python -m depth_project.evaluation.video \
+  --manifest Proj/data/kitti/prepared/vda_protocol_v2/manifest.json \
+  --predictions Proj/outputs/paper/short_side_518/kitti/long/vda-fp32 \
+  --setting long --output Proj/outputs/paper/short_side_518/kitti/long/vda-fp32/metrics.json
 ```
 
 Bonn 已完成下载和解压；预处理使用 `depth_project.data.benchmark --dataset bonn`，随后分别运行 long、short 和五种长度。模型推理和评价分别执行；计算脚本不生成报告。已完成序列可恢复，不完整序列重新计算。历史源码快照仅作为已有结果的凭证保留，不是当前入口。
