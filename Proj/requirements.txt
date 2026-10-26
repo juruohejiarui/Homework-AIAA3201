@@ -70,3 +70,10 @@ typing_extensions==4.16.0
 uv==0.11.29
 wheel==0.48.0
 xformers==0.0.35
+absl-py==2.5.1
+grpcio==1.84.1
+markdown==3.11.2
+protobuf==7.36.2
+tensorboard==2.21.0
+tensorboard-data-server==0.7.2
+werkzeug==3.1.9

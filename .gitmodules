@@ -7,3 +7,6 @@
 [submodule "Proj/third_party/ml-depth-pro"]
 	path = Proj/third_party/ml-depth-pro
 	url = https://github.com/apple-aiml-research/ml-depth-pro.git
+[submodule "Proj/third_party/dinov2"]
+	path = Proj/third_party/dinov2
+	url = https://github.com/facebookresearch/dinov2.git

@@ -1,0 +1,26 @@
+# Project runtime only. Platform CUDA libraries are resolved by official ARM torch.
+numpy==2.5.4
+scipy==1.18.1
+opencv-python==5.0.0.93
+pillow==13.0.0
+pillow_heif==1.8.1
+h5py==3.16.0
+timm==1.0.30
+einops==0.8.2
+easydict==1.13
+PyYAML==6.0.3
+matplotlib==3.11.2
+tqdm==4.70.1
+safetensors==0.8.0
+tensorboard==2.21.0
+pytest==9.1.1
+pandas==3.0.6
+# Match architecture-independent dependencies used by the local runtime.
+filelock==4.2.4
+fsspec==2026.9.0
+networkx==3.7
+Jinja2==3.1.6
+sympy==1.14.0
+packaging==26.3
+typing_extensions==4.16.0
+setuptools==81.0.0

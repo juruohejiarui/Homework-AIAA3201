@@ -236,3 +236,11 @@ lab_week*/*.pdf
 /Proj/storage/migration_state.json
 /Proj/storage/migration_state.json.tmp
 /Proj/storage/.migration.lock
+
+# Direction A: user-downloaded source and generated download requests.
+/Proj/storage/tum/plan*.json
+/Proj/storage/tum/*.aria2.txt
+/Proj/storage/nyuv2/plan*.json
+/Proj/storage/nyuv2/*.aria2.txt
+/Proj/storage/nyuv2/*.verified.json
+/Proj/storage/nyuv2/*.metadata/

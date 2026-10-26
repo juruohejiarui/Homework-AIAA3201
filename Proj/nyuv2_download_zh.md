@@ -1,5 +1,7 @@
 # NYUv2 完整下载与训练数据说明
 
+**2026-10-24 新入口：** 推荐使用TUM风格的 `bash Proj/download_nyuv2.sh plan|download|verify|extract`，会逐包读取官网MD5并校验已有ZIP；旧接口仍保留。详见 [完整Raw下载说明](src/explore_a/NYUV2_DOWNLOAD.md)。默认方向A训练已改为NYUv2 Raw＋TUM＋KITTI，具体划分与真实数据状态见 [DATASETS.md](src/explore_a/DATASETS.md)。下文为旧接口说明。
+
 2026-10-23 更新。脚本由你执行；本次没有启动大文件下载。
 
 ## 1. 先区分三种数据

@@ -1,0 +1,77 @@
+# Paths are relative to Proj unless absolute. Dataset roots may be symlinks.
+paths:
+  datasets: ~/Documents/ResourcesLow/Datasets
+  manifest: outputs/explore_a/mixed/data.json
+  runs: outputs/explore_a/mixed/runs
+  dinov2_source: third_party/dinov2
+weights:
+  depthpro: checkpoints/depth_pro.pt
+  raft: checkpoints/explore_a/raft/raft_large_C_T_SKHT_V2-ff5fadd5.pth
+  mftiq: checkpoints/explore_a/mftiq/UOM_bs4_200k.pth
+  resnet: checkpoints/explore_a/backbones/resnet50-11ad3fa6.pth
+  dinov2: checkpoints/explore_a/backbones/dinov2_vits14_reg4_pretrain.pth
+data:
+  datasets: [kitti, tum, scannet, nyuv2]
+  seed: 2026
+  dev_fraction: 0.15
+  # Optional JSON: dataset -> canonical sequence ID -> shared physical group ID.
+  scene_groups: null
+  sync_tolerance_s: 0.02
+  max_frame_gap_s: 0.1
+  canvas_kitti: [256, 832]
+  canvas_indoor: [384, 512]
+  min_depth_m: 0.1
+  indoor_max_depth_m: 10.0
+  kitti_max_depth_m: 80.0
+  # Official ScanNet split files must be provided before enabling that adapter.
+  scannet_train_list: storage/scannet/official/scannetv2_train.txt
+  scannet_val_list: storage/scannet/official/scannetv2_val.txt
+  nyu_raw_root: null
+geometry:
+  epsilon: 0.000001
+  fb_relative: 0.01
+  fb_absolute_px2: 0.5
+  raft_updates: 12
+training:
+  steps: 60000
+  effective_batch: 8
+  microbatch: 8
+  learning_rate: 0.0001
+  weight_decay: 0.0001
+  warmup_steps: 500
+  gradient_clip: 1.0
+  validate_every: 2000
+  heldout_every: 0  # Test only after all training; no step-0 monitoring.
+  save_every: 1000
+  log_every: 50
+  seed: 2026
+  residual_fraction: 0.1
+  residual_penalty: 0.01
+  log_smooth_l1_beta: 0.1
+  amp: true
+evaluation:
+  boundary_threshold: 0.05
+  boundary_tolerance: 1
+  visualizations_per_sequence: 3
+
+# CPU prefetch and evaluation output queues; no persistent intermediate predictions.
+online:
+  read_workers: 4
+  prefetch: 8
+  raft_bidirectional_batch: true
+result_io:
+  write_workers: 2
+  write_queue: 8
+
+# Observation settings do not enter experiment identity or checkpoint selection.
+observability:
+  progress: auto
+  tensorboard: true
+  plots: true
+  plot_every: 1000
+  refresh_seconds: 1.0
+  non_tty_every_s: 30.0
+  tb_flush_s: 10
+
+cache_policy:
+  max_rgb_frames: 4000
