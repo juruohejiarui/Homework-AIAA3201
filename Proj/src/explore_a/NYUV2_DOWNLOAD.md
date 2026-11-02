@@ -42,18 +42,11 @@ bash Proj/download_nyuv2.sh verify
 
 脚本同时保留旧 `--mode full|prepared|labeled` 接口；本次完整Raw推荐使用上面的新子命令。新入口只下载Raw，不重复下载本机已有的MAT和划分文件。如果改用新数据根目录，需将现有 `nyu_depth_v2_labeled.mat` 和 `splits.mat` 放入该根目录，用于场景级测试排除。
 
-## 使用三来源训练
+## 当前训练
 
-默认配置现在是 `Proj/configs/explore_a/mixed.yaml`，包含 **KITTI＋TUM＋NYUv2 Raw**。全部数据准备好后由用户执行：
+当前三模型使用现有 NYUv2 H5，不以完整 Raw 下载作为训练前置条件。
+H5 自带 RGB 与米制 GT。既有固定清单和房间隔离不变，不重新运行 prepare。
+完整 Raw 下载器保留为独立数据工具；下载操作不代表自动加入训练。
 
-```bash
-bash Proj/explore_a.sh status
-bash Proj/explore_a.sh prepare --extract-kitti
-bash Proj/explore_a.sh all
-```
-
-`prepare`会生成固定清单；随后`all`复用它，继续即时计算训练与评价。若已有清单，不重复执行prepare；直接all。Raw里的官方测试房间、既有评价房间以及新划出的开发房间全部排除于训练。
-
-所有可用训练Raw相邻帧对进入候选池，不设场景数或帧数上限。按用户选择保留30,000步和来源等概率、有放回采样，因此不保证每一帧都被抽到一次。labeled是Raw子集，不另行重复计入；MAT用于识别官方测试场景，训练深度监督来自Raw传感器投影后的有效测量。
-
-数据来源与实际状态见 [DATASETS.md](DATASETS.md)，完整启动参数和held-out规则见 [TRAINING_GUIDE.md](TRAINING_GUIDE.md)。官网：[NYU Depth V2](https://cs.nyu.edu/~fergus/datasets/nyu_depth_v2.html)。
+当前配置与命令见 [DA 指南](DA_TRAINING.md)，
+H5 解压与缓存说明见 [NYUv2 H5](NYUV2_H5_GLOB.md)。

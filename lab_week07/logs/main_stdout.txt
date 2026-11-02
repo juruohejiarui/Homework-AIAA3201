@@ -1,0 +1,27 @@
+🚀 Starting Lab Week 07 Verification Scripts...
+--- Testing Activation Functions ---
+Sigmoid Forward: ✅
+Sigmoid Backward: ✅
+ReLU Forward: ✅
+Activation Functions section finished.
+
+--- Testing Optimizers ---
+SGD + Momentum: ✅
+Adam Optimizer: ✅
+Optimizers section finished.
+
+--- Testing Inverted Dropout ---
+Dropout (Train): ✅
+Dropout (Test): ✅
+Dropout section finished.
+
+--- Testing Batch Normalization ---
+BN (Train): ✅
+BN (Test): ✅
+Batch Normalization section finished.
+
+--- Testing Transfer Learning ---
+Transfer Learning: ✅
+Transfer Learning section finished.
+
+🎉 Verification Finished!

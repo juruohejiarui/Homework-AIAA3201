@@ -124,6 +124,7 @@ def test_all_raw_scenes_are_considered_and_test_room_variants_never_train(tmp_pa
             (folder / f"d-{time + .001:.3f}-{index}.pgm").touch()
     monkeypatch.setattr(nyu, "historical_scenes", lambda dataset: {"library_0104"})
     settings = load_config()["data"]
+    settings["nyu_h5_root"] = None
     rows, report = nyu.prepare_nyu(tmp_path, settings, {})
     assert len(rows) == len(scenes) * 2  # Every valid anchor, rather than labeled images only.
     assert {r["sequence"] for r in rows} == set(scenes)
@@ -139,5 +140,5 @@ def test_all_raw_scenes_are_considered_and_test_room_variants_never_train(tmp_pa
 
 def test_default_has_three_sources_and_scannet_stays_optional():
     assert set(load_config()["data"]["datasets"]) == {"nyuv2", "tum", "kitti"}
-    four = load_config(DEFAULT_CONFIG.with_name("mixed_scannet.yaml"))
-    assert set(four["data"]["datasets"]) == {"nyuv2", "tum", "kitti", "scannet"}
+    from explore_a.data.prepare import ADAPTERS
+    assert "scannet" in ADAPTERS

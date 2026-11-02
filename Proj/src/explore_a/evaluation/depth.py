@@ -8,6 +8,18 @@ from depth_project.evaluation.metrics import depth_metrics
 DEPTH_METRICS = ("abs_rel", "sq_rel", "rmse", "rmse_log", "d1", "d2", "d3")
 
 
+def field_scores(prediction, target, valid, config, dataset):
+    from explore_a.frontend import relative
+    from explore_a.data.reading import depth_range
+    if not valid.any():
+        return None
+    if relative(config):
+        from explore_a.training.relative import scoring_depth
+        prediction = scoring_depth(prediction, target, valid)
+    values = frame_scores(prediction, target, valid, limits=depth_range(dataset, config["data"]))
+    return {"ssi_"+k: v for k, v in values.items()} if relative(config) else values
+
+
 def frame_scores(prediction, target, valid, limits=None, all_metrics=True):
     """Score a HW tensor on measured GT; limits match the final evaluation protocol."""
     valid = valid.bool()

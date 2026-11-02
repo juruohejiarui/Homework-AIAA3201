@@ -8,6 +8,7 @@ from depth_project.io import read_json, write_json
 def count_rgb(job, sources):
     """Count the complete original RGB sequence; KITTI's two color cameras are summed."""
     source = Path(next(iter(sources.values()))["source"])
+    h5 = job["rows"][0].get("camera") == "h5_rgb"
     if job["rows"][0]["dataset"] == "kitti":
         directories = [source.parents[2] / camera / "data" for camera in ("image_02", "image_03")]
     else:
@@ -18,7 +19,8 @@ def count_rgb(job, sources):
         if not directory.is_dir():
             raise ValueError(f"Cannot count original RGB frames: {directory}")
         with os.scandir(directory) as entries:
-            total += sum(entry.name.lower().endswith((".png", ".jpg", ".jpeg"))
+            extensions = (".h5",) if h5 else (".png", ".jpg", ".jpeg")
+            total += sum(entry.name.lower().endswith(extensions)
                          and entry.is_file() for entry in entries)
     return total
 

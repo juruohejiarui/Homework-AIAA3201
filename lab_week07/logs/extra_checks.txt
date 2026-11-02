@@ -1,0 +1,6 @@
+PASS: Sigmoid non-unit upstream gradient matches finite differences.
+PASS: Five Adam steps and uncorrected states match torch.optim.Adam.
+PASS: Dropout p=0.2, 0.7, 1.0; scaling, retention, and test identity.
+PASS: BatchNorm affine transform, momentum, constant feature, and fixed test statistics.
+PASS: ResNet18 output shapes and frozen backbone for 3 and 7 classes.
+All 5 additional check groups passed.

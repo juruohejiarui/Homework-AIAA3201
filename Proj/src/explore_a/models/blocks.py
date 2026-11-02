@@ -5,9 +5,12 @@ import torch.nn.functional as functional
 
 
 def double_conv(inputs, outputs):
-    return nn.Sequential(nn.Conv2d(inputs, outputs, 3, padding=1), nn.GroupNorm(4, outputs),
-                         nn.ReLU(), nn.Conv2d(outputs, outputs, 3, padding=1),
-                         nn.GroupNorm(4, outputs), nn.ReLU())
+    return nn.Sequential(nn.Conv2d(inputs, outputs, 3, padding=1),
+                         nn.GroupNorm(4, outputs),
+                         nn.ReLU(),
+                         nn.Conv2d(outputs, outputs, 3, padding=1),
+                         nn.GroupNorm(4, outputs),
+                         nn.ReLU())
 
 
 class SmallUNet(nn.Module):

@@ -1,35 +1,26 @@
-# 方向 A：配置启用的数据与实际训练数据
+# 当前三源数据与固定划分
 
-2026-10-24。本次核对时，三来源默认配置尚未生成训练清单，也没有已完成的训练。以下“启用”指代码配置，不表示数据已下载、预处理或训练完成。运行 `bash Proj/explore_a.sh status` 可查看当前真实状态。
+三个 DA 模型共用 `outputs/explore_a/mixed_h5_balanced/data.json`。
+本次只精简配置和入口，没有修改清单或重新划分。训练数据位于
+`~/Documents/Resources/Datasets`，共享预测缓存另在 ResourcesLow。
 
-## 当前配置
+| 来源 | train 帧对 | 完整 dev 帧对 | held-out test 帧对 |
+|---|---:|---:|---:|
+| KITTI | 68,470 | 17,428 | 6,852 |
+| TUM | 47,554 | 8,514 | 21,542 |
+| NYUv2 H5 | 38,420 | 7,466 | 1,418 |
 
-| 配置 | 启用的数据源 | 输出位置（Proj下） |
-|---|---|---|
-| **默认 `mixed.yaml`** | **KITTI＋TUM RGB-D＋NYUv2 Raw** | `outputs/explore_a/nyu_tum_kitti` |
-| `kitti_tum.yaml` | KITTI＋TUM，NYU未完成时使用 | `outputs/explore_a/kitti_tum` |
-| `kitti.yaml` | KITTI单来源，保留此前配置 | `outputs/explore_a/kitti` |
-| `mixed_scannet.yaml` | 上述三来源＋ScanNet，保留此前四来源配方 | `outputs/explore_a/mixed` |
+训练实际使用固定 10% dev 子集；按 KITTI:NYUv2:TUM=3:3:2 抽来源，
+来源内按视频帧对数平方根抽序列，再抽帧对。完整候选池不等于每轮遍历。
 
-ScanNet不再是默认训练的前置条件。显式请求某个来源时，其数据缺失或没有可用训练/开发样本会报错，不静默省略该来源。
+KITTI 是 Raw 连续 RGB 与有效深度的交集；历史评价 drive 整体隔离。
+TUM 当前固定清单仍是 Freiburg 2 训练、Freiburg 1 dev、Freiburg 3 test；
+这描述现有清单，并非建议依据相机编号重新划分。官方 validation 单独用于视频评价。
+NYUv2 使用 H5 的 RGB 与米制 GT，不需要额外 Raw 来获取 RGB；在同一场景内使用
+数字排序的相邻保留帧，通常编号差 5，无可靠时间戳。物理房间及官方测试房间隔离保持不变。
 
-## 各来源具体使用什么
+NYU labeled 654 张官方测试图另作单图评价，不按编号拼成视频，不参与训练或选模。
+ScanNet 读取器保留为可选数据工具，不属于当前训练或四个视频 benchmark。
+GT 只用于监督与评分，不进入融合输入、预测缓存或 DGX 请求。
 
-| 来源 | 训练数据 | 开发集与held-out test |
-|---|---|---|
-| NYUv2 | 全部Raw场景中符合划分的真实相邻RGB，以及同步、投影后的传感器深度；不限定为labeled或预处理子集 | 654个官方测试索引对应的完整房间、同房间a/b扫描、已有八个评价场景和其他历史评价场景保留test；剩余房间约15%开发、其余训练 |
-| TUM RGB-D | 全部普通序列中划为训练的相邻RGB-D，默认Freiburg 2 | 默认Freiburg 1开发、Freiburg 3测试；已知同地点变体通过group映射归同一划分；validation/标定包不参与首轮训练 |
-| KITTI | Raw连续RGB和annotated train深度的全部有效交集，含两路彩色相机；无GT当前帧不能伪装为监督样本 | 已有13个评价drive整体保留test，包含另一相机和导出副本；剩余训练drive约15%划开发 |
-| ScanNet（可选） | 完成下载的v1 `.sens`，按官方train及场景组筛选 | 官方val和历史评价空间保留test；同一`sceneXXXX`重扫描不跨划分；其余训练空间划开发 |
-
-所有来源先按drive/房间/物理场景划分，再构造帧对。GT不作为模型输入，也不使用test选择checkpoint；开发集仍负责选择最佳模型。
-
-## “全部Raw”的含义
-
-完整下载覆盖官方Raw分包；训练池遍历所有允许场景和所有相邻RGB锚点，不设抽样上限。跨场景、时间间隔过大、无法同步深度、缺少文件或无效测量不作为有效监督。训练阶段仍为每组30,000步、数据源等概率、有放回采样；全量候选池不等于保证遍历每帧一轮。
-
-`nyu_depth_v2_labeled.mat`含1449张处理后的图像，是Raw的子集。当前不会仅拿795张labeled训练图代替Raw，也不会将它们再重复添加一遍。MAT及 `splits.mat`用于定位并排除654测试图所属完整房间；当前Raw损失使用真实传感器有效深度，而不是MAT中额外填洞的depths。
-
-准备阶段的 `data.json` 保存每来源train/dev/test帧对数、NYU场景组数和同步剔除计数。实际下载完成前不预报一个未经计算的最终训练样本数。
-
-所有训练及评价均直接读取原始数据并即时预测，固定清单不包含预计算预测文件。
+[操作与配置](DA_TRAINING.md) · [NYUv2 H5](NYUV2_H5_GLOB.md)

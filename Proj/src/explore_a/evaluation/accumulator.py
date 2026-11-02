@@ -9,6 +9,7 @@ from explore_a.data.reading import depth_range
 from explore_a.evaluation.depth import frame_scores
 from explore_a.evaluation.output import safe_id
 from explore_a.evaluation.temporal import flow_temporal, geometric_temporal
+from explore_a.training.correction_metrics import CorrectionMetrics
 
 
 def average(rows):
@@ -29,26 +30,32 @@ class EvaluationAccumulator:
         self.visual_counts = defaultdict(int)
         self.previous = self.previous_key = self.first_median = None
         self.timings, self.head_timings = [], []
+        self.corrections = CorrectionMetrics(config["training"]["correction_fraction"])
 
     def add(self, row, data, output, scoring):
+        from explore_a.frontend import relative
+        is_relative = relative(self.config)
+        self.corrections.add(output, [row])
         key = row["dataset"], row["sequence"], row["camera"]
         _, maximum = depth_range(row["dataset"], self.config["data"])
-        prediction = output["depth"].float().clamp(*depth_range(
-            row["dataset"], self.config["data"]))
+        prediction = output["depth"].float()
+        if not is_relative:
+            prediction = prediction.clamp(*depth_range(row["dataset"], self.config["data"]))
         valid = data["gt_valid"][0, 0].bool().cpu().numpy()
         record = {}
         self.coverage[key]["pairs"] += 1
         if valid.any():
-            record.update(frame_scores(prediction[0, 0], data["gt"][0, 0],
-                                       data["gt_valid"][0, 0]))
+            from explore_a.evaluation.depth import field_scores
+            record.update(field_scores(prediction[0, 0], data["gt"][0, 0],
+                                       data["gt_valid"][0, 0], self.config, row["dataset"]))
             eligible = cv2.erode(valid.astype(np.uint8), np.ones((3, 3), np.uint8)) > 0
             record["boundary_valid_fraction"] = float(eligible.mean())
-            if eligible.any():
+            if eligible.any() and not is_relative:
                 boundary = boundary_score(prediction[0, 0].cpu().numpy(),
                                           data["gt"][0, 0].cpu().numpy(), valid, self.config)
                 record["custom_boundary_f1"] = boundary["f1"]
             self.coverage[key]["valid_gt_frames"] += 1
-        if self.previous_key == (*key, row["previous_id"]):
+        if self.previous_key == (*key, row["previous_id"]) and not is_relative:
             record.update(flow_temporal(prediction, self.previous, scoring,
                                         self.config["geometry"]))
             record.update(geometric_temporal(prediction, self.previous, scoring))
@@ -74,13 +81,21 @@ class EvaluationAccumulator:
                       "coverage": coverage} for key, coverage in sorted(self.coverage.items())]
         by_dataset = {source: average([s["metrics"] for s in sequences if s["dataset"] == source])
                       for source in sorted({s["dataset"] for s in sequences})}
-        return {"experiment": self.name, "split": self.split, "test_label": manifest["test_label"],
-                "protocol": "online metric meters, no GT scale alignment; padded canvas",
+        from explore_a.frontend import relative, metadata
+        return {"experiment": self.name, "frontend": metadata(self.config),
+                "split": self.split, "test_label": manifest["test_label"],
+                "relative_protocol": ("per-image GT-assisted inverse SSI; not metric inference; "
+                                      "legacy metric temporal/boundary scores omitted"
+                                      if relative(self.config) else None),
+                "protocol": ("relative inverse; GT-assisted per-image SSI; padded canvas"
+                             if relative(self.config) else
+                             "online metric meters, no GT scale alignment; padded canvas"),
                 "temporal_note": "Consecutive evaluated RGB outputs only; GT-corrected motion "
                                  "residual when two measured depths exist; not paper 3D TAE.",
                 "boundary_note": "Custom log-depth Sobel F1; omitted without valid 3x3 GT.",
                 "sequences": sequences, "by_dataset": by_dataset,
-                "macro_mean": average(list(by_dataset.values())), "latency": latency}
+                "macro_mean": average(list(by_dataset.values())), "latency": latency,
+                "correction_metrics": self.corrections.finish()}
 
 
 def boundary_score(predicted, target, valid, config):

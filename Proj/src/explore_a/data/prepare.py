@@ -32,10 +32,21 @@ def prepare(config, extract_kitti=False):
     settings = config["data"]
     aliases = read_json(settings["scene_groups"]) if settings["scene_groups"] else {}
     root = Path(config["paths"]["datasets"])
+    base_path = config["paths"].get("base_manifest")
+    base = read_json(base_path) if base_path else None
+    if base:
+        from explore_a.data.history import assert_history_current
+        assert_history_current(base)
+        if any(settings.get(k) != v for k, v in base["settings"].items() if k != "datasets"):
+            raise ValueError("Base manifest preprocessing/split settings changed")
+        validate_rows(base["samples"], base["history"])
     rows, reports = [], {}
     for dataset in settings["datasets"]:
         folder, adapter = ADAPTERS[dataset]
-        if dataset == "kitti":
+        if base and dataset in base["settings"]["datasets"]:
+            selected = [r for r in base["samples"] if r["dataset"] == dataset]
+            report = {**base["reports"][dataset], "fixed_source_manifest": str(base_path)}
+        elif dataset == "kitti":
             if extract_kitti:
                 extract_training(root / folder)
             selected, report = adapter(root / folder, settings, history, aliases.get(dataset, {}))

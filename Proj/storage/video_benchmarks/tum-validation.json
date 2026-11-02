@@ -1,0 +1,243 @@
+{
+  "schema": 1,
+  "dataset": "tum-validation",
+  "output": "/home/hjr/Documents/Resources/Datasets/TUM-RGBD/official_validation",
+  "files": [
+    {
+      "name": "rgbd_dataset_freiburg1_360_validation.tgz",
+      "url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg1/rgbd_dataset_freiburg1_360_validation.tgz",
+      "category": "validation",
+      "path": "archives/rgbd_dataset_freiburg1_360_validation.tgz",
+      "bytes": 501689080
+    },
+    {
+      "name": "rgbd_dataset_freiburg1_desk2_validation.tgz",
+      "url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg1/rgbd_dataset_freiburg1_desk2_validation.tgz",
+      "category": "validation",
+      "path": "archives/rgbd_dataset_freiburg1_desk2_validation.tgz",
+      "bytes": 378281889
+    },
+    {
+      "name": "rgbd_dataset_freiburg1_desk_validation.tgz",
+      "url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg1/rgbd_dataset_freiburg1_desk_validation.tgz",
+      "category": "validation",
+      "path": "archives/rgbd_dataset_freiburg1_desk_validation.tgz",
+      "bytes": 632712254
+    },
+    {
+      "name": "rgbd_dataset_freiburg1_plant_validation.tgz",
+      "url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg1/rgbd_dataset_freiburg1_plant_validation.tgz",
+      "category": "validation",
+      "path": "archives/rgbd_dataset_freiburg1_plant_validation.tgz",
+      "bytes": 762489590
+    },
+    {
+      "name": "rgbd_dataset_freiburg1_room_validation.tgz",
+      "url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg1/rgbd_dataset_freiburg1_room_validation.tgz",
+      "category": "validation",
+      "path": "archives/rgbd_dataset_freiburg1_room_validation.tgz",
+      "bytes": 1338516528
+    },
+    {
+      "name": "rgbd_dataset_freiburg1_rpy_validation.tgz",
+      "url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg1/rgbd_dataset_freiburg1_rpy_validation.tgz",
+      "category": "validation",
+      "path": "archives/rgbd_dataset_freiburg1_rpy_validation.tgz",
+      "bytes": 538804467
+    },
+    {
+      "name": "rgbd_dataset_freiburg1_xyz_validation.tgz",
+      "url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg1/rgbd_dataset_freiburg1_xyz_validation.tgz",
+      "category": "validation",
+      "path": "archives/rgbd_dataset_freiburg1_xyz_validation.tgz",
+      "bytes": 536074599
+    },
+    {
+      "name": "rgbd_dataset_freiburg2_360_hemisphere_validation.tgz",
+      "url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg2/rgbd_dataset_freiburg2_360_hemisphere_validation.tgz",
+      "category": "validation",
+      "path": "archives/rgbd_dataset_freiburg2_360_hemisphere_validation.tgz",
+      "bytes": 1122483401
+    },
+    {
+      "name": "rgbd_dataset_freiburg2_360_kidnap_validation.tgz",
+      "url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg2/rgbd_dataset_freiburg2_360_kidnap_validation.tgz",
+      "category": "validation",
+      "path": "archives/rgbd_dataset_freiburg2_360_kidnap_validation.tgz",
+      "bytes": 894505082
+    },
+    {
+      "name": "rgbd_dataset_freiburg2_desk_validation.tgz",
+      "url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg2/rgbd_dataset_freiburg2_desk_validation.tgz",
+      "category": "validation",
+      "path": "archives/rgbd_dataset_freiburg2_desk_validation.tgz",
+      "bytes": 2154441237
+    },
+    {
+      "name": "rgbd_dataset_freiburg2_desk_with_person_validation.tgz",
+      "url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg2/rgbd_dataset_freiburg2_desk_with_person_validation.tgz",
+      "category": "validation",
+      "path": "archives/rgbd_dataset_freiburg2_desk_with_person_validation.tgz",
+      "bytes": 2509334848
+    },
+    {
+      "name": "rgbd_dataset_freiburg2_pioneer_360_validation.tgz",
+      "url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg2/rgbd_dataset_freiburg2_pioneer_360_validation.tgz",
+      "category": "validation",
+      "path": "archives/rgbd_dataset_freiburg2_pioneer_360_validation.tgz",
+      "bytes": 1137570324
+    },
+    {
+      "name": "rgbd_dataset_freiburg2_rpy_validation.tgz",
+      "url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg2/rgbd_dataset_freiburg2_rpy_validation.tgz",
+      "category": "validation",
+      "path": "archives/rgbd_dataset_freiburg2_rpy_validation.tgz",
+      "bytes": 2210124986
+    },
+    {
+      "name": "rgbd_dataset_freiburg2_xyz_validation.tgz",
+      "url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg2/rgbd_dataset_freiburg2_xyz_validation.tgz",
+      "category": "validation",
+      "path": "archives/rgbd_dataset_freiburg2_xyz_validation.tgz",
+      "bytes": 2234626988
+    },
+    {
+      "name": "rgbd_dataset_freiburg3_cabinet_validation.tgz",
+      "url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg3/rgbd_dataset_freiburg3_cabinet_validation.tgz",
+      "category": "validation",
+      "path": "archives/rgbd_dataset_freiburg3_cabinet_validation.tgz",
+      "bytes": 433938025
+    },
+    {
+      "name": "rgbd_dataset_freiburg3_large_cabinet_validation.tgz",
+      "url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg3/rgbd_dataset_freiburg3_large_cabinet_validation.tgz",
+      "category": "validation",
+      "path": "archives/rgbd_dataset_freiburg3_large_cabinet_validation.tgz",
+      "bytes": 521650579
+    },
+    {
+      "name": "rgbd_dataset_freiburg3_long_office_household_validation.tgz",
+      "url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg3/rgbd_dataset_freiburg3_long_office_household_validation.tgz",
+      "category": "validation",
+      "path": "archives/rgbd_dataset_freiburg3_long_office_household_validation.tgz",
+      "bytes": 1532741250
+    },
+    {
+      "name": "rgbd_dataset_freiburg3_nostructure_notexture_far_validation.tgz",
+      "url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg3/rgbd_dataset_freiburg3_nostructure_notexture_far_validation.tgz",
+      "category": "validation",
+      "path": "archives/rgbd_dataset_freiburg3_nostructure_notexture_far_validation.tgz",
+      "bytes": 157310751
+    },
+    {
+      "name": "rgbd_dataset_freiburg3_nostructure_notexture_near_withloop_validation.tgz",
+      "url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg3/rgbd_dataset_freiburg3_nostructure_notexture_near_withloop_validation.tgz",
+      "category": "validation",
+      "path": "archives/rgbd_dataset_freiburg3_nostructure_notexture_near_withloop_validation.tgz",
+      "bytes": 475215537
+    },
+    {
+      "name": "rgbd_dataset_freiburg3_nostructure_texture_far_validation.tgz",
+      "url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg3/rgbd_dataset_freiburg3_nostructure_texture_far_validation.tgz",
+      "category": "validation",
+      "path": "archives/rgbd_dataset_freiburg3_nostructure_texture_far_validation.tgz",
+      "bytes": 217686350
+    },
+    {
+      "name": "rgbd_dataset_freiburg3_nostructure_texture_near_withloop_validation.tgz",
+      "url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg3/rgbd_dataset_freiburg3_nostructure_texture_near_withloop_validation.tgz",
+      "category": "validation",
+      "path": "archives/rgbd_dataset_freiburg3_nostructure_texture_near_withloop_validation.tgz",
+      "bytes": 866650442
+    },
+    {
+      "name": "rgbd_dataset_freiburg3_sitting_halfsphere_validation.tgz",
+      "url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg3/rgbd_dataset_freiburg3_sitting_halfsphere_validation.tgz",
+      "category": "validation",
+      "path": "archives/rgbd_dataset_freiburg3_sitting_halfsphere_validation.tgz",
+      "bytes": 575622985
+    },
+    {
+      "name": "rgbd_dataset_freiburg3_sitting_rpy_validation.tgz",
+      "url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg3/rgbd_dataset_freiburg3_sitting_rpy_validation.tgz",
+      "category": "validation",
+      "path": "archives/rgbd_dataset_freiburg3_sitting_rpy_validation.tgz",
+      "bytes": 460595848
+    },
+    {
+      "name": "rgbd_dataset_freiburg3_sitting_static_validation.tgz",
+      "url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg3/rgbd_dataset_freiburg3_sitting_static_validation.tgz",
+      "category": "validation",
+      "path": "archives/rgbd_dataset_freiburg3_sitting_static_validation.tgz",
+      "bytes": 436744140
+    },
+    {
+      "name": "rgbd_dataset_freiburg3_sitting_xyz_validation.tgz",
+      "url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg3/rgbd_dataset_freiburg3_sitting_xyz_validation.tgz",
+      "category": "validation",
+      "path": "archives/rgbd_dataset_freiburg3_sitting_xyz_validation.tgz",
+      "bytes": 531639929
+    },
+    {
+      "name": "rgbd_dataset_freiburg3_structure_notexture_far_validation.tgz",
+      "url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg3/rgbd_dataset_freiburg3_structure_notexture_far_validation.tgz",
+      "category": "validation",
+      "path": "archives/rgbd_dataset_freiburg3_structure_notexture_far_validation.tgz",
+      "bytes": 376941835
+    },
+    {
+      "name": "rgbd_dataset_freiburg3_structure_notexture_near_validation.tgz",
+      "url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg3/rgbd_dataset_freiburg3_structure_notexture_near_validation.tgz",
+      "category": "validation",
+      "path": "archives/rgbd_dataset_freiburg3_structure_notexture_near_validation.tgz",
+      "bytes": 465590100
+    },
+    {
+      "name": "rgbd_dataset_freiburg3_structure_texture_far_validation.tgz",
+      "url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg3/rgbd_dataset_freiburg3_structure_texture_far_validation.tgz",
+      "category": "validation",
+      "path": "archives/rgbd_dataset_freiburg3_structure_texture_far_validation.tgz",
+      "bytes": 436271029
+    },
+    {
+      "name": "rgbd_dataset_freiburg3_structure_texture_near_validation.tgz",
+      "url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg3/rgbd_dataset_freiburg3_structure_texture_near_validation.tgz",
+      "category": "validation",
+      "path": "archives/rgbd_dataset_freiburg3_structure_texture_near_validation.tgz",
+      "bytes": 539589887
+    },
+    {
+      "name": "rgbd_dataset_freiburg3_walking_halfsphere_validation.tgz",
+      "url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg3/rgbd_dataset_freiburg3_walking_halfsphere_validation.tgz",
+      "category": "validation",
+      "path": "archives/rgbd_dataset_freiburg3_walking_halfsphere_validation.tgz",
+      "bytes": 722004962
+    },
+    {
+      "name": "rgbd_dataset_freiburg3_walking_rpy_validation.tgz",
+      "url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg3/rgbd_dataset_freiburg3_walking_rpy_validation.tgz",
+      "category": "validation",
+      "path": "archives/rgbd_dataset_freiburg3_walking_rpy_validation.tgz",
+      "bytes": 483522225
+    },
+    {
+      "name": "rgbd_dataset_freiburg3_walking_static_validation.tgz",
+      "url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg3/rgbd_dataset_freiburg3_walking_static_validation.tgz",
+      "category": "validation",
+      "path": "archives/rgbd_dataset_freiburg3_walking_static_validation.tgz",
+      "bytes": 513496086
+    },
+    {
+      "name": "rgbd_dataset_freiburg3_walking_xyz_validation.tgz",
+      "url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg3/rgbd_dataset_freiburg3_walking_xyz_validation.tgz",
+      "category": "validation",
+      "path": "archives/rgbd_dataset_freiburg3_walking_xyz_validation.tgz",
+      "bytes": 555858444
+    }
+  ],
+  "total_bytes": 27254725677,
+  "protocol": {
+    "source": "https://cvg.cit.tum.de/data/datasets/rgbd-dataset/download",
+    "selection": "All official validation RGB-D recordings; hidden GT is trajectory, not sensor depth; no automatic submission."
+  }
+}

@@ -20,6 +20,7 @@ def read_pair(row, settings):
         images[previous] = rgb
         fitted[previous], valid = fit_image(rgb, canvas)
         data[prefix + "_rgb"] = fitted[previous].transpose(2, 0, 1)
+        data[prefix + "_image_valid"] = valid[None]
         if not previous:
             data["image_valid"] = valid[None]
             if row.get("K") is not None:
@@ -38,50 +39,62 @@ def read_pair(row, settings):
 
 
 class OnlinePairs:
-    def __init__(self, config, rows, runtime, flow, teacher=False):
+    def __init__(self, config, rows, runtime, flow, teacher=False, phase="evaluation"):
         self.config, self.rows, self.runtime = config, rows, runtime
         self.flow, self.teacher = flow, teacher
+        self.phase = phase
 
     def __len__(self):
         return len(self.rows)
 
-    def raw_stream(self, indices=None):
+    def raw_stream(self, indices=None, flows=None, teacher_flows=(), native=False):
         settings = self.config["online"]
         indices = range(len(self.rows)) if indices is None else indices
         jobs = ((index, self.rows[index]) for index in indices)
 
         def load(job):
             index, row = job
-            return index, read_pair(row, self.config["data"])
+            raw = read_pair(row, self.config["data"])
+            requested = {f:f in teacher_flows for f in (flows or [self.flow])}
+            raw["frozen_ticket"] = self.runtime.prepare(row, index, requested,
+                                                       phase=self.phase, native=native)
+            self.runtime.submit_decoded(raw)
+            return index, raw
 
-        return prefetch(jobs, load, settings["read_workers"], settings["prefetch"],
-                        Timings("raw input"))
+        def stream():
+            with self.runtime.input_phase(self.phase):
+                yield from prefetch(jobs, load, settings["read_workers"], settings["prefetch"],
+                                    Timings("raw input"))
+        return stream()
 
     def iter_batches(self, batches=None, ordered=True):
         if batches is None:
             batches = validation_batches(self.rows, self.config["training"]["microbatch"])
         # Flatten without letting the reader consume the complete, potentially infinite schedule.
         def jobs():
+            occurrence = getattr(batches, "start", 0) * self.config["training"]["effective_batch"]
             for batch in batches:
                 for offset, index in enumerate(batch):
-                    yield index, offset == len(batch) - 1
+                    ticket = self.runtime.prepare(self.rows[index], occurrence,
+                                                  {self.flow:self.teacher}, phase=self.phase)
+                    yield index, offset == len(batch) - 1, ticket
+                    occurrence += 1
 
         settings = self.config["online"]
         def load(job):
-            index, end = job
-            return index, end, read_pair(self.rows[index], self.config["data"])
+            index, end, ticket = job
+            raw = read_pair(self.rows[index], self.config["data"])
+            raw["frozen_ticket"] = ticket
+            self.runtime.submit_decoded(raw)
+            return index, end, raw
 
         loaded = prefetch(jobs(), load, settings["read_workers"], settings["prefetch"],
                           Timings("raw batches"))
-        self.runtime.reset()
-        try:
-            with closing(loaded):
-                indices, samples = [], []
-                for index, end, raw in loaded:
-                    samples.append(self.runtime.compute(raw, self.flow, self.teacher, ordered))
-                    indices.append(index)
-                    if end:
-                        yield indices, collate(samples)
-                        indices, samples = [], []
-        finally:
-            self.runtime.reset()
+        with self.runtime.input_phase(self.phase), closing(loaded):
+            indices, samples = [], []
+            for index, end, raw in loaded:
+                samples.append(self.runtime.compute(raw, self.flow, self.teacher, ordered))
+                indices.append(index)
+                if end:
+                    yield indices, collate(samples)
+                    indices, samples = [], []

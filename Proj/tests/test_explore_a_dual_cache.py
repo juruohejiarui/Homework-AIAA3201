@@ -109,17 +109,17 @@ def test_local_failure_no_receipt_then_resume(prepared):
     assign(root, name, "local")
     publish_local(root, name)
     producer = Producer(config, "cpu")
-    teacher = producer.runtime.teacher
+    teacher = producer.runtime.frozen.get("teacher")
     def interrupted(*args):
         raise RuntimeError("disk interruption")
-    producer.runtime.teacher = interrupted
+    producer.runtime.frozen.models["teacher"] = interrupted
     with pytest.raises(RuntimeError, match="interruption"):
         generate(root, name, producer, 0)
     assert not (root / "jobs" / name / "local.complete.json").exists()
     job = load_job(root, name)
-    path = artifact(root, "frames", job["rows"][0])
+    path = artifact(root, "flow/farneback", job["rows"][0])
     stamp = path.stat().st_mtime_ns
-    producer.runtime.teacher = teacher
+    producer.runtime.frozen.models["teacher"] = teacher
     generate(root, name, producer, 0)
     assert (root / "jobs" / name / "local.complete.json").exists()
     assert path.stat().st_mtime_ns == stamp

@@ -1,0 +1,3 @@
+extends: mixed_h5_da2.yaml
+paths:
+  runs: outputs/explore_a/mixed_h5_balanced/runs_da2_refine_30k

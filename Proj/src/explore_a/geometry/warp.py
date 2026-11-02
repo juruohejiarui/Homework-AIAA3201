@@ -27,11 +27,14 @@ def pair_geometry(data, settings):
     historical, bounds = warp(data["previous_depth"], backward)
     previous_color, _ = warp(previous_rgb, backward)
     warped_flow, _ = warp(forward, backward)
-    sampled_valid, _ = warp(data["image_valid"].float(), backward)
+    sampled_valid, _ = warp(data.get("previous_image_valid", data["image_valid"]).float(), backward)
+    nonnegative = (data["previous_depth"] >= 0 if settings.get("relative_inverse")
+                   else data["previous_depth"] > 0)
     historical_valid, _ = warp((torch.isfinite(data["previous_depth"])
-                                & (data["previous_depth"] > 0)).float(), backward)
+                                & nonnegative).float(), backward)
     hard = bounds & (sampled_valid > .999) & data["image_valid"].bool()
-    hard &= (historical_valid > .999) & torch.isfinite(historical) & (historical > 0)
+    positive_history = historical >= 0 if settings.get("relative_inverse") else historical > 0
+    hard &= (historical_valid > .999) & torch.isfinite(historical) & positive_history
     residual2 = (backward + warped_flow).square().sum(1, keepdim=True)
     bound = settings["fb_relative"] * (backward.square() + warped_flow.square()).sum(
         1, keepdim=True) + settings["fb_absolute_px2"]

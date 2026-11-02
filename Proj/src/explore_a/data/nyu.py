@@ -28,6 +28,9 @@ def test_rooms(root):
 
 
 def prepare_nyu(root, settings, aliases):
+    if settings.get("nyu_h5_root"):
+        from explore_a.data.nyu_h5_pairs import prepare_h5
+        return prepare_h5(root, settings, aliases)
     raw = settings.get("nyu_raw_root")
     raw = Path(raw).expanduser() if raw else root / "raw"
     scenes = sorted({p.parent for p in raw.rglob("r-*.ppm")})

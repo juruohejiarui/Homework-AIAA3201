@@ -12,7 +12,7 @@ from depth_project.paths import CHECKPOINTS
 WEIGHTS = {
     "da2": "depth_anything_v2_vits.pth",
     "vda": "video_depth_anything_vits.pth",
-    "depthpro": "depth_pro.pt",
+    "unidepthv2": "unidepth-v2-vits14",
 }
 
 
@@ -28,7 +28,6 @@ def main():
     parser.add_argument("--input-size", type=int, default=518)
     parser.add_argument("--backend", choices=["upstream", "sdpa", "flash"], default="upstream")
     parser.add_argument("--metric", action="store_true", help="Use a VDA metric checkpoint")
-    parser.add_argument("--focal", type=float, help="Depth Pro input focal length in pixels")
     args = parser.parse_args()
     if args.model == "vda" and args.images:
         parser.error("VDA requires consecutive video frames supplied with --frames")
@@ -49,7 +48,7 @@ def main():
     with gpu_session():
         adapter = load_model(
             args.model, weights, args.precision == "fp32", args.input_size,
-            args.backend, args.metric, args.focal,
+            args.backend, args.metric,
         )
         depths, profile = predict(adapter, frames, fps)
     args.output.mkdir(parents=True, exist_ok=True)
@@ -62,8 +61,6 @@ def main():
         model=args.model, kind=adapter.kind, precision=args.precision,
         weights=str(weights), input_size=args.input_size,
     )
-    if hasattr(adapter, "focal_predictions"):
-        profile["focal_predictions_px"] = adapter.focal_predictions
     write_json(args.output / "profile.json", profile)
     print(args.output)
 

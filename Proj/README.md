@@ -1,51 +1,19 @@
-# Depth Project
+# 视频深度与方向 A
 
-项目代码位于 `src/depth_project`，采用标准 Python 包布局。没有统一大脚本，也不保留旧入口。
+项目代码位于 `src/depth_project` 和 `src/explore_a`。方向 A 统一使用冻结 DA-V2-S，
+三模型为 `unet_guided`、`flow_refine`、`final_flow`，支持 Farnebäck／RAFT。
+原前端专属代码、依赖、权重、预测缓存与旧执行结果已删除，训练划分保留。
 
-## 使用现有环境
+- [完整训练、恢复、缓存和 DGX 命令](src/explore_a/DA_TRAINING.md)
+- [三模型结构](src/explore_a/FUSION_MODELS.md)
+- [基础数据、双目、独立模型工具](GUIDE_zh.md)
+- [方法和评价协议](paper_reproduction_zh.md)
 
-从仓库根目录执行一次本地注册，不重新安装依赖：
+训练数据位于 `~/Documents/Resources/Datasets`；KITTI／Sintel／Bonn benchmark
+仍位于 `~/Documents/ResourcesLow/Datasets`，TUM 官方 validation 下载到前者。
+四个视频集合之外，NYU labeled 可单独进行无历史单图评价。
 
-```bash
-conda run -n aiaa3201 python -m pip install --no-deps --no-build-isolation -e Proj
-```
+使用现有 `aiaa3201` 环境，不创建额外虚拟环境。冻结模型包括 DA、RAFT、MFTIQ，
+独立参考 UniDepthV2／VDA 保留。GT 始终留在本机；统一 hybrid 消费端只读预测缓存。
 
-本机 `aiaa3201` 的解释器为 `/home/hjr/miniconda3/envs/aiaa3201/bin/python`，已安装 PyTorch 2.12.0+cu130。后续命令使用 `conda run -n aiaa3201`，避免落入 base 或编辑器的其他解释器。此包不依赖 uv，也不创建 `.venv`。
-
-## 模块职责
-
-| 模块 | 用途 |
-|---|---|
-| `data` | labeled/raw NYUv2、视频帧、各 benchmark 的数据读取和同步 |
-| `stereo` | BM/SGBM、标定几何、左右一致性、视差敏感性 |
-| `models` | DA-V2、Depth Pro、VDA 各自的适配器 |
-| `inference` | 独立推理、预测保存、GPU 串行调度 |
-| `evaluation` | 图像精度、官方视频指标、三维 TAE、光流诊断 |
-| `visualization` | 独立生成图片、曲线和视频 |
-| `storage` | 下载、解压、一次性复制迁移、submodule 补丁 |
-
-计算命令保存 NPY/NPZ、JSON 和必要日志；不会创建或覆盖 Markdown 报告。报告直接编辑。
-
-## 文档与结果
-
-- [运行指南](GUIDE_zh.md)：各独立入口及输入输出。
-- [下载交接](download_data_zh.md)：完整 NYUv2 Raw、KITTI、ScanNet 及已下载数据。
-- [NYUv2 下载](nyuv2_download_zh.md)：完整 Raw、官方 labeled 与 HF 预处理训练镜像。
-- [多数据集训练](multi_dataset_training_zh.md)：KITTI/NYUv2、扩展数据与混合训练工作量。
-- [论文复现记录](paper_reproduction_zh.md)：实测值、论文参考值与协议差异。
-- [Part 3 指南](part3_guidance_zh.md)：后续改进、消融和应用评价。
-- [首轮历史记录](FIRST_RUN_zh.md)：重写前的完整实验结果，仍保留在 `outputs/first_round`。
-
-共享数据位于 `~/Documents/ResourcesLow/Datasets`；实际挂载路径以当前链接解析结果为准，不在新下载脚本中写死。按原始数据集命名，权重位于 `checkpoints`，本项目结果位于 `outputs`。已有数据、模型和结果不因代码重写而删除。
-
-## 官方依赖
-
-三个 submodule 的固定提交见 `submodule-versions.txt`。必要补丁位于 `patches`，单独执行：
-
-```bash
-conda run -n aiaa3201 python -m depth_project.storage.patches
-```
-
-- [Depth Anything V2](https://github.com/DepthAnything/Depth-Anything-V2)
-- [Video Depth Anything](https://github.com/DepthAnything/Video-Depth-Anything)
-- [Depth Pro](https://github.com/apple-aiml-research/ml-depth-pro)
+数据下载交接见 [下载文档](download_data_zh.md)；TUM 下载命令以 DA 指南为准。

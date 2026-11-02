@@ -6,100 +6,40 @@ import pytest
 import torch
 
 from depth_project.io import read_json
-from explore_a.config import file_identity
 from explore_a.evaluation.branches import matrix_specs
 from explore_a.evaluation.engine import evaluate, evaluate_matrix
 from explore_a.geometry.warp import pair_geometry
-from explore_a.models.occlusion import OcclusionStudent
-from explore_a.online.frozen import FrozenRuntime
+from explore_a.online.factory import make_runtime
 from explore_a.online.identity import input_identity, teacher_identity
 from explore_a.online.loading import read_pair
-from explore_a.training.prediction import make_fusion
+from explore_a.training.prediction import make_fusion, predict
 from test_explore_a_pipeline import online_experiment, fake_backbones as fake_backbones
-
-
-def test_only_adjacent_raw_depth_reused_and_teacher_conditional(tmp_path, fake_backbones,
-                                                              monkeypatch):
-    config = online_experiment(tmp_path)
-    rows = read_json(config["paths"]["manifest"])["samples"]
-    depth, _, _ = fake_backbones
-    required = []
-    monkeypatch.setattr("explore_a.online.frozen.check_weights",
-                        lambda config, names: required.append(names))
-    runtime = FrozenRuntime(config, ["farneback"], False, "cpu")
-    assert required == [["depthpro"]] and runtime.teacher is None
-    for row in rows[:2]:
-        runtime.compute(read_pair(row, config["data"]), "farneback", ordered=True)
-    assert depth.calls == 3
-    runtime.compute(read_pair(rows[2], config["data"]), "farneback", ordered=True)
-    assert depth.calls == 5  # New sequence: no cross-sequence reuse.
-    for _ in range(2):
-        runtime.compute(read_pair(rows[0], config["data"]), "farneback", ordered=False)
-    assert depth.calls == 9
-    assert runtime.previous_key is None
-    other = FrozenRuntime(config, ["raft"], True, "cpu")
-    assert required[-1] == ["depthpro", "raft", "mftiq", "resnet", "dinov2"]
-    assert other.teacher is not None
-    assert not list(tmp_path.rglob("*.npz"))
-
-
-def test_frozen_outputs_are_safe_for_head_backward(tmp_path, monkeypatch):
-    config = online_experiment(tmp_path)
-
-    class Depth:
-        def __init__(self, *_, **__):
-            self.model = torch.nn.Conv2d(1, 1, 1)
-            torch.nn.init.zeros_(self.model.weight)
-            torch.nn.init.constant_(self.model.bias, 2)
-
-        def predict(self, rgb):
-            value = self.model(torch.ones(1, 1, *rgb.shape[:2]))
-            assert not value.requires_grad
-            return value[0, 0].numpy()
-
-    monkeypatch.setattr("explore_a.online.frozen.DepthProAdapter", Depth)
-    runtime = FrozenRuntime(config, ["farneback"], False, "cpu")
-    row = read_json(config["paths"]["manifest"])["samples"][0]
-    sample = runtime.compute(read_pair(row, config["data"]), "farneback")
-    data = {key: value.unsqueeze(0) for key, value in sample.items()}
-    assert not any(value.is_inference() for value in data.values())
-    model = make_fusion("residual", config)
-    geometry = pair_geometry(data, config["geometry"])
-    model(data, geometry, geometry["rule"].float())["depth"].mean().backward()
-    assert any(p.grad is not None and torch.isfinite(p.grad).all() for p in model.parameters())
-    assert all(not p.requires_grad and p.grad is None for p in runtime.depth.model.parameters())
 
 
 def create_heads(config):
     root = Path(config["paths"]["runs"])
-    for flow in ("raft", "farneback"):
-        path = root / f"occlusion-{flow}/best.pt"
-        path.parent.mkdir(parents=True)
-        torch.save({"model": OcclusionStudent().state_dict(), "identity": {
-            "input": input_identity(config, flow), "teacher": teacher_identity(config),
-            "experiment": {"flow": flow, "occlusion": "distillation", "fusion": "student"},
-        }}, path)
-    for spec in matrix_specs():
+    from explore_a.evaluation.branches import specification
+    specs = matrix_specs()
+    for spec in specs:
         if spec["baseline"]:
             continue
-        identity = {"input": input_identity(config, spec["flow"]),
+        identity = {"frontend":{"name":"da2", "kind":"relative_inverse"},
+                    "input": input_identity(config, spec["flow"]),
                     "experiment": {key: spec[key] for key in ("flow", "occlusion", "fusion")}}
         if spec["occlusion"] == "mftiq":
             identity["teacher"] = teacher_identity(config)
-        if spec["occlusion"] == "student":
-            identity["student"] = file_identity(root / f"occlusion-{spec['flow']}/best.pt")
         path = root / spec["name"] / "best.pt"
         path.parent.mkdir(parents=True)
         torch.save({"model": make_fusion(spec["fusion"], config).state_dict(),
                     "identity": identity}, path)
 
 
-def test_all_23_shared_branches_match_independent_and_share_depth(tmp_path, fake_backbones):
+def test_shared_candidates_match_independent_and_share_depth(tmp_path, fake_backbones):
     config = online_experiment(tmp_path)
     create_heads(config)
     depth, _, _ = fake_backbones
     results = evaluate_matrix(config, device="cpu")
-    assert len(results) == 23 and depth.calls == 3
+    assert len(results) == 4 and depth.calls == 3
     for spec, shared in zip(matrix_specs(), results):
         separate = evaluate(config, spec["flow"], spec["occlusion"], spec["fusion"],
                             spec["baseline"], device="cpu")

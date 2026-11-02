@@ -12,7 +12,7 @@ from depth_project.io import read_json, write_json
 from explore_a.cache import plan, transfers, worker
 from explore_a.cache.paths import artifact, expected
 from explore_a.cache.producer import Producer
-from explore_a.cache.reader import CachedRuntime
+from explore_a.online.factory import make_runtime
 from explore_a.cache.settings import root_path
 from explore_a.cache.storage import read_npz, write_npz
 from explore_a.online.loading import read_pair
@@ -54,7 +54,9 @@ def fake_transport(monkeypatch, remote_base):
                 dst.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(source / line, dst)
         elif source.is_dir():
-            shutil.copytree(source, target, dirs_exist_ok=True)
+            ignore = (shutil.ignore_patterns("*.rgb.json")
+                      if "--exclude=*.rgb.json" in extra else None)
+            shutil.copytree(source, target, dirs_exist_ok=True, ignore=ignore)
         else:
             shutil.copy2(source, target)
 
@@ -74,7 +76,7 @@ def test_fp32_maximum_compression_and_portable_grouping(prepared):
     assert not any("depth" in name for name in job["inputs"])
     assert all(not Path(row["current_rgb"]).is_absolute() for row in job["rows"])
     assert job["history_drives"]
-    assert job["outputs"] == expected(job["rows"])
+    assert job["outputs"] == expected(job["rows"], frames=False)
     path = root / "probe.npz"
     value = np.arange(32, dtype=np.float32).reshape(1, 4, 8) / 7
     write_npz(path, depth=value)
@@ -95,15 +97,20 @@ def test_transfer_generate_pull_then_prune_and_read_locally(prepared, tmp_path, 
     job = plan.load_job(remote_root, name)
     producer = Producer(config, device="cpu")
     report = producer.generate(remote_root, job, remote_root / ".staging" / name, minimum_gib=0)
-    assert len(report["sizes"]) == 11 and report["producer"]["machine"]
+    assert len(report["sizes"]) == 8 and report["producer"]["machine"]
     transfers.pull(root, name, minimum_gib=0)
     assert worker.state(remote_root, name) == "pruned"
     assert not (remote_root / ".staging" / name).exists()
     assert not any((remote_root / item).exists() for item in report["sizes"])
     assert all((root / item).exists() for item in report["sizes"])
+    # DA predictions have an independent namespace; shared transfer never carries them.
+    da_root = plan.prepare_plan(config, recipe="glob-da2", base=base)
+    da_job = plan.load_job(da_root, name)
+    Producer(config, "cpu").generate(da_root, da_job, sources=read_json(
+        da_root / "jobs" / name / "sources.json"), host="local", minimum_gib=0)
     config["execution"] = {"backend": "cache"}
-    config["cache"] = {"root": str(base), "recipe": read_json(root / "recipe.json")["id"]}
-    runtime = CachedRuntime(config, ["raft"], teacher=True, device="cpu")
+    config["cache"] = {"root": str(base), "recipe": "glob-da2"}
+    runtime = make_runtime(config, ["raft"], teacher=True, device="cpu")
     original = read_json(config["paths"]["manifest"])["samples"]
     row = next(row for row in original if row["id"] == job["rows"][0]["id"])
     result = runtime.compute(read_pair(row, config["data"]), "raft", True)
@@ -114,12 +121,14 @@ def test_transfer_generate_pull_then_prune_and_read_locally(prepared, tmp_path, 
     # Deserialized frontends are ordinary tensors: heads can backpropagate without
     # loading a local frozen backbone or retaining an inference-mode tensor.
     from explore_a.training.prediction import make_fusion, predict
-    model = make_fusion("unet", config)
+    model = make_fusion("unet_guided", config)
     batch = {key: value.unsqueeze(0) for key, value in result.items()}
-    prediction, _ = predict(model, batch, config, "rule", None)
+    prediction, _ = predict(model, batch, config, "rule")
     prediction["depth"].mean().backward()
     assert any(parameter.grad is not None for parameter in model.parameters())
-    artifact(root, "frames", row).unlink()
+    artifact(da_root, "frames", row).unlink()
+    runtime.close()
+    runtime = make_runtime(config, ["raft"], teacher=True, device="cpu")
     with pytest.raises(FileNotFoundError):
         runtime.compute(read_pair(row, config["data"]), "raft", True)
 
@@ -183,20 +192,20 @@ def test_worker_failed_job_resumes_without_reupload(prepared, tmp_path, monkeypa
 
     def factory(settings):
         producer = real_producer(settings, "cpu")
-        teacher = producer.runtime.teacher
+        teacher = producer.runtime.frozen.get("teacher")
 
         def predict(*args):
             if fail[0]:
                 fail[0] = False
                 raise RuntimeError("interrupted teacher")
             return teacher(*args)
-        producer.runtime.teacher = predict
+        producer.runtime.frozen.models["teacher"] = predict
         return producer
 
     monkeypatch.setattr("explore_a.cache.producer.Producer", factory)
     worker.run(remote_base, once=True)
     assert worker.state(target, name) == "failed"
-    assert list((target / "frames").rglob("*.npz"))
+    assert list((target / "flow").rglob("*.npz"))
     worker.control("retry", remote_base, read_json(root / "recipe.json")["id"], name)
     worker.run(remote_base, once=True)
     assert worker.state(target, name) == "remote_complete"

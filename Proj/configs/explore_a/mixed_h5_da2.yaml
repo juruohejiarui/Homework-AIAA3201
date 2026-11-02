@@ -1,0 +1,88 @@
+# Shared DA-V2-S training and frozen inference settings.
+execution:
+  backend: hybrid
+cache:
+  root: ~/Documents/ResourcesLow/cache/Homework-AIAA3201
+cache_read:
+  probability: 0.2
+  max_inflight: 4
+remote_online:
+  enabled: true
+  probability: 0.28
+  host: Dgx-e
+  project: /home/hjr/Documents/Projects/Homework-AIAA3201
+  python: /home/hjr/miniconda3/envs/aiaa3201/bin/python
+paths:
+  datasets: ~/Documents/Resources/Datasets
+  manifest: outputs/explore_a/mixed_h5_balanced/data.json
+  runs: outputs/explore_a/mixed_h5_balanced/runs_da2_guided_30k
+  dinov2_source: third_party/dinov2
+  base_manifest: outputs/explore_a/kitti_tum/data.json
+weights:
+  raft: checkpoints/explore_a/raft/raft_large_C_T_SKHT_V2-ff5fadd5.pth
+  mftiq: checkpoints/explore_a/mftiq/UOM_bs4_200k.pth
+  resnet: checkpoints/explore_a/backbones/resnet50-11ad3fa6.pth
+  dinov2: checkpoints/explore_a/backbones/dinov2_vits14_reg4_pretrain.pth
+  da2: checkpoints/depth_anything_v2_vits.pth
+data:
+  datasets:
+  - kitti
+  - tum
+  - nyuv2
+  seed: 2026
+  dev_fraction: 0.15
+  sync_tolerance_s: 0.02
+  max_frame_gap_s: 0.1
+  canvas_kitti:
+  - 256
+  - 832
+  canvas_indoor:
+  - 384
+  - 512
+  min_depth_m: 0.1
+  indoor_max_depth_m: 10.0
+  kitti_max_depth_m: 80.0
+  nyu_h5_root: ~/Documents/Resources/Datasets/nyu_depth_v2/h5
+geometry:
+  epsilon: 1.0e-06
+  fb_relative: 0.01
+  fb_absolute_px2: 0.5
+  raft_updates: 12
+training:
+  steps: 30000
+  effective_batch: 8
+  microbatch: 8
+  learning_rate: 0.0001
+  weight_decay: 0.0001
+  warmup_steps: 500
+  gradient_clip: 1.0
+  validate_every: 2000
+  dev_sample_fraction: 0.1
+  heldout_every: 0
+  save_every: 1000
+  log_every: 1
+  seed: 2026
+  correction_fraction: 0.1
+  correction_penalty: 0.01
+  global_correction_weight: 0.01
+  local_correction_weight: 0.01
+  blend_aux_weight: 0.1
+  reset_aux_weight: 0.05
+  blend_min_gap: 0.01
+  reset_min_gain: 0.001
+  log_smooth_l1_beta: 0.1
+  amp: true
+  sampling_mode: video_sqrt
+  source_weights:
+    kitti: 3
+    tum: 2
+    nyuv2: 3
+evaluation:
+  boundary_threshold: 0.05
+  boundary_tolerance: 1
+  visualizations_per_sequence: 3
+online:
+  read_workers: 8
+  prefetch: 32
+cache_policy:
+  max_rgb_frames: 4000

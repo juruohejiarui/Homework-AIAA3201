@@ -5,11 +5,6 @@
     "sha256": "13379300b739e659f076a59d52e9801bd8d38c541a7e71f73bbca4dcfb013609"
   },
   {
-    "path": "checkpoints/depth_pro.pt",
-    "bytes": 1904446787,
-    "sha256": "3eb35ca68168ad3d14cb150f8947a4edf85589941661fdb2686259c80685c0ce"
-  },
-  {
     "path": "checkpoints/depth_anything_v2_vits.pth",
     "bytes": 99218434,
     "sha256": "715fade13be8f229f8a70cc02066f656f2423a59effd0579197bbf57860e1378"

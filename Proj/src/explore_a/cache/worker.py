@@ -99,7 +99,10 @@ def control(action, base, recipe, name=None):
         report = read_json(folder / "remote.complete.json")
         from explore_a.cache.paths import expected
         job = load_job(root, name)
-        if set(report["sizes"]) != set(expected(job["rows"])):
+        if set(report["sizes"]) != set(expected(job["rows"], flows=() if job["recipe"] == "glob-da2"
+                                               else ("raft", "farneback"),
+                                               teacher=job["recipe"] != "glob-da2",
+                                               frames=job["recipe"] == "glob-da2")):
             raise ValueError("Refusing cleanup: output inventory differs from canonical job IDs")
         ack = read_json(folder / "local.ack.json")
         if ack != {"recipe": recipe, "job": name, "sizes": report["sizes"]}:
@@ -127,10 +130,13 @@ def run(base=REMOTE_ROOT, once=False):
         models = WorkerRuntime()
         message("DGX worker waiting for uploaded sequence jobs", base)
         while not (base / "stop.json").exists():
-            available = sorted((base / "explore_a").glob("*/jobs/*/input.ready.json"))
+            from explore_a.cache.settings import ready_files
+            available = ready_files(base, "input.ready.json")
             worked = False
             for ready in available:
                 root, name = ready.parents[2], ready.parent.name
+                if root.is_symlink():
+                    continue
                 if state(root, name) not in ("ready", "generating"):
                     continue
                 worked = True

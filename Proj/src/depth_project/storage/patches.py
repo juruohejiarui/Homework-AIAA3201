@@ -4,7 +4,6 @@ import subprocess
 from depth_project.paths import PROJECT, THIRD_PARTY
 
 PATCHES = [
-    ("depth-pro-python313-numpy.patch", "ml-depth-pro"),
     ("vda-benchmark-compat.patch", "Video-Depth-Anything"),
     ("vda-preprocessing-corrections.patch", "Video-Depth-Anything"),
 ]

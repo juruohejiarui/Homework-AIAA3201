@@ -5,21 +5,49 @@ from explore_a.observability.history import development
 
 
 def scalars(kind, row):
+    corrections = row.get("correction_metrics", {})
+    if not corrections:
+        corrections = (row.get("depth_metrics") or {}).get("correction_metrics", {})
+    for source, metrics in corrections.items():
+        for name, value in metrics.items():
+            yield f"{kind}/{source}/correction/{name}", value
+    for source, metrics in row.get("losses_by_dataset", {}).items():
+        for name, value in metrics.items():
+            yield f"{kind}/{source}/{name}", value
     for key, value in row.get("input_stats", {}).items():
         yield f"{kind}_inputs/{key}", value
     if kind == "train":
-        for key in ("loss", "lr", "update_s", "pairs_per_s", "peak_allocated_gib", "microbatch"):
+        for key in ("loss", "depth_loss", "blend_loss", "reset_loss", "correction_loss",
+                    "global_correction_loss", "local_correction_loss", "aux_depth_ratio",
+                    "temporal_loss", "temporal_coefficient",
+                    "gauge_fallback_fraction", "gt_coverage",
+                    "lr", "update_s", "pairs_per_s", "peak_allocated_gib", "microbatch"):
             if key in row:
                 yield "train/" + key, row[key]
+        summary = row.get("depth_metrics")
+        if summary:
+            for scope, metrics in [("macro", summary["macro_mean"]),
+                                   *summary["by_dataset"].items()]:
+                for name, value in metrics.items():
+                    yield f"train/{scope}/{name}", value
     elif kind == "dev":
         metric = row["metric"]
-        yield f"dev/macro/{metric}", row["score"]
+        summary = row.get("depth_metrics")
+        if summary:
+            yield f"dev/selection/{metric}", row["score"]
+            for scope, metrics in [("macro", summary["macro_mean"]),
+                                   *summary["by_dataset"].items()]:
+                for name, value in metrics.items():
+                    yield f"dev/{scope}/{name}", value
+        else:
+            yield f"dev/macro/{metric}", row["score"]
         if "best" in row:
             yield f"dev/best/{metric}", row["best"]
         if "duration_s" in row:
             yield "time/dev_seconds", row["duration_s"]
-        for source, value in row.get("by_dataset", {}).items():
-            yield f"dev/{source}/{metric}", value
+        if not summary:
+            for source, value in row.get("by_dataset", {}).items():
+                yield f"dev/{source}/{metric}", value
     else:
         for scope, metrics in [("macro", row["macro_mean"]), *row["by_dataset"].items()]:
             for metric, value in metrics.items():

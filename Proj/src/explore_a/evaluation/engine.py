@@ -1,5 +1,6 @@
 """Online single/multi-head evaluation with shared frontends and bounded result writing."""
 from contextlib import closing
+import copy
 from pathlib import Path
 import time
 
@@ -7,6 +8,7 @@ import numpy as np
 import torch
 
 from depth_project.io import write_json
+from explore_a.config import experiment_name
 from explore_a.data.prepare import load_manifest
 from explore_a.evaluation.accumulator import EvaluationAccumulator
 from explore_a.evaluation.branches import load_branch, matrix_specs, specification
@@ -17,7 +19,8 @@ from explore_a.online.frozen import synchronize
 from explore_a.observability.progress import Progress, message
 from explore_a.online.loading import OnlinePairs
 from explore_a.online.statistics import snapshot
-from explore_a.training.prediction import predict
+from explore_a.training.prediction import predict, project_to_interval, global_only as only_global
+from explore_a.models.inputs import FusionInputs
 
 
 def baseline_output(name, data, geometry):
@@ -26,13 +29,17 @@ def baseline_output(name, data, geometry):
         mask = geometry["rule"] if name == "rule-fixed" else geometry["hard"]
         weight = mask.float() * .5
     return {"depth": (1 - weight) * data["current_depth"] + weight * geometry["historical"],
-            "historical_weight": weight, "visibility": geometry["hard"].float()}
+            "historical_weight": weight, "visibility": geometry["hard"].float(),
+            "prediction_kind": geometry.get("prediction_kind", "metric_m")}
 
 
-def evaluate(config, flow="raft", occlusion="rule", fusion="unet", baseline=None,
-             split="test", device="cuda"):
-    return evaluate_specs(config, [specification(flow, occlusion, fusion, baseline)],
-                          split, device)[0]
+def evaluate(config, flow="raft", occlusion="rule", fusion="unet_guided", baseline=None,
+             split="test", device="cuda", project_interval=False, global_only=False,
+             checkpoint=None, output=None, ablation="full"):
+    spec = specification(flow, occlusion, fusion, baseline, project_interval, global_only, ablation)
+    if checkpoint is not None:
+        spec["checkpoint"] = checkpoint
+    return evaluate_specs(config, [spec], split, device, output)[0]
 
 
 def evaluate_matrix(config, split="test", device="cuda"):
@@ -40,20 +47,38 @@ def evaluate_matrix(config, split="test", device="cuda"):
 
 
 @torch.inference_mode()
-def evaluate_specs(config, specs, split="test", device="cuda"):
+def evaluate_specs(config, specs, split="test", device="cuda", output=None, rows=None):
+    if output is not None:
+        root = Path(config["paths"]["runs"])
+        specs = [{**spec, "checkpoint": spec.get("checkpoint") or
+                  root / experiment_name(spec["flow"], spec["occlusion"], spec["fusion"]) /
+                  "best.pt"} if not spec["baseline"] else spec for spec in specs]
+        config = copy.deepcopy(config)
+        config["paths"]["runs"] = str(output)
     manifest = load_manifest(config)
-    rows = [row for row in manifest["samples"] if row["split"] == split]
+    rows = ([row for row in manifest["samples"] if row["split"] == split]
+            if rows is None else rows)
+    if any(row["split"] != split for row in rows):
+        raise ValueError("Explicit evaluation rows contain a different split")
     if not rows:
         raise ValueError(f"No evaluation samples in {split}")
-    branches = [load_branch(config, spec, device) for spec in specs]
+    branches, models = [], {}
+    for spec in specs:
+        key = (spec["flow"], spec["occlusion"], spec["fusion"], str(spec.get("checkpoint")))
+        if not spec["baseline"] and key in models:
+            branch = {**spec, **{name: models[key][name]
+                                for name in ("model", "checkpoint", "checkpoint_step")}}
+        else:
+            branch = load_branch(config, spec, device)
+            if not spec["baseline"]:
+                models[key] = branch
+        branches.append(branch)
     # Farneback is the fixed, common temporal-scoring reference for every experiment.
     flows = sorted({branch["flow"] for branch in branches} | {"farneback"})
     teacher_flows = {b["flow"] for b in branches
                      if b["occlusion"] == "mftiq" and not b["baseline"]}
     runtime = make_runtime(config, flows, bool(teacher_flows), device)
-    if hasattr(runtime, "require_rows"):
-        runtime.require_rows(rows)
-    dataset = OnlinePairs(config, rows, runtime, flows[0])
+    dataset = OnlinePairs(config, rows, runtime, flows[0], phase=split)
     shared = len(branches) > 1
     if shared:
         (Path(config["paths"]["runs"]) / f"matrix-{split}.json").unlink(missing_ok=True)
@@ -61,11 +86,11 @@ def evaluate_specs(config, specs, split="test", device="cuda"):
     if device == "cuda":
         torch.cuda.reset_peak_memory_stats()
     began = time.perf_counter()
-    with ResultSink(config["result_io"]) as sink:
+    with closing(runtime), ResultSink(config["result_io"]) as sink:
         accumulators = [EvaluationAccumulator(config, b["name"], split, sink) for b in branches]
         label = (f"EVAL-MATRIX {split} ({len(branches)} branches)" if shared
                  else f"EVAL {split} {branches[0]['name']}")
-        with (closing(dataset.raw_stream()) as loaded,
+        with (closing(dataset.raw_stream(flows=flows, teacher_flows=teacher_flows)) as loaded,
               Progress(config, label, len(rows)) as progress):
             iterator = iter(loaded)
             for _ in rows:
@@ -83,6 +108,7 @@ def evaluate_specs(config, specs, split="test", device="cuda"):
                     inputs[flow] = {key: value.unsqueeze(0) for key, value in data.items()}
                     synchronize(device)
                     front[flow].append(time.perf_counter() - started)
+                predictions = {}
                 for branch, accumulator in zip(branches, accumulators):
                     data = inputs[branch["flow"]]
                     progress.set(branch=branch["name"], phase="heads")
@@ -91,11 +117,28 @@ def evaluate_specs(config, specs, split="test", device="cuda"):
                     with torch.autocast(device_type=device, enabled=device == "cuda"
                                         and config["training"]["amp"]):
                         if branch["baseline"]:
+                            from explore_a.training.prediction import fusion_geometry
                             output = baseline_output(branch["baseline"], data,
-                                                     pair_geometry(data, config["geometry"]))
+                                                     fusion_geometry(data, config))
                         else:
-                            output, _ = predict(branch["model"], data, config,
-                                                branch["occlusion"], branch["student"])
+                            key = id(branch["model"])
+                            if key in predictions:
+                                output, geometry = predictions[key]
+                            else:
+                                output, geometry = predict(branch["model"], data, config,
+                                                           branch["occlusion"])
+                                predictions[key] = output, geometry
+                            if branch.get("ablation", "full") != "full":
+                                visibility = (torch.ones_like(data["current_depth"])
+                                              if branch["occlusion"] == "rule"
+                                              else data["teacher_visibility"])
+                                fusion_inputs = FusionInputs.from_pair(data, geometry, visibility)
+                                output = branch["model"].ablate(output, fusion_inputs,
+                                                               branch["ablation"])
+                            if branch.get("project_interval"):
+                                output = project_to_interval(output, data)
+                            if branch.get("global_only"):
+                                output = only_global(output, data)
                     synchronize(device)
                     accumulator.head_timings.append(time.perf_counter() - started)
                     if not shared:
@@ -109,10 +152,9 @@ def evaluate_specs(config, specs, split="test", device="cuda"):
         message("Saving evaluation results: draining ordered metrics and image writers")
     # All JSONL and image futures have succeeded before any final metrics summary is published.
     wall = time.perf_counter() - began
-    runtime.reset()
     peak = torch.cuda.max_memory_allocated() / 2**30 if device == "cuda" else None
     results = []
-    for accumulator in accumulators:
+    for branch, accumulator in zip(branches, accumulators):
         times, heads = accumulator.timings, accumulator.head_timings
         cached_mode = config.get("execution", {}).get("backend") == "cache"
         latency = {"mode": ("shared_cached" if shared else "independent_cached")
@@ -136,13 +178,29 @@ def evaluate_specs(config, specs, split="test", device="cuda"):
                    "peak_allocated_gib": peak}
         if config.get("execution", {}).get("backend") == "hybrid":
             latency.update(mode="shared_hybrid" if shared else "independent_hybrid",
-                           scope="local cache reads + online missing frontends + fusion; "
+                           scope="blocking cache/DGX/local components + fusion; "
                                  "includes lazy loads, excludes prior cache generation",
                            input_stats=snapshot(runtime),
                            frontend_note="Hybrid online timings include lazy load time; "
                                          "model_load_s is reported separately, not added twice. "
                                          "Counts are shared frontend totals in matrix evaluation.")
         result = accumulator.finish(manifest, latency)
+        result["projection_ablation"] = bool(branch.get("project_interval"))
+        result["global_only_ablation"] = bool(branch.get("global_only"))
+        result["ablation"] = branch.get("ablation", "full")
+        if branch.get("checkpoint"):
+            result.update(checkpoint=str(branch["checkpoint"]),
+                          checkpoint_step=branch["checkpoint_step"])
+        if branch["fusion"] == "final_flow":
+            result["ablation_timing_note"] = ("Shared normal forward may be reused; ablation "
+                                               "head timing is not standalone model latency")
+        if branch["model"] is not None:
+            parameters = list(branch["model"].parameters())
+            result["fusion_model"] = {
+                "architecture": branch["fusion"], "parameters": sum(p.numel() for p in parameters),
+                "parameter_bytes": sum(p.numel() * p.element_size() for p in parameters),
+                "scope": "fusion head only; frozen frontends excluded",
+            }
         write_json(accumulator.root / "metrics.json", result)
         message(accumulator.name, result["by_dataset"])
         results.append(result)

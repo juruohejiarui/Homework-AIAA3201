@@ -31,4 +31,4 @@ bash Proj/download_tum.sh extract --manifest Proj/storage/tum/plan-all.json
 
 首次plan可用 `--output /绝对路径/TUM-RGBD` 改下载磁盘。官网无本脚本可用的摘要清单，下载后检查计划大小，解压读取gzip/tar结构；不会宣称已经完成官方MD5/SHA认证。已有同名文件大小不符且不是有效续传时会报错，保留文件供用户处理。
 
-训练时再做RGB/深度时间戳关联、5000比例换算及场景划分。下载完整数据不意味着允许将全部序列用于训练，详见 [TRAINING_GUIDE.md](TRAINING_GUIDE.md)。
+训练时再做RGB/深度时间戳关联、5000比例换算及场景划分。下载完整数据不意味着允许将全部序列用于训练，详见 [DA_TRAINING.md](DA_TRAINING.md)。

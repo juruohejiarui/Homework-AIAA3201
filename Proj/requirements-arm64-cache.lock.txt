@@ -6,8 +6,6 @@ cuda-bindings==13.3.1
 cuda-pathfinder==1.6.0
 cuda-toolkit==13.0.2
 cycler==0.12.1
-# Editable install with no version control (depth_pro==0.1)
--e /home/hjr/Documents/Projects/Homework-AIAA3201/Proj/third_party/ml-depth-pro
 easydict==1.13
 einops==0.8.2
 filelock==4.2.4

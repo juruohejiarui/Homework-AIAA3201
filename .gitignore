@@ -233,6 +233,7 @@ lab_week*/*.pdf
 /Proj/logs/
 /Proj/third_party/**/checkpoints/
 /Proj/.env.local
+/Proj/.runtime/
 /Proj/storage/migration_state.json
 /Proj/storage/migration_state.json.tmp
 /Proj/storage/.migration.lock

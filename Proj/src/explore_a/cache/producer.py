@@ -18,7 +18,7 @@ from explore_a.data.reading import fit_image
 from explore_a.execution import BackgroundWriter, Timings, prefetch
 from explore_a.models.attention import configure_depth_attention
 from explore_a.observability.progress import Progress
-from explore_a.online.frozen import FrozenRuntime
+from explore_a.online.components import LocalExecutor
 
 
 def decoded(row, inputs, config):
@@ -26,10 +26,14 @@ def decoded(row, inputs, config):
     canvas = config["data"]["canvas_kitti" if row["dataset"] == "kitti" else "canvas_indoor"]
     for previous, prefix in ((False, "current"), (True, "previous")):
         path = inputs(row[prefix + "_rgb"])
-        image = cv2.imread(str(path))
-        if image is None:
-            raise OSError(path)
-        images[previous] = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        if path.suffix == ".h5":
+            from explore_a.data.nyu_h5 import read_h5
+            images[previous], _ = read_h5(path, depth=False)
+        else:
+            image = cv2.imread(str(path))
+            if image is None:
+                raise OSError(path)
+            images[previous] = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         fitted[previous], _ = fit_image(images[previous], canvas)
     return {"row": row, "images": images, "fitted": fitted, "canvas": canvas, "data": {}}
 
@@ -37,8 +41,8 @@ def decoded(row, inputs, config):
 class Producer:
     def __init__(self, config, device="cuda"):
         self.config, self.device = config, device
-        self.runtime = FrozenRuntime(config, ["raft", "farneback"], True, device)
-        self.attention = configure_depth_attention(self.runtime.depth.model)
+        self.runtime = LocalExecutor(config, device)
+        self.attention = None
 
     def generate(self, root, job, staging=None, minimum_gib=50, *, sources=None, host="dgx"):
         root = Path(root)
@@ -48,7 +52,10 @@ class Producer:
         started = time.monotonic()
         last_progress = 0.
         processed = 0
-        prior_attention = dict(self.attention.counts)
+        prediction = job["recipe"] == "glob-da2"
+        if prediction:
+            self.attention = configure_depth_attention(self.runtime.frozen.get("depth").model)
+        prior_attention = dict(self.attention.counts) if self.attention else {}
         if self.device == "cuda":
             torch.cuda.reset_peak_memory_stats()
         timing = Timings(f"{host} producer")
@@ -60,32 +67,31 @@ class Producer:
             return decoded(row, inputs, self.config)
 
         loaded = prefetch(job["rows"], load, options["read_workers"], options["prefetch"], timing)
-        self.runtime.reset()
+
         with (closing(loaded), BackgroundWriter(settings, timing) as writer,
               Progress(self.config, f"CACHE {job['job']}", len(job["rows"])) as progress):
             for raw in loaded:
                 row = raw["row"]
                 require_space(root, minimum_gib)
-                for previous in (True, False):
+                for previous in ((True, False) if prediction else ()):
                     key = frame_key(row, previous)
                     path = artifact(root, "frames", row, previous)
                     if key not in done and not path.exists():
                         with torch.inference_mode():
-                            depth = self.runtime.depth.predict(raw["images"][previous])
-                        if not np.isfinite(depth).all() or (depth <= 0).any():
-                            raise ValueError(f"Invalid Depth Pro output: {key}")
+                            depth = self.runtime.frozen.depth(raw["images"][previous])
+                        from explore_a.frontend import valid_prediction, field
+                        if not valid_prediction(depth, self.config):
+                            raise ValueError(f"Invalid frozen prediction: {key}")
                         fitted, _ = fit_image(depth.astype(np.float32), raw["canvas"])
-                        writer.submit(write_npz, path, depth=fitted[None])
+                        writer.submit(write_npz, path, **{field(self.config): fitted[None]})
                     done.add(key)
-                    if hasattr(self.runtime.depth, "focal_predictions"):
-                        self.runtime.depth.focal_predictions.clear()
                 previous, current = raw["fitted"][True], raw["fitted"][False]
-                for flow in ("farneback", "raft"):
+                for flow in (() if prediction else ("farneback", "raft")):
                     field_path = artifact(root, f"flow/{flow}", row)
                     teacher_path = artifact(root, f"teacher/{flow}", row)
                     fields = None
                     if not field_path.exists():
-                        fields = self.runtime.flows[flow](previous, current)
+                        fields = self.runtime.frozen.flow(flow, previous, current)
                         writer.submit(write_npz, field_path, forward=fields[0].astype(np.float32),
                                       backward=fields[1].astype(np.float32))
                     if not teacher_path.exists():
@@ -94,7 +100,7 @@ class Producer:
                             backward = read_npz(field_path)["backward"]
                         else:
                             backward = fields[1]
-                        output = self.runtime.teacher(previous, current, backward)
+                        output = self.runtime.frozen.get("teacher")(previous, current, backward)
                         writer.submit(write_npz, teacher_path,
                                       visibility=output["visibility"].astype(np.float32))
                 progress.update(1, sequence=row["sequence"], camera=row["camera"])
@@ -108,9 +114,10 @@ class Producer:
                         "updated": time.time()})
                     last_progress = now
         sizes = inventory(root, job["outputs"])
-        attention = self.attention.report()
+        attention = self.attention.report() if self.attention else {"calls":{}}
         attention["calls"] = {key: count - prior_attention.get(key, 0)
-                              for key, count in self.attention.counts.items()}
+                              for key, count in
+                              (self.attention.counts.items() if self.attention else [])}
         report = {"recipe": job["recipe"], "job": job["job"], "sizes": sizes,
                   "bytes": sum(sizes.values()), "pairs": len(job["rows"]),
                   "seconds": time.monotonic() - started, "attention": attention,

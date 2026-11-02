@@ -10,6 +10,7 @@ from explore_a.observability.history import FILES, append_record, load_history, 
 from explore_a.observability.plots import plot_history
 from explore_a.observability.scalars import replay, write_scalars
 from explore_a.observability.table import export_csv
+from explore_a.observability.progress import message
 
 
 @contextmanager
@@ -46,6 +47,7 @@ class RunObserver:
         self.baseline, self.last_plot_step = None, None
         self.last_dev_sources = {}
         self.last_dev_input_stats = {}
+        self.last_dev_metrics = None
 
     def __enter__(self):
         self.lock = run_lock(self.root)
@@ -78,12 +80,19 @@ class RunObserver:
     def train(self, record):
         with evaluation_state():
             self._put("train", record)
+        if self.options["progress"] != "off":
+            values = {key: record[key] for key in
+                      ("step", "loss", "lr", "update_s", "pairs_per_s") if key in record}
+            if record.get("depth_metrics"):
+                values.update(record["depth_metrics"]["macro_mean"])
+            message("TRAIN", values)
 
     def development(self, step, score, best, metric, duration):
         with evaluation_state():
             self._put("dev", {"step": step, "score": score, "best": best, "metric": metric,
                               "by_dataset": self.last_dev_sources, "duration_s": duration,
-                              "input_stats": self.last_dev_input_stats})
+                              "input_stats": self.last_dev_input_stats,
+                              "depth_metrics": self.last_dev_metrics})
 
     def test(self, record, baseline):
         with evaluation_state():

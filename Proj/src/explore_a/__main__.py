@@ -13,6 +13,11 @@ def main():
     commands = parser.add_subparsers(dest="command", required=True)
     commands.add_parser("check-weights")
     commands.add_parser("status", help="report configured versus actually prepared datasets")
+    diagnostic = commands.add_parser("diagnose-gradnorm",
+                                     help="cached head pilot, at most 30 steps")
+    diagnostic.add_argument("--output", type=Path, required=True)
+    diagnostic.add_argument("--device", choices=("cpu", "cuda"), default="cuda")
+    diagnostic.add_argument("--steps", type=int, default=30)
     plot = commands.add_parser("plot", help="rebuild curves from logs, no model inference")
     plot.add_argument("--run", help="one experiment folder; default: all runs in this config")
     plot.add_argument("--tensorboard", action="store_true", help="also rebuild scalar events")
@@ -20,17 +25,49 @@ def main():
     prepare.add_argument("--extract-kitti", action="store_true")
     evaluate_all = commands.add_parser("evaluate-matrix", help="shared online frontend evaluation")
     evaluate_all.add_argument("--split", choices=("dev", "test"), default="test")
-    for action in ("train-occlusion", "train", "evaluate"):
+    comparison = commands.add_parser("evaluate-final", help="three explicit best checkpoints")
+    for model in ("guided", "refine", "final"):
+        comparison.add_argument("--" + model + "-checkpoint", type=Path, required=True)
+    comparison.add_argument("--output", type=Path, required=True)
+    comparison.add_argument("--split", choices=("dev", "test"), default="test")
+    pair = commands.add_parser("evaluate-fusion-pair", help="two explicit heads and raw frontend")
+    for model in ("guided", "final"):
+        pair.add_argument("--" + model + "-checkpoint", type=Path, required=True)
+    pair.add_argument("--output", type=Path, required=True)
+    pair.add_argument("--split", choices=("dev", "test"), default="dev")
+    pair.add_argument("--ablations", action="store_true")
+    part2 = commands.add_parser("evaluate-part2", help="frozen Part 2 video benchmark")
+    part2.add_argument("--checkpoint", type=Path, required=True)
+    part2.add_argument("--output", type=Path, required=True)
+    part2.add_argument("--benchmark-root", type=Path,
+                       default=Path.home() / "Documents/ResourcesLow/Datasets")
+    part2.add_argument("--setting", choices=("short", "long", "full"), default="long")
+    part2.add_argument("--tum-root", type=Path,
+                       default=Path.home() / "Documents/Resources/Datasets/TUM-RGBD")
+    part2.add_argument("--ablations", action="store_true", help="five shared-forward final modes")
+    part2.add_argument("--datasets", nargs="+",
+                       choices=("kitti", "sintel", "bonn", "tum-validation"),
+                       default=("kitti", "sintel", "bonn"))
+    for action in ("train", "evaluate"):
         command = commands.add_parser(action)
         command.add_argument("--flow", choices=FLOWS, default="raft")
-        if action != "train-occlusion":
-            command.add_argument("--occlusion", choices=OCCLUSIONS, default="rule")
-            command.add_argument("--fusion", choices=FUSIONS, default="unet")
+        command.add_argument("--occlusion", choices=OCCLUSIONS, default="rule")
+        command.add_argument("--fusion", choices=FUSIONS,
+                             default="unet_guided")
         if action == "evaluate":
+            from explore_a.models.final_flow import ABLATIONS
+            command.add_argument("--ablation", choices=ABLATIONS, default="full")
+            command.add_argument("--checkpoint", type=Path)
+            command.add_argument("--output", type=Path)
+            command.add_argument("--project-interval", action="store_true",
+                                 help="flow_refine output projection ablation, no GT")
+            command.add_argument("--global-only", action="store_true",
+                                 help="disable local correction; use the same checkpoint")
             command.add_argument("--baseline", choices=("raw", "fixed", "rule-fixed"))
             command.add_argument("--split", choices=("dev", "test"), default="test")
     matrix = commands.add_parser("run-matrix")
     matrix.add_argument("--train-only", action="store_true")
+    matrix.add_argument("--evaluate-after", action="store_true")
     commands.add_parser("summarize")
     commands.add_parser("all", help="check -> prepare -> online training -> shared evaluation")
     args = parser.parse_args()
@@ -38,6 +75,9 @@ def main():
     if args.command == "status":
         from explore_a.data.status import dataset_status
         print(json.dumps(dataset_status(config), indent=2, ensure_ascii=False))
+    elif args.command == "diagnose-gradnorm":
+        from explore_a.training.diagnostic import run
+        run(config, args.output, args.device, args.steps)
     elif args.command == "plot":
         from explore_a.observability.export import export
         export(config, args.run, args.tensorboard)
@@ -50,19 +90,33 @@ def main():
     elif args.command == "evaluate-matrix":
         from explore_a.evaluation.engine import evaluate_matrix
         evaluate_matrix(config, args.split)
-    elif args.command in ("train", "train-occlusion"):
+    elif args.command == "evaluate-fusion-pair":
+        from explore_a.evaluation.final import compare_pair
+        compare_pair(config, args.guided_checkpoint, args.final_checkpoint, args.split,
+                     args.output, ablations=args.ablations)
+    elif args.command == "evaluate-final":
+        from explore_a.evaluation.final import compare
+        compare(config, args.guided_checkpoint, args.refine_checkpoint, args.final_checkpoint,
+                args.split, args.output)
+    elif args.command == "evaluate-part2":
+        from explore_a.evaluation.part2 import evaluate_part2
+        evaluate_part2(config, args.checkpoint, args.output, args.benchmark_root,
+                       args.setting, args.datasets, ablations=args.ablations,
+                       tum_root=args.tum_root)
+    elif args.command == "train":
         from explore_a.training.engine import run_training
-        run_training(config, args.flow, getattr(args, "occlusion", "rule"),
-                     getattr(args, "fusion", "unet"), args.command == "train-occlusion")
+        run_training(config, args.flow, args.occlusion, args.fusion)
     elif args.command == "evaluate":
         from explore_a.evaluation.engine import evaluate
-        evaluate(config, args.flow, args.occlusion, args.fusion, args.baseline, args.split)
+        evaluate(config, args.flow, args.occlusion, args.fusion, args.baseline, args.split,
+                 project_interval=args.project_interval, global_only=args.global_only,
+                 checkpoint=args.checkpoint, output=args.output, ablation=args.ablation)
     elif args.command == "summarize":
         from explore_a.matrix import summarize
         summarize(config)
     elif args.command == "run-matrix":
         from explore_a.matrix import run_matrix
-        run_matrix(config, not args.train_only)
+        run_matrix(config, args.evaluate_after and not args.train_only)
     elif args.command == "all":
         from explore_a.data.prepare import load_manifest
         from explore_a.matrix import command, run_matrix

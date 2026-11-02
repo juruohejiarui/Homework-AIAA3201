@@ -4,10 +4,11 @@ import pytest
 import torch
 
 from explore_a.data.reading import fit_depth, resize_intrinsics
-from explore_a.geometry.features import fusion_features, occlusion_features
+from explore_a.models.inputs import FusionInputs
+from explore_a.training.prediction import make_fusion
+from explore_a.config import load_config
 from explore_a.geometry.warp import pair_geometry, warp
 from explore_a.models.correlation import CompiledSampler, TorchCorrelation
-from explore_a.models.fusion import Fusion
 
 
 def example(height=16, width=24):
@@ -35,37 +36,39 @@ def test_feature_channels_and_fb_mask():
     data = example()
     geometry = pair_geometry(data, SETTINGS)
     assert geometry["rule"].all()
-    assert fusion_features(data, geometry, geometry["hard"].float()).shape[1] == 12
-    assert occlusion_features(data, geometry).shape[1] == 13
+    inputs = FusionInputs.from_pair(data, geometry, geometry["rule"].float())
+    assert inputs.features().shape[1] == 12
     data["forward"][:, 0] = 5
     assert not pair_geometry(data, SETTINGS)["rule"].any()
 
 
 def test_soft_visibility_renormalizes_both_confidences():
     data = example()
-    model = Fusion("cnn")
+    model = make_fusion("unet_guided", load_config())
     for parameter in model.parameters():
         torch.nn.init.zeros_(parameter)
     geometry = pair_geometry(data, SETTINGS)
-    output = model(data, geometry, torch.ones_like(data["current_depth"]) * .25)
+    output = model(FusionInputs.from_pair(data, geometry,
+                                  torch.ones_like(data["current_depth"]) * .25))
     # Equal confidence (.5,.5) and history availability .25 give .125/(.5+.125)=.2.
-    torch.testing.assert_close(output["historical_weight"], torch.full_like(data["current_depth"], .2))
-    torch.testing.assert_close(output["depth"], torch.full_like(data["current_depth"], 2.4))
+    torch.testing.assert_close(output["historical_weight"],
+                               torch.full_like(data["current_depth"], 1/9))
+    torch.testing.assert_close(output["depth"], torch.full_like(data["current_depth"], 2+2/9))
 
 
-@pytest.mark.parametrize("architecture", ["cnn", "unet", "residual"])
+@pytest.mark.parametrize("architecture", ["unet_guided", "final_flow", "flow_refine"])
 def test_absent_history_is_exact_fallback_and_gradient_is_finite(architecture):
     data = example()
     geometry = pair_geometry(data, SETTINGS)
-    model = Fusion(architecture)
-    absent = model(data, geometry, torch.zeros_like(data["current_depth"]))
+    model = make_fusion(architecture, load_config())
+    absent = model(FusionInputs.from_pair(data, geometry, torch.zeros_like(data["current_depth"])))
     torch.testing.assert_close(absent["depth"], data["current_depth"])
     assert not absent["historical_weight"].any()
-    present = model(data, geometry, torch.ones_like(data["current_depth"]))
+    present = model(FusionInputs.from_pair(data, geometry, torch.ones_like(data["current_depth"])))
     present["depth"].mean().backward()
     assert all(p.grad is not None and torch.isfinite(p.grad).all() for p in model.parameters())
-    if architecture == "residual":
-        assert present["residual_fraction"].abs().max() <= .1
+    if architecture == "flow_refine":
+        assert present["correction"].abs().max() <= .1
     else:
         assert present["depth"].min() >= 2 and present["depth"].max() <= 4
 

@@ -11,27 +11,55 @@ from explore_a.config import load_config
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("action", choices=("sync-project", "plan", "policy", "pipeline", "worker",
-                                          "status", "retry", "stop", "remote"))
+    parser.add_argument("action", choices=("sync-project", "migrate", "plan", "policy", "pipeline",
+                                          "worker", "status", "retry", "stop", "remote", "native"))
     parser.add_argument("operation", nargs="?")
     parser.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
     parser.add_argument("--recipe", default=RECIPE)
     parser.add_argument("--base", type=Path)
     parser.add_argument("--job")
+    parser.add_argument("--from-recipe", default="kitti_tum-fp32-flash-v1")
     parser.add_argument("--once", action="store_true")
     parser.add_argument("--host", choices=("local", "dgx", "all"))
     parser.add_argument("--workers", default="dgx", help="local, dgx, or local,dgx")
+    parser.add_argument("--scope", choices=("manifest", "benchmark", "nyu"), default="manifest")
+    parser.add_argument("--split", choices=("all", "train", "dev", "test"), default="all")
+    parser.add_argument("--setting", choices=("short", "long"), default="long")
+    parser.add_argument("--datasets", nargs="+", default=("kitti", "sintel", "bonn"))
+    parser.add_argument("--benchmark-root", type=Path,
+                        default=Path.home()/"Documents/ResourcesLow/Datasets")
+    parser.add_argument("--nyu-root", type=Path)
+    parser.add_argument("--device", choices=("cpu", "cuda"), default="cuda")
     args = parser.parse_args()
     if args.action == "worker" and args.host == "all":
         parser.error("A worker runs on one host: choose local or dgx")
     remote_worker = args.action == "worker" and args.host != "local"
     base = args.base or (REMOTE_ROOT if remote_worker or args.action == "remote" else LOCAL_ROOT)
     root = root_path(base, args.recipe)
-    if args.action == "sync-project":
+    if args.action == "native":
+        from explore_a.cache.native import produce
+        config = load_config(args.config)
+        if args.base:
+            config.setdefault("cache", {})["root"] = str(args.base)
+        if args.scope == "nyu" and args.nyu_root is None:
+            parser.error("--scope nyu requires --nyu-root")
+        print(json.dumps(produce(config, args.scope, args.split, args.benchmark_root,
+                                 args.setting, args.datasets, args.nyu_root, args.device)))
+    elif args.action == "sync-project":
         remote.sync_project(PROJECT.parent)
+    elif args.action == "migrate":
+        from explore_a.cache.migration import migrate
+        if args.host == "all":
+            result = remote.ssh(["bash", f"{remote.REMOTE_PROJECT}/Proj/dgx_cache.sh", "migrate",
+                                 "--base", REMOTE_ROOT, "--from-recipe", args.from_recipe,
+                                 "--recipe", args.recipe, "--host", "local"])
+            print(result)
+        print(json.dumps(migrate(base, args.from_recipe, args.recipe), indent=2))
     elif args.action == "plan":
         from explore_a.cache.plan import prepare_plan
-        prepare_plan(load_config(args.config), args.recipe, base)
+        from explore_a.cache.locks import process_lock
+        with process_lock(Path(base).expanduser() / "coordinator.lock", "Cache coordinator"):
+            prepare_plan(load_config(args.config), args.recipe, base)
     elif args.action == "policy":
         from explore_a.cache.catalog import refresh_catalog
         from explore_a.cache.locks import process_lock

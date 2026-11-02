@@ -1,0 +1,22 @@
+{
+  "schema": 1,
+  "dataset": "ddad",
+  "output": "/media/hjr/\u65b0\u52a0\u5377/Resources/Datasets/DDAD",
+  "files": [
+    {
+      "name": "DDAD.tar",
+      "path": "archives/DDAD.tar",
+      "url": "https://tri-ml-public.s3.amazonaws.com/github/DDAD/datasets/DDAD.tar",
+      "checksum": {
+        "type": "MD5",
+        "value": "c0da97967f76da80f86d6f97d0d98904"
+      },
+      "bytes": 275266242560
+    }
+  ],
+  "total_bytes": 275266242560,
+  "protocol": {
+    "source": "https://github.com/TRI-ML/DDAD",
+    "selection": "Official download bundles train+val (~275 GB / 256 GiB). Evaluation should select val only; no official val-only RGB archive verified. Explicit opt-in required to download bundle."
+  }
+}

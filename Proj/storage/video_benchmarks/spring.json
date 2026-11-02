@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "dataset": "spring",
+  "output": "/media/hjr/新加卷/Resources/Datasets/Spring",
+  "files": [
+    {
+      "name": "train_cam_data.zip",
+      "path": "archives/train_cam_data.zip",
+      "url": "https://darus.uni-stuttgart.de/api/access/datafile/198954",
+      "bytes": 478094,
+      "checksum": {
+        "type": "MD5",
+        "value": "9b1611f904e20ea79f90c2624b7fad94"
+      }
+    },
+    {
+      "name": "train_disp1_left.zip",
+      "path": "archives/train_disp1_left.zip",
+      "url": "https://darus.uni-stuttgart.de/api/access/datafile/198961",
+      "bytes": 10608767690,
+      "checksum": {
+        "type": "MD5",
+        "value": "9534f6094be09729aff3a0db31551257"
+      }
+    },
+    {
+      "name": "train_frame_left.zip",
+      "path": "archives/train_frame_left.zip",
+      "url": "https://darus.uni-stuttgart.de/api/access/datafile/199097",
+      "bytes": 13361546687,
+      "checksum": {
+        "type": "MD5",
+        "value": "3a53483fc920514f72e553d1a11d271a"
+      }
+    }
+  ],
+  "total_bytes": 23970792471,
+  "protocol": {
+    "source": "https://darus.uni-stuttgart.de/api/datasets/:persistentId/?persistentId=doi:10.18419/darus-3376",
+    "publisher_version": [
+      2,
+      0
+    ],
+    "selection": "Public-GT train release, left RGB + disp1 + camera metadata. No claim that this equals Depth Pro undocumented frame subset."
+  }
+}

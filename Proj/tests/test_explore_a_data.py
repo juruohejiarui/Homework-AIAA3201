@@ -60,6 +60,26 @@ def test_sampler_resume_and_microbatch_preserve_examples():
     assert all(len({rows[i]["dataset"] for i in batch}) == 1 for batch in full)
 
 
+def test_explicit_fix_preserves_original_rng_and_rejects_unimplemented_policies():
+    import random
+
+    rows = [{"dataset": name} for name in ("kitti", "nyuv2", "tum") for _ in range(7)]
+    weights = {"kitti": .5, "nyuv2": .25, "tum": .25}
+    expected = []
+    sources = sorted(weights)
+    for step in range(100):
+        rng = random.Random(2026 + step)
+        source = rng.choices(sources, weights=[weights[s] for s in sources], k=1)[0]
+        indices = [i for i, row in enumerate(rows) if row["dataset"] == source]
+        expected.append(rng.choices(indices, k=8))
+    actual = list(StepBatches(rows, 8, 8, 100, 0, 2026, weights, "fix"))
+    assert actual == expected
+    resumed = list(StepBatches(rows, 8, 4, 100, 73, 2026, weights, "fix"))
+    assert [resumed[i] + resumed[i + 1] for i in range(0, len(resumed), 2)] == expected[73:]
+    with pytest.raises(ValueError, match="sampling mode"):
+        StepBatches(rows, 8, 8, 100, 0, 2026, weights, "dynamic")
+
+
 def test_tum_link_classification_and_deduplication():
     url = "https://cvg.cit.tum.de/rgbd/dataset/freiburg1/rgbd_dataset_freiburg1_xyz.tgz"
     parser = ArchiveLinks()

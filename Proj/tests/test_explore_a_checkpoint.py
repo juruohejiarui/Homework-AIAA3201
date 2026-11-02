@@ -7,6 +7,37 @@ import torch
 from explore_a.training.checkpoint import load_checkpoint, save_checkpoint, seed_everything
 
 
+def test_resume_allows_config_changes_but_rejects_different_model(tmp_path):
+    import pytest
+    from explore_a.config import bind_identity
+    task = {"flow": "farneback", "occlusion": "rule", "fusion": "unet_guided"}
+    old = {"experiment": task, "input": {"schema": 6, "cache_read": {"probability": .15}},
+           "training": {"steps": 60000, "learning_rate": .0001}}
+    new = {"experiment": task, "input": {"schema": 2, "manifest": "moved.json"},
+           "training": {"steps": 10000, "learning_rate": .0002}}
+    model = torch.nn.Linear(3, 1)
+    optimizer = torch.optim.AdamW(model.parameters())
+    scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, lambda _: 1)
+    scaler = torch.amp.GradScaler("cuda", enabled=False)
+    path = tmp_path / "last.pt"
+    save_checkpoint(path, model, optimizer, scheduler, scaler, 7, .2, old)
+    bind_identity(tmp_path / "identity.json", old)
+    bind_identity(tmp_path / "identity.json", new)
+    assert (tmp_path / "identity_history.jsonl").exists()
+    state = load_checkpoint(path, model, optimizer, scheduler, scaler, new)
+    assert state["step"] == 7
+    wrong = {**new, "experiment": {**task, "fusion": "final_flow"}}
+    with pytest.raises(ValueError, match="model/task"):
+        load_checkpoint(path, model, identity=wrong)
+
+
+def test_online_backend_ignores_optional_remote_config():
+    from explore_a.remote_online.policy import settings
+    config = {"execution": {"backend": "online"},
+              "remote_online": {"enabled": True, "probability": .2}}
+    assert settings(config)["enabled"] is False
+
+
 def test_resume_restores_optimizer_and_random_streams(tmp_path):
     seed_everything(2026)
     model = torch.nn.Linear(3, 1)

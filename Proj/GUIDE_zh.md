@@ -1,3 +1,6 @@
+> 方向 A 的最新三模型训练、hybrid 和四视频评价见
+> [DA 操作指南](src/explore_a/DA_TRAINING.md)。以下为独立基础工具。
+
 # 独立模块运行指南
 
 以下命令在仓库根目录执行，环境使用现有 `aiaa3201`。完整下载步骤见 [下载交接](download_data_zh.md)。本指南提供运行方式，不表示所有课程实验已经完成。
@@ -49,27 +52,23 @@ conda run -n aiaa3201 python -m depth_project.inference \
   --output Proj/outputs/da2_nyu --precision fp32
 
 conda run -n aiaa3201 python -m depth_project.inference \
-  --model depthpro --images Proj/data/nyuv2/test/rgb \
-  --output Proj/outputs/depthpro_nyu --precision fp32
-
-conda run -n aiaa3201 python -m depth_project.inference \
   --model vda --frames Proj/data/videos/official_demo_frames.npz \
   --output Proj/outputs/vda_demo --precision fp32
 ```
 
-图像保存逐帧 NPY；视频保存 `depths.npz`。DA-V2 和相对 VDA 的输出为 relative inverse depth，Depth Pro 为米制深度。默认使用 `checkpoints` 中现有 Small 权重；`--weights` 可指定其他文件。VDA metric 需要对应 metric 权重及 `--metric`，不能把相对权重当作米制模型。
+图像保存逐帧 NPY；视频保存 `depths.npz`。DA-V2 和相对 VDA 的输出为 relative inverse depth。默认使用 `checkpoints` 中现有 Small 权重；`--weights` 可指定其他文件。VDA metric 需要对应 metric 权重及 `--metric`，不能把相对权重当作米制模型。
 
-`--backend upstream` 为默认路径，也可选择 `sdpa` 或 `flash`；FP32 默认，FP16 使用 `--precision fp16`。Depth Pro 内部使用原生多尺度分辨率，`--input-size` 不改变它。`profile.json` 是本次运行的数据记录，不是经过预热的论文效率复现。
+`--backend upstream` 为默认路径，也可选择 `sdpa` 或 `flash`；FP32 默认，FP16 使用 `--precision fp16`。`profile.json` 是本次运行的数据记录，不是经过预热的论文效率复现。
 
 ## 4. 图像评价与光流诊断
 
 ```bash
 conda run -n aiaa3201 python -m depth_project.evaluation.images \
-  --predictions Proj/outputs/depthpro_nyu --ground-truth Proj/data/nyuv2/test/gt \
-  --alignment none --output Proj/outputs/depthpro_nyu/metrics.json
+  --predictions Proj/outputs/da2_nyu --ground-truth Proj/data/nyuv2/test/gt \
+  --alignment inverse-ssi --output Proj/outputs/da2_nyu/metrics.json
 ```
 
-DA-V2 可用 `--alignment inverse-ssi` 或 `inverse-median` 作为 oracle 对照。开发 SSI 使用非负斜率约束，不能冒充论文整段无约束 inverse-depth SSI。图像评价保存逐图精度和自定义边界指标；Depth Pro 主结果使用原始尺度，不对齐 GT。
+DA-V2 可用 `--alignment inverse-ssi` 或 `inverse-median` 作为 oracle 对照。开发 SSI 使用非负斜率约束，不能冒充论文整段无约束 inverse-depth SSI。图像评价保存逐图精度和自定义边界指标。
 
 ```bash
 conda run -n aiaa3201 python -m depth_project.evaluation.flow \

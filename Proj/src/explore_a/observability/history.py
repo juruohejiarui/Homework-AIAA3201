@@ -98,5 +98,5 @@ def development(history):
     # Older online runs stored only the overall development score in training.jsonl.
     return [{"step": row["step"], "score": row[key], "metric": key.removeprefix("dev_"),
              "by_dataset": {}} for row in history["train"]
-            for key in ("dev_abs_rel", "dev_bce") if key in row]
+            for key in ("dev_abs_rel",) if key in row]
 

@@ -1,0 +1,6 @@
+Official verification: 10/10 PASS
+Supplemental verification: 5/5 groups PASS
+PDF: 1 A4 page; no overfull boxes or missing glyphs
+Backup: all 4 original files byte-identical
+ZIP: exactly student_lab.py and report.pdf; extraction and byte comparison passed
+ZIP SHA256: a3cdf2832e7b97823a6040520a9291910008d3dbaea6349c72167bbc7d10560f

@@ -35,7 +35,7 @@ def line(axis, rows, key, label, **kwargs):
 
 
 
-def depth_figure(root, rows, baseline, source, delta=False):
+def depth_figure(root, rows, baseline, source, delta=False, phase="test"):
     figure, axes = plt.subplots(3, 3, figsize=(12, 9))
     scope = "macro_mean" if source == "macro" else "by_dataset"
     for axis, metric in zip(axes.flat, DEPTH_METRICS):
@@ -47,20 +47,20 @@ def depth_figure(root, rows, baseline, source, delta=False):
                 values = row[scope] if source == "macro" else row[scope].get(source, {})
             if metric in values:
                 points.append({"step": row["step"], "value": values[metric]})
-        line(axis, points, "value", "test - Depth Pro" if delta else "held-out test")
+        line(axis, points, "value", "test - DA-V2-S" if delta else phase)
         reference = baseline.get("macro_mean", {}) if source == "macro" else \
             baseline.get("by_dataset", {}).get(source, {})
         if delta:
             axis.axhline(0, color="gray", linestyle="--", label="no change")
         elif metric in reference:
-            axis.axhline(reference[metric], color="gray", linestyle="--", label="Depth Pro")
+            axis.axhline(reference[metric], color="gray", linestyle="--", label="DA-V2-S")
         direction = " (higher better)" if metric.startswith("d") else " (lower better)"
         axis.set_title(metric + direction)
         axis.legend(fontsize=8)
     for axis in list(axes.flat)[len(DEPTH_METRICS):]:
         axis.set_visible(False)
-    figure.suptitle(f"{root.name}: test {'delta' if delta else 'depth'} / {source} (monitor only)")
-    save(figure, root / "plots" / f"test_{'delta' if delta else 'depth'}_{source}.png")
+    figure.suptitle(f"{root.name}: {phase} {'delta' if delta else 'depth'} / {source}")
+    save(figure, root / "plots" / f"{phase}_{'delta' if delta else 'depth'}_{source}.png")
 
 
 def plot_history(root, history=None):
@@ -68,8 +68,6 @@ def plot_history(root, history=None):
     history = load_history(root) if history is None else history
     export_csv(root, history)
     train, test, dev = history["train"], history["test"], development(history)
-    student = root.name.startswith("occlusion-") or any(
-        row.get("task") == "mftiq_soft_label_distillation" for row in test)
     if train:
         figure, axes = plt.subplots(2, 2, figsize=(11, 7))
         for axis, key, label in zip(axes.flat,
@@ -92,18 +90,13 @@ def plot_history(root, history=None):
         axis.set_title(f"Development {dev[0]['metric']} (checkpoint selection)")
         axis.legend()
         save(figure, root / "plots/development.png")
-    if student:
-        figure, axis = plt.subplots(figsize=(9, 5))
-        line(axis, train, "loss", "train soft-label BCE")
-        line(axis, dev, "score", "dev soft-label BCE")
-        points = [{"step": row["step"], "bce": row["macro_mean"]["heldout_bce"]}
-                  for row in test if "heldout_bce" in row["macro_mean"]]
-        line(axis, points, "bce", "test soft-label BCE (monitor only)")
-        axis.set_title("MFTIQ pseudo-label distillation; not occlusion GT accuracy")
-        if train or dev or points:
-            axis.legend()
-        save(figure, root / "plots/distillation.png")
-    elif test:
+        depth_rows = [{"step": row["step"], **row["depth_metrics"]}
+                      for row in dev if row.get("depth_metrics")]
+        if depth_rows:
+            sources = sorted({key for row in depth_rows for key in row["by_dataset"]})
+            for source in ["macro", *sources]:
+                depth_figure(root, depth_rows, {}, source, phase="dev")
+    if test:
         path = root / "heldout_baseline.json"
         baseline = read_json(path) if path.exists() else {}
         scopes = ["macro", *sorted({key for row in test for key in row["by_dataset"]})]

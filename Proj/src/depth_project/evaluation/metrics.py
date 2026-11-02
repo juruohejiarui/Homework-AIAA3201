@@ -33,7 +33,7 @@ def align_inverse_depth(prediction, target, mask):
 
 
 def boundary_score(prediction, target, valid, threshold=0.05, tolerance=1):
-    """Custom log-depth edge score, not Depth Pro's SI-boundary F1."""
+    """Custom log-depth edge agreement score."""
     valid = cv2.erode(valid.astype(np.uint8), np.ones((3, 3), np.uint8)).astype(bool)
 
     def edges(depth):

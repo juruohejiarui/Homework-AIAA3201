@@ -4,6 +4,7 @@ from pathlib import Path
 
 from depth_project.io import read_json, write_json
 from explore_a.cache import remote
+from explore_a.cache.settings import root_recipe
 from explore_a.cache.assignments import HOSTS, job_folder, local_state, owner
 from explore_a.cache.locks import process_lock
 from explore_a.cache.policy import ensure_eligible
@@ -20,8 +21,8 @@ def selected_hosts(root, host=None):
 def status(root, hosts):
     states, details = {}, {}
     if "dgx" in hosts:
-        states = json.loads(remote.control("status", root.name))
-        details = json.loads(remote.control("details", root.name))
+        states = json.loads(remote.control("status", root_recipe(root)))
+        details = json.loads(remote.control("details", root_recipe(root)))
     local, assignments = {}, {}
     for folder in sorted((root / "jobs").glob("*")):
         if not folder.is_dir():
@@ -63,7 +64,7 @@ def stop(root, base, hosts, all_hosts=False):
         if host == "local":
             write_json(Path(base).expanduser() / "stop.json", {"stop_after_current_job": True})
         else:
-            remote.control("stop", root.name)
+            remote.control("stop", root_recipe(root))
     return {"stop_after_current_job": hosts, "coordinator_stop": all_hosts}
 
 
@@ -73,7 +74,7 @@ def retry(root, base, name=None, hosts=HOSTS):
 
 
 def _retry(root, base, name, hosts):
-    states = json.loads(remote.control("status", root.name)) if "dgx" in hosts else {}
+    states = json.loads(remote.control("status", root_recipe(root))) if "dgx" in hosts else {}
     if name is None:
         names = {path.parent.name for filename in ("local.failed.json", "transfer.failed.json")
                  for path in (root / "jobs").glob(f"*/{filename}")}
@@ -96,7 +97,7 @@ def _retry(root, base, name, hosts):
                                  "local.generated.json", "local.progress.json"):
                     (folder / filename).unlink(missing_ok=True)
         else:
-            remote.control("retry", root.name, name)
+            remote.control("retry", root_recipe(root), name)
             (folder / "local.complete.json").unlink(missing_ok=True)
             (folder / "dgx.pruned.json").unlink(missing_ok=True)
         (folder / "transfer.failed.json").unlink(missing_ok=True)

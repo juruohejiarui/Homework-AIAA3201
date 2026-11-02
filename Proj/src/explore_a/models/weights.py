@@ -2,7 +2,8 @@
 from pathlib import Path
 
 URLS = {
-    "depthpro": "https://ml-site.cdn-apple.com/models/depth-pro/depth_pro.pt",
+    "da2": "https://huggingface.co/depth-anything/Depth-Anything-V2-Small/resolve/main/"
+           "depth_anything_v2_vits.pth",
     "raft": "https://download.pytorch.org/models/raft_large_C_T_SKHT_V2-ff5fadd5.pth",
     "mftiq": "https://cmp.felk.cvut.cz/~serycjon/MFTIQ/materials/UOM_bs4_200k.pth",
     "resnet": "https://download.pytorch.org/models/resnet50-11ad3fa6.pth",
@@ -15,7 +16,8 @@ EXPECTED_BYTES = {"raft": 21106607, "mftiq": 108034251, "resnet": 102540417,
 
 def check_weights(config, required=None):
     missing = []
-    for name in required or URLS:
+    defaults = list(URLS)
+    for name in required or defaults:
         path = Path(config["weights"][name])
         available = path.is_file() and path.stat().st_size > 0
         if available and name in EXPECTED_BYTES:

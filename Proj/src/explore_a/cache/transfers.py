@@ -20,6 +20,7 @@ def prepare_upload(stage, sources):
     if stage.is_symlink():
         raise ValueError(f"Upload staging must be a real directory: {stage}")
     stage.mkdir(parents=True, exist_ok=True)
+    sizes = {}
     for relative, record in sources.items():
         path = stage / safe_relative(relative)
         source = Path(record["source"])
@@ -33,6 +34,13 @@ def prepare_upload(stage, sources):
                 raise ValueError(f"Upload directory is a symlink: {parent}")
             parent = parent.parent
         path.parent.mkdir(parents=True, exist_ok=True)
+        if record.get("encoding") == "nyu_h5_rgb":
+            from explore_a.cache.rgb_export import export_rgb
+            if path.is_symlink():
+                raise ValueError(f"H5 export must be a regular file: {path}")
+            sizes[relative] = export_rgb(path, source)
+            continue
+        sizes[relative] = record["bytes"]
         if path.is_symlink():
             if str(path.readlink()) == str(source):
                 continue
@@ -40,6 +48,7 @@ def prepare_upload(stage, sources):
         elif path.exists():
             raise ValueError(f"Unknown file inside upload staging: {path}")
         path.symlink_to(source)
+    return sizes
 
 
 def remote_root(root):
@@ -63,13 +72,18 @@ def upload(root, name):
     job = load_job(root, name)
     sources = read_json(root / "jobs" / name / "sources.json")
     stage = root / ".upload" / name
-    prepare_upload(stage, sources)
+    transport_sizes = prepare_upload(stage, sources)
     staging = target / ".staging" / name
     folder = target / "jobs" / name
     remote.ssh(["mkdir", "-p", staging, folder])
-    remote.rsync(root / "jobs" / name / "job.json", f"{remote.HOST}:{folder}/job.json")
+    if transport_sizes != job["inputs"]:
+        transport = root / "jobs" / name / "transport.json"
+        write_json(transport, {**job, "inputs": transport_sizes})
+    else:
+        transport = root / "jobs" / name / "job.json"
+    remote.rsync(transport, f"{remote.HOST}:{folder}/job.json")
     remote.control("space", job["recipe"], name)
-    remote.rsync(str(stage) + "/", f"{remote.HOST}:{staging}/", ("-L",))
+    remote.rsync(str(stage) + "/", f"{remote.HOST}:{staging}/", ("-L", "--exclude=*.rgb.json"))
     result = remote.control("ready", job["recipe"], name)
     shutil.rmtree(stage)  # Symlink farm only; original RGBs are never removed.
     return result

@@ -3,7 +3,6 @@ import argparse
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 import subprocess
-import tarfile
 
 from depth_project.io import read_json, write_json
 from depth_project.paths import DATASETS, PROJECT
@@ -12,14 +11,29 @@ from explore_a.download.tum_links import PAGE, crawl, get_size
 DEFAULT_MANIFEST = PROJECT / "storage/tum/plan.json"
 
 
-def plan(path, output, include_all=False, workers=8):
+def select_archives(entries, subset, names=None):
+    if subset not in {"ordinary", "validation", "all"}:
+        raise ValueError(f"Unknown TUM subset: {subset}")
+    selected = entries if subset == "all" else [e for e in entries if e["category"] == subset]
+    if names:
+        missing = set(names) - {e["name"] for e in selected}
+        if missing:
+            raise ValueError(f"Sequences outside selected official subset: {sorted(missing)}")
+        selected = [e for e in selected if e["name"] in names]
+    if not selected:
+        raise ValueError("No archives selected")
+    return selected
+
+
+def plan(path, output, include_all=False, workers=8, subset=None, names=None):
     if path.exists():
         raise ValueError("Plan exists; reuse it or select a different --manifest")
     entries = crawl()
-    selected = entries if include_all else [e for e in entries if e["category"] == "ordinary"]
+    subset = subset or ("all" if include_all else "ordinary")
+    selected = select_archives(entries, subset, names)
     with ThreadPoolExecutor(max_workers=workers) as pool:
         selected = list(pool.map(get_size, selected))
-    result = {"schema": 1, "source": PAGE, "all_discovered": entries,
+    result = {"schema": 1, "source": PAGE, "subset": subset, "all_discovered": entries,
               "output": str(output.expanduser().resolve()), "files": selected,
               "total_bytes": sum(e["bytes"] for e in selected), "official_checksums": None}
     write_json(path, result)
@@ -64,6 +78,8 @@ def download(path, jobs):
 
 
 def extract(path):
+    from explore_a.download.tum_extract import extract_archive
+
     manifest = read_json(path)
     root = Path(manifest["output"]) / "sequences"
     root.mkdir(parents=True, exist_ok=True)
@@ -71,19 +87,7 @@ def extract(path):
         archive = archive_target(manifest, entry)
         if not complete(archive, entry):
             raise ValueError(f"Finish downloading first: {archive}")
-        destination = root / entry["name"].removesuffix(".tgz")
-        marker = destination / ".explore_a_extracted.json"
-        if marker.exists():
-            continue
-        with tarfile.open(archive, "r:gz") as source:
-            for member in source.getmembers():
-                target = (root / member.name).resolve()
-                safe_type = member.isfile() or member.isdir()
-                if not target.is_relative_to(destination.resolve()) or not safe_type:
-                    raise ValueError(f"Unsafe/unexpected tar member: {member.name}")
-            source.extractall(root, filter="data")
-        write_json(marker, {"archive": entry["name"], "bytes": entry["bytes"]})
-        print("Extracted", entry["name"], flush=True)
+        extract_archive(archive, root, entry)
 
 
 def main():

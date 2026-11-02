@@ -41,6 +41,7 @@ class ResultSink:
         images = {key: data[key].detach().to("cpu", copy=True) for key in fields}
         shown = {key: output[key].detach().to("cpu", copy=True)
                  for key in ("depth", "historical_weight", "visibility")}
+        shown["prediction_kind"] = output.get("prediction_kind", "metric_m")
         self.images.submit(save_panel, path, images, shown, maximum)
 
     def __exit__(self, kind, value, traceback):

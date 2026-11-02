@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "created_utc": "2026-10-24T03:45:06.679009+00:00",
-  "output": "/media/hjr/新加卷1/Resources/Datasets/ScanNet/v1",
+  "output": "/media/hjr/新加卷/Resources/Datasets/ScanNet/v1",
   "seed": 2026,
   "split": "scannet_v1_full",
   "split_source": "https://kaldir.vc.in.tum.de/scannet/v1/scans.txt",

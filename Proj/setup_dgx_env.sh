@@ -18,7 +18,6 @@ python -m pip install 'torch==2.12.0+cu130' 'torchvision==0.27.0+cu130' \
   --index-url https://download.pytorch.org/whl/cu130
 python -m pip install -r "$project_dir/requirements-arm64-cache.txt" \
   -c "$project_dir/constraints-arm64-cache.txt"
-python -m pip install --no-deps -e "$project_dir/third_party/ml-depth-pro"
 wheel_url='https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.9.22/flash_attn-2.8.3%2Bcu130torch2.12-cp313-cp313-manylinux_2_34_aarch64.whl'
 python -m pip install --no-deps "$wheel_url"
 python -m pip freeze > "$project_dir/requirements-arm64-cache.lock.txt"

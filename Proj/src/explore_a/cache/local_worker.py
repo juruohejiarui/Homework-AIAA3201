@@ -37,8 +37,11 @@ def run(base, once=False):
         message("Local worker waiting for assigned sequence jobs", base)
         while not (base / "stop.json").exists():
             worked = False
-            for ready in sorted((base / "explore_a").glob("*/jobs/*/local.ready.json")):
+            from explore_a.cache.settings import ready_files
+            for ready in ready_files(base, "local.ready.json"):
                 root, name = ready.parents[2], ready.parent.name
+                if root.is_symlink():
+                    continue
                 if skipped(root, name):
                     continue
                 if local_state(root, name) not in ("ready", "generating"):

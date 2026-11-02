@@ -34,8 +34,9 @@ class LazyFrozen:
             began = time.perf_counter()
             with preserve_rng(self.device), torch.no_grad():
                 if name == "depth":
-                    frozen.check_weights(self.config, ["depthpro"])
-                    model = frozen.DepthProAdapter(self.config["weights"]["depthpro"], fp32=False)
+                    from explore_a.frontend import name as frontend_name, make
+                    frozen.check_weights(self.config, [frontend_name(self.config)])
+                    model = make(self.config)
                     model.model.eval().requires_grad_(False)
                     self.attention = configure_depth_attention(model.model)
                 elif name == "teacher":
@@ -53,10 +54,9 @@ class LazyFrozen:
     def depth(self, rgb):
         model = self.get("depth")
         value = model.predict(rgb)
-        if hasattr(model, "focal_predictions"):
-            model.focal_predictions.clear()
-        if not np.isfinite(value).all() or (value <= 0).any():
-            raise ValueError("Invalid online Depth Pro depth")
+        from explore_a.frontend import valid_prediction
+        if not valid_prediction(value, self.config):
+            raise ValueError("Invalid online frozen prediction")
         return value.astype(np.float32)
 
     @torch.no_grad()

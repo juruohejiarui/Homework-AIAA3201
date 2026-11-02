@@ -2,8 +2,9 @@
 import shutil
 
 from depth_project.io import read_json, write_json
-from explore_a.cache.paths import component, expected
+from explore_a.cache.paths import component
 from explore_a.cache.policy import skipped
+from explore_a.cache.settings import root_recipe
 from explore_a.cache.storage import safe_relative
 
 
@@ -14,10 +15,10 @@ def discard_length(root, name):
         raise ValueError(f"Refusing deletion of a cache-eligible video: {name}")
     folder = root / "jobs" / name
     job = read_json(folder / "job.json")
-    if job["job"] != name or job["recipe"] != root.name:
+    if job["job"] != name or job["recipe"] != root_recipe(root):
         raise ValueError("Remote task identity differs from requested deletion")
     paths = []
-    for relative in expected(job["rows"]):
+    for relative in job["outputs"]:
         path = root / safe_relative(relative)
         for candidate in (path, path.with_suffix(".tmp")):
             if candidate.is_symlink() or not candidate.resolve().is_relative_to(root.resolve()):

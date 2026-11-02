@@ -9,6 +9,9 @@ from explore_a.data.sens import sensor
 
 def read_frame(row, previous=False):
     prefix = "previous" if previous else "current"
+    if row["depth_encoding"] == "nyu_h5":
+        from explore_a.data.nyu_h5 import read_h5
+        return read_h5(row[f"{prefix}_rgb"])
     if row["depth_encoding"] == "sens":
         return sensor(row["sens"]).read(int(row[f"{prefix}_id"]))
     rgb = read_rgb(row[f"{prefix}_rgb"])

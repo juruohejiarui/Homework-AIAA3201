@@ -4,9 +4,6 @@
 [submodule "Proj/third_party/Video-Depth-Anything"]
 	path = Proj/third_party/Video-Depth-Anything
 	url = https://github.com/DepthAnything/Video-Depth-Anything.git
-[submodule "Proj/third_party/ml-depth-pro"]
-	path = Proj/third_party/ml-depth-pro
-	url = https://github.com/apple-aiml-research/ml-depth-pro.git
 [submodule "Proj/third_party/dinov2"]
 	path = Proj/third_party/dinov2
 	url = https://github.com/facebookresearch/dinov2.git

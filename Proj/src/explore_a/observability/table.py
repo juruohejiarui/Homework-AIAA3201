@@ -13,7 +13,7 @@ FIELDS = ("step", "phase", "scope", "dataset", "sequence", "camera", "metric", "
 
 def tagged(step, tag, value):
     parts = tag.split("/")
-    scope = parts[1] if len(parts) == 3 else "macro"
+    scope = parts[1] if len(parts) >= 3 else "macro"
     dataset = "" if scope in ("macro", "best") else scope
     return {"step": step, "phase": parts[0], "scope": "dataset" if dataset else scope,
             "dataset": dataset, "sequence": "", "camera": "", "metric": parts[-1],

@@ -42,7 +42,7 @@ def fake_backbones(monkeypatch):
         def __call__(self, previous, current, backward):
             return {"visibility": np.ones((1, *current.shape[:2]), np.float32) * .8}
 
-    monkeypatch.setattr("explore_a.online.frozen.DepthProAdapter", Depth)
+    monkeypatch.setattr("explore_a.frontend.make", lambda config: Depth())
     monkeypatch.setattr("explore_a.online.frozen.PairFlow", Flow)
     monkeypatch.setattr("explore_a.online.frozen.MFTIQVisibility", Teacher)
     monkeypatch.setattr("explore_a.online.frozen.check_weights", lambda *_, **__: None)
@@ -52,6 +52,9 @@ def fake_backbones(monkeypatch):
 def online_experiment(tmp_path):
     torch.set_num_threads(1)
     config = load_config()
+    config["execution"] = {"backend":"online"}
+    config["training"]["source_weights"] = {"tum":1}
+    config["training"]["dev_sample_fraction"] = 1.
     config["observability"].update(progress="off", tensorboard=False, plots=False)
     for name in config["weights"]:
         path = tmp_path / (name + ".dummy")
@@ -88,22 +91,21 @@ def online_experiment(tmp_path):
 
 def test_online_training_resume_and_temporal_evaluation(tmp_path):
     config = online_experiment(tmp_path)
-    run_training(config, "raft", distillation=True, device="cpu")
-    run_training(config, "raft", "student", "residual", device="cpu")
-    last = tmp_path / "runs/raft-student-residual/last.pt"
+    run_training(config, "raft", "mftiq", "flow_refine", device="cpu")
+    last = tmp_path / "runs/raft-mftiq-flow_refine/last.pt"
     before = last.stat().st_mtime_ns
-    run_training(config, "raft", "student", "residual", device="cpu")
+    run_training(config, "raft", "mftiq", "flow_refine", device="cpu")
     assert last.stat().st_mtime_ns == before
-    result = evaluate(config, "raft", "student", "residual", device="cpu")
-    assert result["sequences"][0]["coverage"]["consecutive_outputs"] == 1
-    assert "gt_corrected_temporal_mae_m" in result["by_dataset"]["tum"]
+    result = evaluate(config, "raft", "mftiq", "flow_refine", device="cpu")
+    assert result["sequences"][0]["coverage"]["pairs"] == 2
+    assert "gt_corrected_temporal_mae_m" not in result["by_dataset"]["tum"]
     raw = evaluate(config, "farneback", baseline="raw", device="cpu")
-    np.testing.assert_allclose(raw["by_dataset"]["tum"]["abs_rel"], 1 / 3, rtol=1e-6)
+    np.testing.assert_allclose(raw["by_dataset"]["tum"]["ssi_abs_rel"], 0, rtol=1e-6)
     assert raw["latency"]["mode"] == "independent_online"
     assert raw["latency"]["warm_ms"] > 0
     state = read_json(last.parent / "complete.json")
     assert state["steps"] == 2
     baseline = read_json(last.parent / "heldout_baseline.json")
-    for metric in DEPTH_METRICS:
+    for metric in ("ssi_"+m for m in DEPTH_METRICS):
         np.testing.assert_allclose(baseline["macro_mean"][metric], raw["macro_mean"][metric])
     assert not list(tmp_path.rglob("*.npz"))

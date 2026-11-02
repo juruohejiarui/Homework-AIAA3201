@@ -5,7 +5,6 @@ cuda-bindings==13.4.4
 cuda-pathfinder==1.8.3
 cuda-toolkit==13.0.2
 cycler==0.12.1
--e git+https://github.com/apple-aiml-research/ml-depth-pro.git@9e65e4dbe9568d23c546fcec53302b10445e109e#egg=depth_pro&subdirectory=../../../../Proj/third_party/ml-depth-pro
 easydict==1.13
 einops==0.8.2
 filelock==4.2.4

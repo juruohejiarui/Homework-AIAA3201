@@ -2,18 +2,26 @@
 CONFIG = {
     "sintel": {"folder": "MPI-Sintel", "crop": [0, 436, 0, 1024], "max_depth": 70, "factor": 1},
     "bonn": {"folder": "Bonn-RGBD", "crop": [0, 480, 0, 640], "max_depth": 10, "factor": 5000},
-    "nyuv2": {"folder": "nyu_depth_v2", "crop": [45, 471, 41, 601], "max_depth": 10, "factor": 6000},
+    "nyuv2": {"folder": "nyu_depth_v2", "crop": [45, 471, 41, 601],
+              "max_depth": 10, "factor": 6000},
     "scannet": {"folder": "ScanNet", "crop": [8, -8, 11, -11], "max_depth": 10, "factor": 1000},
     "kitti": {"folder": "KITTI", "crop": [0, 374, 0, 1242], "max_depth": 80, "factor": 256},
 }
 NYU_SCENES = ["basement_0001a", "bookstore_0001a", "cafe_0001a", "classroom_0001a",
               "kitchen_0003", "office_0004", "playroom_0002", "study_0002"]
-SETTINGS = ["long", "short", "tae", "length-110", "length-192", "length-300", "length-400", "length-500"]
+SETTINGS = ["long", "short", "full", "tae", "length-110", "length-192", "length-300",
+            "length-400", "length-500"]
 
 
 def select_sequences(manifest, setting):
+    if setting not in SETTINGS:
+        raise ValueError(f"Unknown benchmark setting: {setting}")
     dataset = manifest["dataset"]
     sequences = manifest["sequences"]
+    if dataset == "tum-validation" and setting != "full":
+        raise ValueError("TUM validation has no published 110/500-frame protocol; use full")
+    if setting == "full" and dataset != "tum-validation":
+        raise ValueError("Use the paper's long/short protocol for VDA datasets")
     length = 500
     if setting.startswith("length-"):
         length = int(setting.split("-")[1])
@@ -28,7 +36,9 @@ def select_sequences(manifest, setting):
     selected = []
     for sequence in sequences:
         frames = sequence["frames"]
-        if setting == "tae":
+        if setting == "full":
+            frames = list(frames)
+        elif setting == "tae":
             frames = frames[10:180]
         elif setting == "short" and dataset == "bonn":
             frames = frames[30:140]

@@ -28,13 +28,18 @@ def save_checkpoint(path, model, optimizer, scheduler, scaler, step, best, ident
     temporary.replace(path)
 
 
+def load_model_state(model, state):
+    model.load_state_dict(state)
+
+
 def load_checkpoint(path, model, optimizer=None, scheduler=None, scaler=None, identity=None):
     # Only our locally produced run checkpoints use pickle RNG state. External weights use
     # weights_only=True in their adapters, never this loader.
     state = torch.load(path, map_location="cpu", weights_only=False)
-    if identity is not None and state["identity"] != identity:
-        raise ValueError(f"Checkpoint belongs to a different experiment: {path}")
-    model.load_state_dict(state["model"])
+    if identity is not None:
+        from explore_a.training.identity import assert_same_task
+        assert_same_task(state["identity"], identity)
+    load_model_state(model, state["model"])
     if optimizer is not None:
         optimizer.load_state_dict(state["optimizer"])
         scheduler.load_state_dict(state["scheduler"])

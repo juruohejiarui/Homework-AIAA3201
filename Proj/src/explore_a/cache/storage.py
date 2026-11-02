@@ -1,9 +1,12 @@
-"""Atomic, maximum-level lossless NPZ and cheap transfer inventories; no full-file hashes."""
+"""Preallocated atomic FP32 NPZ and cheap transfer inventories; no full-file hashes."""
+from io import BytesIO
 from pathlib import Path
 import shutil
 import zipfile
 
 import numpy as np
+
+from explore_a.cache.preallocation import reserve
 
 
 def write_npz(path, **values):
@@ -11,13 +14,19 @@ def write_npz(path, **values):
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_suffix(".tmp")
     try:
-        with zipfile.ZipFile(temporary, "w", zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
-            for key, value in values.items():
-                value = np.asarray(value)
-                if value.dtype != np.float32 or not np.isfinite(value).all():
-                    raise ValueError(f"Expected finite FP32 model output: {path}/{key}")
-                with archive.open(key + ".npy", "w", force_zip64=True) as stream:
-                    np.lib.format.write_array(stream, value, allow_pickle=False)
+        # Compression size is data-dependent. Encode once, then reserve the exact
+        # final length so concurrent writers do not grow each file a chunk at a time.
+        with BytesIO() as buffer:
+            with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
+                for key, value in values.items():
+                    value = np.asarray(value)
+                    if value.dtype != np.float32 or not np.isfinite(value).all():
+                        raise ValueError(f"Expected finite FP32 model output: {path}/{key}")
+                    with archive.open(key + ".npy", "w", force_zip64=True) as stream:
+                        np.lib.format.write_array(stream, value, allow_pickle=False)
+            with buffer.getbuffer() as payload, temporary.open("wb") as output:
+                reserve(output.fileno(), len(payload))
+                output.write(payload)
         temporary.replace(path)
     finally:
         temporary.unlink(missing_ok=True)
@@ -28,6 +37,8 @@ def read_npz(path):
         values = {key: data[key] for key in data.files}
     if any(value.dtype != np.float32 or not np.isfinite(value).all() for value in values.values()):
         raise ValueError(f"Invalid cached FP32 output: {path}")
+    if "inverse_depth" in values and (values["inverse_depth"] < 0).any():
+        raise ValueError(f"Invalid negative inverse depth: {path}")
     return values
 
 

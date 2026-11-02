@@ -21,7 +21,7 @@ def prepare_sintel(source, output):
     for scene in sorted(path for path in clean.iterdir() if path.is_dir()):
         pairs = pair_frame_ids(scene.glob("*.png"), (depth_root / scene.name).glob("*.dpt"))
         frames = []
-        for index, (image, depth) in enumerate(pairs[:100]):
+        for index, (image, depth) in enumerate(pairs):
             target = output / "gt_m" / scene.name / (depth.stem + ".npy")
             target.parent.mkdir(parents=True, exist_ok=True)
             if not target.exists():

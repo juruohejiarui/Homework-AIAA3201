@@ -84,8 +84,8 @@ def test_monitor_cannot_change_updates_or_best_development_checkpoint(tmp_path, 
         development_scores = iter([.1, .2])
         monkeypatch.setattr("explore_a.training.engine.validate",
                             lambda *args, **kwargs: next(development_scores))
-        run_training(current, "raft", "rule", "residual", device="cpu")
-        root = Path(current["paths"]["runs"]) / "raft-rule-residual"
+        run_training(current, "raft", "rule", "flow_refine", device="cpu")
+        root = Path(current["paths"]["runs"]) / "raft-rule-flow_refine"
         last = torch.load(root / "last.pt", weights_only=False)
         best = torch.load(root / "best.pt", weights_only=False)
         assert best["step"] == 1 and best["best"] == .1
@@ -94,14 +94,15 @@ def test_monitor_cannot_change_updates_or_best_development_checkpoint(tmp_path, 
             records = read_curve(root)
             assert [record["step"] for record in records] == [0, 1, 2]
             assert all(record["split"] == "test" for record in records)
-            assert all(set(record["macro_mean"]) == set(DEPTH_METRICS) for record in records)
+            expected_metrics = {"ssi_"+m for m in DEPTH_METRICS}
+            assert all(set(record["macro_mean"]) == expected_metrics for record in records)
             assert all(record["counts"]["valid_frames"] == 2 for record in records)
             assert all({s["sequence"] for s in record["sequences"]} == {"test"}
                        for record in records)
             baseline = read_json(root / "heldout_baseline.json")
-            np.testing.assert_allclose(baseline["macro_mean"]["abs_rel"], 1 / 3, rtol=1e-6)
+            np.testing.assert_allclose(baseline["macro_mean"]["ssi_abs_rel"], 0, rtol=1e-6)
             for record in records:
-                for metric in DEPTH_METRICS:
+                for metric in ("ssi_"+m for m in DEPTH_METRICS):
                     assert record["delta_macro_mean"][metric] == (
                         record["macro_mean"][metric] - baseline["macro_mean"][metric])
             with (root / "heldout.csv").open() as stream:
@@ -118,9 +119,9 @@ def test_monitor_cannot_change_updates_or_best_development_checkpoint(tmp_path, 
     # Enabling observation on a completed older run does not invalidate its checkpoint.
     legacy = copy.deepcopy(config)
     legacy["paths"]["runs"] = original_runs + "-control"
-    root = Path(legacy["paths"]["runs"]) / "raft-rule-residual"
+    root = Path(legacy["paths"]["runs"]) / "raft-rule-flow_refine"
     before = (root / "last.pt").stat().st_mtime_ns
-    run_training(legacy, "raft", "rule", "residual", device="cpu")
+    run_training(legacy, "raft", "rule", "flow_refine", device="cpu")
     assert (root / "last.pt").stat().st_mtime_ns == before
     assert [record["step"] for record in read_curve(root)] == [2]
 
@@ -137,29 +138,18 @@ def test_resume_keeps_curves_without_duplicate_steps_or_reselecting_best(tmp_pat
             raise RuntimeError("simulated interruption after test logging")
     monkeypatch.setattr(HeldoutMonitor, "maybe_run", interrupt_after_record)
     with pytest.raises(RuntimeError, match="simulated interruption"):
-        run_training(config, "raft", "rule", "unet", device="cpu")
-    root = Path(config["paths"]["runs"]) / "raft-rule-unet"
+        run_training(config, "raft", "rule", "unet_guided", device="cpu")
+    root = Path(config["paths"]["runs"]) / "raft-rule-unet_guided"
     first = read_curve(root)
     assert [record["step"] for record in first] == [0, 2]
     # A partial last write and missing CSV are recoverable without losing valid snapshots.
     with (root / "heldout.jsonl").open("a") as stream:
         stream.write('{"step":')
     (root / "heldout.csv").unlink()
-    run_training(config, "raft", "rule", "unet", device="cpu")
+    run_training(config, "raft", "rule", "unet_guided", device="cpu")
     records = read_curve(root)
     assert [record["step"] for record in records] == [0, 2, 3]
     assert records[:2] == first
     size = (root / "heldout.jsonl").stat().st_size
-    run_training(config, "raft", "rule", "unet", device="cpu")
+    run_training(config, "raft", "rule", "unet_guided", device="cpu")
     assert (root / "heldout.jsonl").stat().st_size == size
-
-
-def test_student_reports_only_distillation_bce(tmp_path):
-    config = online_experiment(tmp_path)
-    run_training(config, "raft", distillation=True, device="cpu")
-    root = Path(config["paths"]["runs"]) / "occlusion-raft"
-    records = read_curve(root)
-    assert [record["step"] for record in records] == [0, 1, 2]
-    assert all(set(record["macro_mean"]) == {"heldout_bce"} for record in records)
-    assert all(record["task"] == "mftiq_soft_label_distillation" for record in records)
-    assert not (root / "heldout_baseline.json").exists()

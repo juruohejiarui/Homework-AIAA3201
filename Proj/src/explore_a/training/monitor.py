@@ -15,12 +15,10 @@ def scheduled(step, total, every):
 
 
 class HeldoutMonitor:
-    def __init__(self, root, dataset, config, identity, occlusion, student=None,
-                 distillation=False, device="cuda", observer=None):
+    def __init__(self, root, dataset, config, identity, occlusion, device="cuda", observer=None):
         self.observer = observer
         self.root, self.dataset, self.config = Path(root), dataset, config
-        self.occlusion, self.student = occlusion, student
-        self.distillation, self.device = distillation, device
+        self.occlusion, self.device = occlusion, device
         bind_identity(self.root / "heldout_identity.json", {
             "input": identity["input"], "experiment": identity["experiment"],
             "teacher": identity.get("teacher"),
@@ -47,19 +45,18 @@ class HeldoutMonitor:
         message(f"HELD-OUT TEST start: step {step}, full {len(self.dataset)} test pairs")
         began = time.monotonic()
         result, baseline = collect_heldout(
-            model, self.dataset, self.config, self.device, self.occlusion, self.student,
-            self.distillation, include_baseline=self.baseline is None, step=step,
+            model, self.dataset, self.config, self.device, self.occlusion,
+            include_baseline=self.baseline is None, step=step,
         )
         if baseline is not None:
             self.baseline = baseline
             write_json(self.baseline_path, baseline)
         record = {"step": step, "split": "test", "selection_use": "monitor_only",
                   "duration_s": time.monotonic() - began,
-                  "task": "mftiq_soft_label_distillation" if self.distillation else "metric_depth",
-                  "counts_note": "valid pixels are correspondence-mask pixels" if self.distillation
-                                 else "valid pixels are measured GT depth pixels",
+                  "task": "metric_depth",
+                  "counts_note": "valid pixels are measured GT depth pixels",
                   **result}
-        if self.baseline is not None and not self.distillation:
+        if self.baseline is not None:
             record["delta_macro_mean"] = differences(result["macro_mean"],
                                                        self.baseline["macro_mean"])
             record["delta_by_dataset"] = {
@@ -73,7 +70,7 @@ class HeldoutMonitor:
             self.observer.test(record, self.baseline)
         message("HELD-OUT TEST (monitor only)", {
             "step": step, **result["macro_mean"],
-            "delta_vs_depthpro": record.get("delta_macro_mean"),
+            "delta_vs_frontend": record.get("delta_macro_mean"),
             "valid_frames": result["counts"]["valid_frames"],
             "by_dataset": result["by_dataset"],
         })
