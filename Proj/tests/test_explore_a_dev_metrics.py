@@ -23,13 +23,13 @@ def test_dev_and_heldout_share_metrics_and_every_step_is_logged(tmp_path):
     assert [row["step"] for row in records["training"]] == [1, 2]
     for row in records["training"]:
         summary = row["depth_metrics"]
-        assert set(summary["macro_mean"]) == {"ssi_"+k for k in DEPTH_METRICS}
+        assert set(summary["macro_mean"]) >= {"ssi_"+k for k in DEPTH_METRICS}
         assert summary["counts"]["valid_frames"] == 2
         tags = dict(scalars("train", row))
         assert tags["train/macro/ssi_rmse"] == summary["macro_mean"]["ssi_rmse"]
     for dev, test in zip(records["dev"], records["heldout"][1:]):
         summary = dev["depth_metrics"]
-        assert set(summary["macro_mean"]) == {"ssi_"+k for k in DEPTH_METRICS}
+        assert set(summary["macro_mean"]) >= {"ssi_"+k for k in DEPTH_METRICS}
         assert summary["macro_mean"] == pytest.approx(test["macro_mean"])
         assert summary["by_dataset"] == test["by_dataset"]
         tags = dict(scalars("dev", dev))
@@ -59,6 +59,29 @@ def test_dev_benchmark_clips_but_existing_selection_does_not(tmp_path, monkeypat
     runtime.close() if hasattr(runtime, "close") else runtime.reset()
 
 
+def test_selection_keeps_original_ssi_field_independent_of_report_alias(tmp_path, monkeypatch):
+    from explore_a.online.factory import make_runtime
+    from explore_a.online.loading import OnlinePairs
+    from explore_a.data.prepare import load_manifest
+    from explore_a.training.validation import validate
+    from types import SimpleNamespace
+    config=online_experiment(tmp_path)
+    runtime=make_runtime(config,["farneback"],False,"cpu")
+    rows=[r for r in load_manifest(config)["samples"] if r["split"]=="dev"]
+    dataset=OnlinePairs(config,rows,runtime,"farneback",phase="dev")
+    monkeypatch.setattr("explore_a.training.validation.predict",lambda model,data,*a:
+                        ({"depth":torch.ones_like(data["gt"])},None))
+    monkeypatch.setattr("explore_a.evaluation.live.field_scores",lambda *a:{"ssi_abs_rel":.125})
+    monkeypatch.setattr("explore_a.evaluation.alignment.RelativeScores.add",lambda *a:{"absrel_img":999.})
+    observer=SimpleNamespace()
+    try:
+        score=validate(torch.nn.Identity(),dataset,config,"cpu","rule",observer=observer)
+        assert score==.125
+        assert observer.last_dev_metrics["macro_mean"]["absrel_img"]==999.
+    finally:
+        runtime.close()
+
+
 def test_training_scores_match_benchmark_and_do_not_change_gradients(tmp_path):
     from explore_a.evaluation.depth import MetricSummary, field_scores
     from explore_a.data.reading import depth_range
@@ -86,3 +109,25 @@ def test_training_scores_match_benchmark_and_do_not_change_gradients(tmp_path):
     add_depth_scores(empty, {"depth": prediction}, {"gt": target, "gt_valid": valid & False},
                      rows, config)
     assert finish_depth_scores(empty) is None
+
+
+def test_resume_changed_dev_protocol_archives_best_and_initializes_new_score(tmp_path):
+    config = online_experiment(tmp_path)
+    run_training(config, "farneback", "rule", "unet_guided", device="cpu")
+    root = Path(config["paths"]["runs"])/"farneback-rule-unet_guided"
+    last = root/"last.pt"
+    saved = torch.load(last, weights_only=False)
+    saved["identity"].pop("dev_selection")
+    saved["best"] = -100  # This obsolete score must not survive the cohort transition.
+    torch.save(saved, last)
+    run_training(config, "farneback", "rule", "unet_guided", device="cpu")
+    resumed = torch.load(last, weights_only=False)
+    assert (root/"best-before-dev-2.pt").exists()
+    assert resumed["best"] >= 0
+    assert resumed["identity"]["dev_selection"]["sha256"]
+    for key, value in saved["model"].items():
+        torch.testing.assert_close(resumed["model"][key], value, rtol=0, atol=0)
+    # Simulate interruption after new best commit but before the last checkpoint commit.
+    torch.save(saved, last)
+    run_training(config, "farneback", "rule", "unet_guided", device="cpu")
+    assert torch.load(last, weights_only=False)["best"] >= 0

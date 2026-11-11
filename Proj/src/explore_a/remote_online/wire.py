@@ -54,8 +54,8 @@ def receive(stream):
     arrays, offset = [], 0
     for description in metadata.pop("arrays"):
         shape, dtype = description["shape"], np.dtype(description["dtype"])
-        if (dtype not in (np.dtype("uint8"), np.dtype("float32")) or len(shape) > 4
-                or any(type(d) is not int or d <= 0 for d in shape)):
+        if (dtype not in tuple(np.dtype(v) for v in ("uint8", "uint16", "float16", "float32", "float64", "int32", "int64", "bool")) or len(shape) > 6
+                or any(type(d) is not int or d < 0 for d in shape)):
             raise ValueError("Invalid remote array layout")
         length = int(np.prod(shape, dtype=object)) * dtype.itemsize
         if length > size - offset:

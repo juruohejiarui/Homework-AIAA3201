@@ -1,6 +1,7 @@
 """Streaming per-experiment metrics and temporal state, without retaining dense predictions."""
 from collections import defaultdict
 from pathlib import Path
+import json
 
 import cv2
 import numpy as np
@@ -19,6 +20,8 @@ def average(rows):
 
 class EvaluationAccumulator:
     def __init__(self, config, name, split, sink):
+        from explore_a.evaluation.alignment import RelativeScores
+        self.aligned = RelativeScores()
         self.config, self.name, self.split = config, name, split
         self.root = Path(config["paths"]["runs"]) / name / f"evaluation-{split}"
         self.sink = sink
@@ -30,11 +33,13 @@ class EvaluationAccumulator:
         self.visual_counts = defaultdict(int)
         self.previous = self.previous_key = self.first_median = None
         self.timings, self.head_timings = [], []
+        self.rows = []
         self.corrections = CorrectionMetrics(config["training"]["correction_fraction"])
 
     def add(self, row, data, output, scoring):
         from explore_a.frontend import relative
         is_relative = relative(self.config)
+        self.rows.append(row)
         self.corrections.add(output, [row])
         key = row["dataset"], row["sequence"], row["camera"]
         _, maximum = depth_range(row["dataset"], self.config["data"])
@@ -48,6 +53,10 @@ class EvaluationAccumulator:
             from explore_a.evaluation.depth import field_scores
             record.update(field_scores(prediction[0, 0], data["gt"][0, 0],
                                        data["gt_valid"][0, 0], self.config, row["dataset"]))
+            if is_relative:
+                record.update(self.aligned.add(row, prediction[0, 0], data["gt"][0, 0],
+                                               valid, depth_range(row["dataset"],
+                                                                  self.config["data"])))
             eligible = cv2.erode(valid.astype(np.uint8), np.ones((3, 3), np.uint8)) > 0
             record["boundary_valid_fraction"] = float(eligible.mean())
             if eligible.any() and not is_relative:
@@ -75,6 +84,14 @@ class EvaluationAccumulator:
             self.visual_counts[key] += 1
 
     def finish(self, manifest, latency):
+        # Final reduction runs after the asynchronous result sink has drained.
+        with (self.root / "video_frames.jsonl").open("w") as stream:
+            for row, values, count in self.aligned.finish():
+                key = row["dataset"], row["sequence"], row["camera"]
+                for metric, value in values.items():
+                    self.sums[key][metric] += value
+                    self.counts[key][metric] += 1
+                stream.write(json.dumps({"sample": row["id"], **values})+"\n")
         sequences = [{"dataset": key[0], "sequence": key[1], "camera": key[2],
                       "metrics": {name: total / self.counts[key][name]
                                   for name, total in self.sums[key].items()},
@@ -82,12 +99,14 @@ class EvaluationAccumulator:
         by_dataset = {source: average([s["metrics"] for s in sequences if s["dataset"] == source])
                       for source in sorted({s["dataset"] for s in sequences})}
         from explore_a.frontend import relative, metadata
+        from explore_a.training.dev_subset import selection_record
         return {"experiment": self.name, "frontend": metadata(self.config),
                 "split": self.split, "test_label": manifest["test_label"],
-                "relative_protocol": ("per-image GT-assisted inverse SSI; not metric inference; "
-                                      "legacy metric temporal/boundary scores omitted"
+                "cohort": selection_record(self.rows),
+                "relative_protocol": ("GT-assisted image and video/selected-clip inverse SSI; "
+                                      "raw ordinal diagnostic; not metric inference"
                                       if relative(self.config) else None),
-                "protocol": ("relative inverse; GT-assisted per-image SSI; padded canvas"
+                "protocol": ("relative inverse; dual GT-assisted SSI; padded canvas"
                              if relative(self.config) else
                              "online metric meters, no GT scale alignment; padded canvas"),
                 "temporal_note": "Consecutive evaluated RGB outputs only; GT-corrected motion "

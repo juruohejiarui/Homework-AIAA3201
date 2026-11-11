@@ -162,7 +162,7 @@ def write_hybrid_config(root, config):
     import yaml
     hybrid = copy.deepcopy(config)
     hybrid.pop("config_path", None)
-    hybrid["execution"] = {"backend": "hybrid"}
+    hybrid["execution"] = {**hybrid.get("execution", {}), "backend": "hybrid"}
     hybrid["cache"] = {"root": str(root.parents[1]), "recipe": root.name}
     hybrid["paths"]["runs"] = config["paths"]["runs"]
     from explore_a.frontend import shared_root

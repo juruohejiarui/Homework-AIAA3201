@@ -47,54 +47,72 @@ class OnlinePairs:
     def __len__(self):
         return len(self.rows)
 
-    def raw_stream(self, indices=None, flows=None, teacher_flows=(), native=False):
+    def raw_stream(self, indices=None, flows=None, teacher_flows=(), native=False, submit=True):
         settings = self.config["online"]
         indices = range(len(self.rows)) if indices is None else indices
-        jobs = ((index, self.rows[index]) for index in indices)
+        scope = object()
+        jobs = ((index, self.rows[index], self.runtime.prepare(
+            self.rows[index], index, {f:f in teacher_flows for f in (flows or [self.flow])},
+            phase=self.phase, native=native, scope=scope)) for index in indices)
 
         def load(job):
-            index, row = job
-            raw = read_pair(row, self.config["data"])
-            requested = {f:f in teacher_flows for f in (flows or [self.flow])}
-            raw["frozen_ticket"] = self.runtime.prepare(row, index, requested,
-                                                       phase=self.phase, native=native)
-            self.runtime.submit_decoded(raw)
-            return index, raw
+            index, row, ticket = job
+            try:
+                raw = read_pair(row, self.config["data"])
+                raw["frozen_ticket"] = ticket
+                if submit:
+                    self.runtime.submit_decoded(raw)
+                return index, raw
+            except BaseException:
+                self.runtime.cancel_ticket(ticket)
+                raise
 
         def stream():
-            with self.runtime.input_phase(self.phase):
-                yield from prefetch(jobs, load, settings["read_workers"], settings["prefetch"],
-                                    Timings("raw input"))
+            try:
+                with self.runtime.input_phase(self.phase):
+                    yield from prefetch(jobs, load, settings["read_workers"], settings["prefetch"],
+                                        Timings("raw input"))
+            finally:
+                self.runtime.cancel_prepared(scope)
         return stream()
 
     def iter_batches(self, batches=None, ordered=True):
         if batches is None:
             batches = validation_batches(self.rows, self.config["training"]["microbatch"])
         # Flatten without letting the reader consume the complete, potentially infinite schedule.
+        scope = object()
         def jobs():
             occurrence = getattr(batches, "start", 0) * self.config["training"]["effective_batch"]
             for batch in batches:
                 for offset, index in enumerate(batch):
                     ticket = self.runtime.prepare(self.rows[index], occurrence,
-                                                  {self.flow:self.teacher}, phase=self.phase)
+                                                  {self.flow:self.teacher},
+                                                  phase=self.phase, scope=scope)
                     yield index, offset == len(batch) - 1, ticket
                     occurrence += 1
 
         settings = self.config["online"]
         def load(job):
             index, end, ticket = job
-            raw = read_pair(self.rows[index], self.config["data"])
-            raw["frozen_ticket"] = ticket
-            self.runtime.submit_decoded(raw)
-            return index, end, raw
+            try:
+                raw = read_pair(self.rows[index], self.config["data"])
+                raw["frozen_ticket"] = ticket
+                self.runtime.submit_decoded(raw)
+                return index, end, raw
+            except BaseException:
+                self.runtime.cancel_ticket(ticket)
+                raise
 
         loaded = prefetch(jobs(), load, settings["read_workers"], settings["prefetch"],
                           Timings("raw batches"))
-        with self.runtime.input_phase(self.phase), closing(loaded):
-            indices, samples = [], []
-            for index, end, raw in loaded:
-                samples.append(self.runtime.compute(raw, self.flow, self.teacher, ordered))
-                indices.append(index)
-                if end:
-                    yield indices, collate(samples)
-                    indices, samples = [], []
+        try:
+            with self.runtime.input_phase(self.phase), closing(loaded):
+                indices, samples = [], []
+                for index, end, raw in loaded:
+                    samples.append(self.runtime.compute(raw, self.flow, self.teacher, ordered))
+                    indices.append(index)
+                    if end:
+                        yield indices, collate(samples)
+                        indices, samples = [], []
+        finally:
+            self.runtime.cancel_prepared(scope)

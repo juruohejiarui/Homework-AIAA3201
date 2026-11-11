@@ -35,23 +35,27 @@ def prefetch(items, load, workers, limit, timings):
             return load(item)
 
     source, pending = iter(items), deque()
-    with ThreadPoolExecutor(max_workers=workers) as pool:
-        try:
-            for _ in range(limit):
-                item = next(source, None)
-                if item is None:
-                    break
-                pending.append(pool.submit(timed, item))
-            while pending:
-                with timings.measure("read_wait"):
-                    result = pending.popleft().result()
-                yield result
-                item = next(source, None)
-                if item is not None:
-                    pending.append(pool.submit(timed, item))
-        finally:
-            for future in pending:
-                future.cancel()
+    from explore_a.online.pool import Workers
+    pool = Workers(workers, "raw-reader")
+    try:
+        for _ in range(limit):
+            item = next(source, None)
+            if item is None:
+                break
+            pending.append(pool.submit(lambda item=item: timed(item)))
+        while pending:
+            with timings.measure("read_wait"):
+                result = pending.popleft().result()
+            yield result
+            item = next(source, None)
+            if item is not None:
+                pending.append(pool.submit(lambda item=item: timed(item)))
+    finally:
+        # Readers own CPU data only. An interrupted decode must not hold CUDA/process exit
+        # hostage through ThreadPoolExecutor's unconditional join and interpreter exit hook.
+        for future in pending:
+            future.cancel()
+        pool.close()
 
 
 class BackgroundWriter:

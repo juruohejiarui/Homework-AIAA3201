@@ -7,6 +7,7 @@ import numpy as np
 import torch
 
 from depth_project.paths import PROJECT, THIRD_PARTY
+from depth_project.models.api import ImageAdapter
 
 REPOSITORY = "lpiccinelli/unidepth-v2-vits14"
 REVISION = "038c238f06c87b6c2f5b3749fd51fbf442b1f218"
@@ -40,8 +41,36 @@ def build_local(weights):
     return model.eval().requires_grad_(False)
 
 
-class UniDepthAdapter:
+class UniDepthAdapter(ImageAdapter):
+    runtime_paths = ("third_party/UniDepth",)
     kind = "metric_m"
+
+    def forward(self, request, **specific_param):
+        from depth_project.models.api import ModelOutput, frame_array
+        level = specific_param.pop("resolution_level", self.model.resolution_level)
+        if specific_param or set(request.specific_in) - {"camera"}:
+            raise ValueError("Unsupported UniDepth inputs/parameters")
+        frames = request.rgb
+        if isinstance(frames, (np.ndarray, torch.Tensor)) and frames.ndim == 3:
+            frames = [frames]
+        outputs = []
+        camera = request.specific_in.get("camera")
+        if isinstance(camera, (np.ndarray, torch.Tensor, list, tuple)):
+            camera = torch.as_tensor(camera, device=next(self.model.parameters()).device)
+        previous = self.model.resolution_level
+        self.model.resolution_level = level
+        try:
+            for rgb in frames:
+                image = torch.from_numpy(frame_array(rgb).transpose(2, 0, 1).copy()).to(
+                    next(self.model.parameters()).device)
+                with torch.autocast("cuda", dtype=torch.float16, enabled=not self.fp32):
+                    outputs.append(self.infer(self.model, image,
+                                              camera=camera))
+        finally:
+            self.model.resolution_level = previous
+        return ModelOutput(torch.stack([r["depth"][0, 0].float() for r in outputs]), self.kind,
+                           request.frame_ids, {"frames": [{k: v for k, v in r.items()
+                                                           if k != "depth"} for r in outputs]})
 
     def __init__(self, weights, fp32=True):
         from pathlib import Path

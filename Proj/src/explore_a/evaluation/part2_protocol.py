@@ -122,3 +122,34 @@ def metric_scores(inverse_depths, frames, config):
         if valid.any():
             records.append(depth_metrics(depth[valid], target[valid]))
     return {key: float(np.mean([r[key] for r in records])) for key in records[0]} if records else {}
+
+
+def aligned_sequence_scores(predictions, frames, config, sample_prefix):
+    """Additional image alignment and raw ordering beside the upstream video protocol."""
+    from explore_a.evaluation.alignment import RelativeScores, ordinal
+    from explore_a.evaluation.accumulator import average
+    from explore_a.evaluation.sintel_ac import PROTOCOL, IMAGE_METRICS, image_scores
+    ac = config.get("image_scoring") == PROTOCOL
+    evaluator = load_evaluator(device="cpu")
+    top, bottom, left, right = config["crop"]
+    scorer, records = RelativeScores(), []
+    try:
+        for i, (prediction, frame) in enumerate(zip(predictions, frames)):
+            target = evaluator.get_gt(frame["gt"], config["factor"], None)[top:bottom, left:right]
+            value = cv2.resize(prediction, (target.shape[1], target.shape[0]))
+            valid = np.isfinite(target) & (target > 1e-3) & (target < config["max_depth"])
+            row = {"id": f"{sample_prefix}:{i}", "dataset": "benchmark",
+                   "sequence": sample_prefix, "camera": "video"}
+            # Match the upstream evaluator's input floor before inverse-depth fitting.
+            measured = scorer.add(row, np.maximum(value, 1e-3), target, valid,
+                                  (1e-3, config["max_depth"]))
+            if ac:
+                measured = {k: v for k, v in measured.items() if k not in IMAGE_METRICS}
+                measured.update(image_scores(value, target))
+            measured.update(ordinal(value[valid], target[valid], row["id"]))
+            records.append(measured)
+        for row, values, count in scorer.finish():
+            records.append(values)
+        return average(records)
+    finally:
+        scorer.close()

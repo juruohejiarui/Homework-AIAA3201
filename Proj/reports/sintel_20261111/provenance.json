@@ -1,0 +1,22 @@
+{
+  "source_sha256": {
+    "src/explore_a/models/guided.py": "2a19c3494afa6b8b160a5f4112e03afc9f48e8f8c1c4d4cac229b472dda135d1",
+    "src/explore_a/models/inputs.py": "b9c9b06c68488c99d81fde698f0fdd1429767226337f55d9349a8d8b8cdbc95c",
+    "src/explore_a/training/relative.py": "4cf9d5cd4ce042c1dd641911748e665eda9954617eda8ccfbf3d50cd409fda44",
+    "src/explore_a/training/two_frame.py": "01267c6a4f159bb064573c93db68cb2fb141a3da2a87f99f22fd5d1b3eabd7c5",
+    "src/explore_a/evaluation/session.py": "f9a17b1a68af22f77fbc3d693d2b1acdebd308d37a8a8c2b0ba2bb5898829af0",
+    "src/explore_a/evaluation/sintel_ac.py": "e8be7af19710df76aac4fe5fd2bd182ac7175bf4e4d86415584f40d24026a501",
+    "src/explore_a/frontend.py": "b56be2177227fc3c9a53b376224d452c989a26790f32163623560cb0a667bb68"
+  },
+  "result_sha256": {
+    "evaluated_comparison.json": "2ecf8b8f36feeb6578ad83d3b32983f314eed70f6491fea835b476a796ef012f",
+    "evaluated_session.json": "dc136cb707d6eebbe4c2de167275295f26edc66015f86d0c9feb3e942a2b9f9b",
+    "sample_diagnostics.json": "ceb914f8205cddefe0a412f2819093d6903d00c570e59d3c6dee1c9ddde6494d"
+  },
+  "diagnostic_models": [
+    "farneback_unet_guided_lr3e-4",
+    "raft_unet_guided_lr3e-4"
+  ],
+  "diagnostic_execution": "local online, CUDA, no DGX or cache, same frozen/head precision settings",
+  "clip_selection": "three Sintel contrasting cases plus Bonn static and KITTI drive0079; center 20 consecutive frames; not a random sample"
+}

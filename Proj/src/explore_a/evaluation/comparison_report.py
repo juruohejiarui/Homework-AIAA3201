@@ -15,6 +15,18 @@ def report(output):
     rows = []
 
     def add(scope, dataset, model, metrics, alignment):
+        if metrics and "absrel_img" in metrics:
+            for suffix, label in (("img", "per-image inverse SSI"),
+                                  ("video", "whole video / selected dev clip inverse SSI")):
+                if "absrel_"+suffix in metrics:
+                    values = {"abs_rel": metrics["absrel_"+suffix],
+                              "rmse": metrics["rmse_"+suffix],
+                              "delta1": metrics["delta1_"+suffix]}
+                    if "ordinal_accuracy" in metrics:
+                        values["ordinal_accuracy"] = metrics["ordinal_accuracy"]
+                    rows.append({"scope": scope+"-"+suffix, "dataset": dataset,
+                                 "model": model, "alignment": label, **values})
+            return
         if metrics:
             metrics = {key.removeprefix("ssi_"): value for key, value in metrics.items()}
             rows.append({"scope": scope, "dataset": dataset, "model": model,
@@ -74,13 +86,13 @@ def report(output):
              "Sintel uses float32 meter GT; Bonn uses timestamp association. These documented",
              "decoding fixes differ from flawed public extraction code; exact paper-cohort",
              "identity is not established. TUM full is not a recovered UniDepth paper list.", "",
-             "| Scope | Dataset | Model | Alignment | AbsRel ↓ | RMSE ↓ | δ1 ↑ |",
-             "|---|---|---|---|---:|---:|---:|"]
+             "| Scope | Dataset | Model | Alignment | AbsRel ↓ | RMSE ↓ | δ1 ↑ | Ordinal ↑ |",
+             "|---|---|---|---|---:|---:|---:|---:|"]
     for row in rows:
         delta = row.get("d1", row.get("delta1", float("nan")))
         lines.append(f"| {row['scope']} | {row['dataset']} | {row['model']} | "
                      f"{row['alignment']} | {row['abs_rel']:.6f} | {row['rmse']:.6f} | "
-                     f"{delta:.6f} |")
+                     f"{delta:.6f} | {row.get('ordinal_accuracy', float('nan')):.6f} |")
     (output / "comparison.md").write_text("\n".join(lines) + "\n")
     print(output / "comparison.md", flush=True)
     return rows

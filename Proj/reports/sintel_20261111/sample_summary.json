@@ -1,0 +1,157 @@
+[
+  {
+    "sequence": "ambush_2",
+    "dataset": "sintel",
+    "start": 1,
+    "end_inclusive": 20,
+    "frames": 20,
+    "gt_ge72_fraction": 0.3843073573681193,
+    "raw_shared_gauge_absrel": 0.636048398911953,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.5691498082712155,
+        "weight_all": 0.2393965929746628,
+        "weight_available": 0.39484833329916,
+        "normalized_change": 0.011478412803262472,
+        "history_better_fraction_available": 0.32422706755660546,
+        "current_history_inverse_error_corr": 0.8371861932486862,
+        "shared_gauge_absrel": 0.620672719180584,
+        "oracle_shared_gauge_absrel": 0.5204027272760868
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.5637499328053327,
+        "weight_all": 0.2733119189739227,
+        "weight_available": 0.4700907662510872,
+        "normalized_change": 0.016447692830115556,
+        "history_better_fraction_available": 0.33351753258384664,
+        "current_history_inverse_error_corr": 0.7436354436749195,
+        "shared_gauge_absrel": 0.6259925499558449,
+        "oracle_shared_gauge_absrel": 0.5397201366722584
+      }
+    }
+  },
+  {
+    "sequence": "market_6",
+    "dataset": "sintel",
+    "start": 10,
+    "end_inclusive": 29,
+    "frames": 20,
+    "gt_ge72_fraction": 4.7036267201834865e-06,
+    "raw_shared_gauge_absrel": 0.3482466995716095,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.7259495726419152,
+        "weight_all": 0.30823590606451035,
+        "weight_available": 0.39964381605386734,
+        "normalized_change": 0.014409488998353481,
+        "history_better_fraction_available": 0.49123527415077745,
+        "current_history_inverse_error_corr": 0.823978280216847,
+        "shared_gauge_absrel": 0.33444777205586435,
+        "oracle_shared_gauge_absrel": 0.2901759475469589
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.8084993414922591,
+        "weight_all": 0.4511903688311577,
+        "weight_available": 0.5415486872196198,
+        "normalized_change": 0.019202422397211195,
+        "history_better_fraction_available": 0.4569923966642283,
+        "current_history_inverse_error_corr": 0.9085055605985269,
+        "shared_gauge_absrel": 0.34524634703993795,
+        "oracle_shared_gauge_absrel": 0.3046277217566967
+      }
+    }
+  },
+  {
+    "sequence": "alley_1",
+    "dataset": "sintel",
+    "start": 15,
+    "end_inclusive": 34,
+    "frames": 20,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.6742040991783143,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.9533673487672019,
+        "weight_all": 0.44049599915742876,
+        "weight_available": 0.456198987364769,
+        "normalized_change": 0.006208008923567832,
+        "history_better_fraction_available": 0.5285911714697615,
+        "current_history_inverse_error_corr": 0.9749861978351733,
+        "shared_gauge_absrel": 0.6690063148736953,
+        "oracle_shared_gauge_absrel": 0.6332092672586441
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.9604442911410549,
+        "weight_all": 0.5331457525491714,
+        "weight_available": 0.5483291447162628,
+        "normalized_change": 0.00789437461644411,
+        "history_better_fraction_available": 0.5322576917733877,
+        "current_history_inverse_error_corr": 0.9779260972107073,
+        "shared_gauge_absrel": 0.6654337346553802,
+        "oracle_shared_gauge_absrel": 0.633017036318779
+      }
+    }
+  },
+  {
+    "sequence": "rgbd_bonn_static",
+    "dataset": "bonn",
+    "start": 240,
+    "end_inclusive": 259,
+    "frames": 20,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.022619623630360863,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.8676060034714655,
+        "weight_all": 0.44734239727258684,
+        "weight_available": 0.5004701822996139,
+        "normalized_change": 0.021227870229631664,
+        "history_better_fraction_available": 0.44480208936980487,
+        "current_history_inverse_error_corr": 0.8535301203549892,
+        "shared_gauge_absrel": 0.02269246310732382,
+        "oracle_shared_gauge_absrel": 0.01821439089005615
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.9999578929632336,
+        "weight_all": 0.46751489341259,
+        "weight_available": 0.4675284132361412,
+        "normalized_change": 0.02184718488715589,
+        "history_better_fraction_available": 0.4999903135732226,
+        "current_history_inverse_error_corr": 0.8597855301111565,
+        "shared_gauge_absrel": 0.021567343362121273,
+        "oracle_shared_gauge_absrel": 0.01633329362778848
+      }
+    }
+  },
+  {
+    "sequence": "2011_09_26_drive_0079_sync",
+    "dataset": "kitti",
+    "start": 35,
+    "end_inclusive": 54,
+    "frames": 20,
+    "gt_ge72_fraction": 0.001028555976860431,
+    "raw_shared_gauge_absrel": 0.09199307123954256,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.9389021005955458,
+        "weight_all": 0.4607344463467598,
+        "weight_available": 0.4849519178271294,
+        "normalized_change": 0.007208709232509136,
+        "history_better_fraction_available": 0.47859842604505165,
+        "current_history_inverse_error_corr": 0.9542268337256636,
+        "shared_gauge_absrel": 0.08750464415246471,
+        "oracle_shared_gauge_absrel": 0.07791940544799214
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.997286730387002,
+        "weight_all": 0.457246758043766,
+        "weight_available": 0.4582128718495369,
+        "normalized_change": 0.007085104030556977,
+        "history_better_fraction_available": 0.4445019556536778,
+        "current_history_inverse_error_corr": 0.9371294331740406,
+        "shared_gauge_absrel": 0.08860296520558972,
+        "oracle_shared_gauge_absrel": 0.07819150608319525
+      }
+    }
+  }
+]

@@ -34,7 +34,8 @@ def _input_identity(config, flow):
         from explore_a.remote_online.policy import settings as remote_settings
         result.update(schema=6, execution="blocking_frozen_components_v2",
                       cache_read=settings(config), remote_online=remote_settings(config),
-                      evaluation_backend="same", write_missing_predictions=False)
+                      evaluation_backend="same", write_missing_predictions=False,
+                      routing=config.get("execution", {}).get("routing", {}))
         return result
     if config.get("execution", {}).get("backend") == "cache":
         from explore_a.cache.reader import cache_spec

@@ -1,7 +1,7 @@
 # 当前三源数据与固定划分
 
 三个 DA 模型共用 `outputs/explore_a/mixed_h5_balanced/data.json`。
-本次只精简配置和入口，没有修改清单或重新划分。训练数据位于
+完整清单与划分保持不变，公共 dev 子集选择已改为固定连续片段。训练数据位于
 `~/Documents/Resources/Datasets`，共享预测缓存另在 ResourcesLow。
 
 | 来源 | train 帧对 | 完整 dev 帧对 | held-out test 帧对 |
@@ -10,8 +10,10 @@
 | TUM | 47,554 | 8,514 | 21,542 |
 | NYUv2 H5 | 38,420 | 7,466 | 1,418 |
 
-训练实际使用固定 10% dev 子集；按 KITTI:NYUv2:TUM=3:3:2 抽来源，
-来源内按视频帧对数平方根抽序列，再抽帧对。完整候选池不等于每轮遍历。
+训练使用固定连续片段 dev 子集：KITTI/NYUv2/TUM=1,253/1,253/835 对，
+覆盖21/47/9个序列。相同清单、种子和规则下，所有模型、光流和验证轮次完全一致。
+训练采样按 KITTI:NYUv2:TUM=3:3:2 抽来源，来源内按视频帧对数平方根抽序列，
+再抽帧对。训练采样与固定 dev 选择是两个独立流程。
 
 KITTI 是 Raw 连续 RGB 与有效深度的交集；历史评价 drive 整体隔离。
 TUM 当前固定清单仍是 Freiburg 2 训练、Freiburg 1 dev、Freiburg 3 test；

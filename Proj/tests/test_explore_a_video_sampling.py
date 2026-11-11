@@ -59,7 +59,7 @@ def test_short_source_recycles_videos_only_after_exhaustion_and_old_fix_is_uncha
     assert next(iter(StepBatches(rows, 8, 8, 1, 0, 2026))) == expected
 
 
-@pytest.mark.parametrize("name", ["mixed_h5_balanced", "mixed_h5_final"])
+@pytest.mark.parametrize("name", ["mixed_h5_da2", "mixed_h5_da2_refine", "mixed_h5_da2_final"])
 def test_current_configs_use_new_distribution(name):
     from pathlib import Path
     path = Path(__file__).parents[1] / f"configs/explore_a/{name}.yaml"

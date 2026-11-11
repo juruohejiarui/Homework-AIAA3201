@@ -1,0 +1,3782 @@
+[
+  {
+    "sequence": "ambush_2",
+    "dataset": "sintel",
+    "index": 1,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/ambush_2/frame_0002.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.20526179042431192,
+    "raw_shared_gauge_absrel": 1.0293868780136108,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.48247563073394495,
+        "weight_all": 0.19834399223327637,
+        "weight_available": 0.38312461972236633,
+        "normalized_change": 0.012094170786440372,
+        "history_better_fraction_available": 0.2445359503825299,
+        "current_history_inverse_error_corr": 0.8467388230088537,
+        "shared_gauge_absrel": 1.14987313747406,
+        "oracle_shared_gauge_absrel": 1.00597083568573,
+        "official_image_score": {
+          "absrel_img": 1.1664841175079346,
+          "delta1_img": 0.3948112277809633,
+          "rmse_img": 30.342809677124023
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.6762964091169725,
+        "weight_all": 0.33394965529441833,
+        "weight_available": 0.4804667532444,
+        "normalized_change": 0.02279875986278057,
+        "history_better_fraction_available": 0.2859688284504971,
+        "current_history_inverse_error_corr": 0.7593324443418082,
+        "shared_gauge_absrel": 1.1529453992843628,
+        "oracle_shared_gauge_absrel": 0.9930153489112854,
+        "official_image_score": {
+          "absrel_img": 1.223088264465332,
+          "delta1_img": 0.4197762865538991,
+          "rmse_img": 31.57319450378418
+        }
+      }
+    }
+  },
+  {
+    "sequence": "ambush_2",
+    "dataset": "sintel",
+    "index": 2,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/ambush_2/frame_0003.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.2264191513761468,
+    "raw_shared_gauge_absrel": 0.9307448863983154,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.471267560206422,
+        "weight_all": 0.172568678855896,
+        "weight_available": 0.33831578493118286,
+        "normalized_change": 0.02253403142094612,
+        "history_better_fraction_available": 0.4690262542537214,
+        "current_history_inverse_error_corr": 0.6499857292241215,
+        "shared_gauge_absrel": 0.7367845177650452,
+        "oracle_shared_gauge_absrel": 0.46158018708229065,
+        "official_image_score": {
+          "absrel_img": 0.8317404389381409,
+          "delta1_img": 0.34813333213876146,
+          "rmse_img": 25.513349533081055
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.6463589449541285,
+        "weight_all": 0.31202250719070435,
+        "weight_available": 0.4692951440811157,
+        "normalized_change": 0.04394810274243355,
+        "history_better_fraction_available": 0.569908793524063,
+        "current_history_inverse_error_corr": 0.5176930872120783,
+        "shared_gauge_absrel": 0.6849405765533447,
+        "oracle_shared_gauge_absrel": 0.5343153476715088,
+        "official_image_score": {
+          "absrel_img": 0.9961504936218262,
+          "delta1_img": 0.40225191728784404,
+          "rmse_img": 25.340517044067383
+        }
+      }
+    }
+  },
+  {
+    "sequence": "ambush_2",
+    "dataset": "sintel",
+    "index": 3,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/ambush_2/frame_0004.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.2338889585722477,
+    "raw_shared_gauge_absrel": 0.4395223557949066,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.4861310206422018,
+        "weight_all": 0.19799168407917023,
+        "weight_available": 0.3788904845714569,
+        "normalized_change": 0.01407857146114111,
+        "history_better_fraction_available": 0.2379100626612606,
+        "current_history_inverse_error_corr": 0.8710688264095167,
+        "shared_gauge_absrel": 0.5207940340042114,
+        "oracle_shared_gauge_absrel": 0.4121493697166443,
+        "official_image_score": {
+          "absrel_img": 0.5547868013381958,
+          "delta1_img": 0.4261642596043578,
+          "rmse_img": 20.05144500732422
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.6623871129587156,
+        "weight_all": 0.34699150919914246,
+        "weight_available": 0.5076016783714294,
+        "normalized_change": 0.02636292204260826,
+        "history_better_fraction_available": 0.4256860941663398,
+        "current_history_inverse_error_corr": 0.8887059087701408,
+        "shared_gauge_absrel": 0.46805599331855774,
+        "oracle_shared_gauge_absrel": 0.3774714469909668,
+        "official_image_score": {
+          "absrel_img": 0.5615643262863159,
+          "delta1_img": 0.4369064471043578,
+          "rmse_img": 20.366819381713867
+        }
+      }
+    }
+  },
+  {
+    "sequence": "ambush_2",
+    "dataset": "sintel",
+    "index": 4,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/ambush_2/frame_0005.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.26271323107798167,
+    "raw_shared_gauge_absrel": 0.26785537600517273,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.4764594681766055,
+        "weight_all": 0.19965073466300964,
+        "weight_available": 0.3985878825187683,
+        "normalized_change": 0.007295502349734306,
+        "history_better_fraction_available": 0.22176831733436128,
+        "current_history_inverse_error_corr": 0.8742182731459666,
+        "shared_gauge_absrel": 0.28399133682250977,
+        "oracle_shared_gauge_absrel": 0.2513588070869446,
+        "official_image_score": {
+          "absrel_img": 0.2851592004299164,
+          "delta1_img": 0.6164237206135321,
+          "rmse_img": 15.641899108886719
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.6591102530103211,
+        "weight_all": 0.3152206242084503,
+        "weight_available": 0.46426069736480713,
+        "normalized_change": 0.021873483434319496,
+        "history_better_fraction_available": 0.2316621866387557,
+        "current_history_inverse_error_corr": 0.8138123156950802,
+        "shared_gauge_absrel": 0.29648375511169434,
+        "oracle_shared_gauge_absrel": 0.23460571467876434,
+        "official_image_score": {
+          "absrel_img": 0.3288394808769226,
+          "delta1_img": 0.5775180081708715,
+          "rmse_img": 16.602338790893555
+        }
+      }
+    }
+  },
+  {
+    "sequence": "ambush_2",
+    "dataset": "sintel",
+    "index": 5,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/ambush_2/frame_0006.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.2847284439506881,
+    "raw_shared_gauge_absrel": 0.4393661916255951,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.39179642703555045,
+        "weight_all": 0.14811784029006958,
+        "weight_available": 0.3509426414966583,
+        "normalized_change": 0.0074548679403960705,
+        "history_better_fraction_available": 0.39227545834452876,
+        "current_history_inverse_error_corr": 0.8630677847582796,
+        "shared_gauge_absrel": 0.34689632058143616,
+        "oracle_shared_gauge_absrel": 0.23059655725955963,
+        "official_image_score": {
+          "absrel_img": 0.3840969204902649,
+          "delta1_img": 0.6645149440940367,
+          "rmse_img": 17.165544509887695
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.544845721043578,
+        "weight_all": 0.24961982667446136,
+        "weight_available": 0.4414673447608948,
+        "normalized_change": 0.014446432702243328,
+        "history_better_fraction_available": 0.42782030305770924,
+        "current_history_inverse_error_corr": 0.7594668252521054,
+        "shared_gauge_absrel": 0.36171743273735046,
+        "oracle_shared_gauge_absrel": 0.27647948265075684,
+        "official_image_score": {
+          "absrel_img": 0.42253297567367554,
+          "delta1_img": 0.6533158328555045,
+          "rmse_img": 18.220081329345703
+        }
+      }
+    }
+  },
+  {
+    "sequence": "ambush_2",
+    "dataset": "sintel",
+    "index": 6,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/ambush_2/frame_0007.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.2766830024369266,
+    "raw_shared_gauge_absrel": 1.0399473905563354,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.44983694094036697,
+        "weight_all": 0.18910890817642212,
+        "weight_available": 0.3941543996334076,
+        "normalized_change": 0.008278767578303814,
+        "history_better_fraction_available": 0.667599434364357,
+        "current_history_inverse_error_corr": 0.9089593528073124,
+        "shared_gauge_absrel": 0.7357718348503113,
+        "oracle_shared_gauge_absrel": 0.5415173768997192,
+        "official_image_score": {
+          "absrel_img": 0.8953781127929688,
+          "delta1_img": 0.4848319237385321,
+          "rmse_img": 22.828022003173828
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.44514675315366975,
+        "weight_all": 0.19881251454353333,
+        "weight_available": 0.42329171299934387,
+        "normalized_change": 0.008136916905641556,
+        "history_better_fraction_available": 0.5753690714594801,
+        "current_history_inverse_error_corr": 0.7894043998067357,
+        "shared_gauge_absrel": 0.8168023228645325,
+        "oracle_shared_gauge_absrel": 0.7123912572860718,
+        "official_image_score": {
+          "absrel_img": 0.958629846572876,
+          "delta1_img": 0.4811720541857798,
+          "rmse_img": 23.3889102935791
+        }
+      }
+    }
+  },
+  {
+    "sequence": "ambush_2",
+    "dataset": "sintel",
+    "index": 7,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/ambush_2/frame_0008.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.2664694129873853,
+    "raw_shared_gauge_absrel": 0.85968017578125,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.5820670871559633,
+        "weight_all": 0.23755666613578796,
+        "weight_available": 0.38702017068862915,
+        "normalized_change": 0.009860968217253685,
+        "history_better_fraction_available": 0.369728173870213,
+        "current_history_inverse_error_corr": 0.8882953733172769,
+        "shared_gauge_absrel": 0.8670901656150818,
+        "oracle_shared_gauge_absrel": 0.7196025252342224,
+        "official_image_score": {
+          "absrel_img": 0.9313446283340454,
+          "delta1_img": 0.4842383708428899,
+          "rmse_img": 24.779388427734375
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.5677075867259175,
+        "weight_all": 0.29832732677459717,
+        "weight_available": 0.5114136934280396,
+        "normalized_change": 0.0195525623857975,
+        "history_better_fraction_available": 0.3105093091244807,
+        "current_history_inverse_error_corr": 0.6452908825099913,
+        "shared_gauge_absrel": 0.9053505659103394,
+        "oracle_shared_gauge_absrel": 0.7982235550880432,
+        "official_image_score": {
+          "absrel_img": 1.1366406679153442,
+          "delta1_img": 0.4654820993405963,
+          "rmse_img": 26.49371910095215
+        }
+      }
+    }
+  },
+  {
+    "sequence": "ambush_2",
+    "dataset": "sintel",
+    "index": 8,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/ambush_2/frame_0009.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.21183342889908258,
+    "raw_shared_gauge_absrel": 1.6376657485961914,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.5158265840022935,
+        "weight_all": 0.20892687141895294,
+        "weight_available": 0.38590753078460693,
+        "normalized_change": 0.00929513294249773,
+        "history_better_fraction_available": 0.19655402999591834,
+        "current_history_inverse_error_corr": 0.9571449561592401,
+        "shared_gauge_absrel": 1.5646474361419678,
+        "oracle_shared_gauge_absrel": 1.391707420349121,
+        "official_image_score": {
+          "absrel_img": 1.592110276222229,
+          "delta1_img": 0.5719139729071101,
+          "rmse_img": 29.48798179626465
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.4006706027809633,
+        "weight_all": 0.2163173407316208,
+        "weight_available": 0.5128755569458008,
+        "normalized_change": 0.011015196330845356,
+        "history_better_fraction_available": 0.3975403191994857,
+        "current_history_inverse_error_corr": 0.8081101610116344,
+        "shared_gauge_absrel": 1.548482060432434,
+        "oracle_shared_gauge_absrel": 1.413206696510315,
+        "official_image_score": {
+          "absrel_img": 1.6086994409561157,
+          "delta1_img": 0.593337872706422,
+          "rmse_img": 29.54960823059082
+        }
+      }
+    }
+  },
+  {
+    "sequence": "ambush_2",
+    "dataset": "sintel",
+    "index": 9,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/ambush_2/frame_0010.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.19039832998853212,
+    "raw_shared_gauge_absrel": 1.129151463508606,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.607551784690367,
+        "weight_all": 0.23598159849643707,
+        "weight_available": 0.37121957540512085,
+        "normalized_change": 0.0069396947510540485,
+        "history_better_fraction_available": 0.22704516129032257,
+        "current_history_inverse_error_corr": 0.9183562598634631,
+        "shared_gauge_absrel": 1.1899967193603516,
+        "oracle_shared_gauge_absrel": 1.1165798902511597,
+        "official_image_score": {
+          "absrel_img": 1.2091917991638184,
+          "delta1_img": 0.6344027737958715,
+          "rmse_img": 27.0268611907959
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.4385437571674312,
+        "weight_all": 0.22404298186302185,
+        "weight_available": 0.49054527282714844,
+        "normalized_change": 0.00845242664217949,
+        "history_better_fraction_available": 0.27262326731156217,
+        "current_history_inverse_error_corr": 0.7893953947204704,
+        "shared_gauge_absrel": 1.2267903089523315,
+        "oracle_shared_gauge_absrel": 1.1053745746612549,
+        "official_image_score": {
+          "absrel_img": 1.273408055305481,
+          "delta1_img": 0.6278512937213303,
+          "rmse_img": 27.45427703857422
+        }
+      }
+    }
+  },
+  {
+    "sequence": "ambush_2",
+    "dataset": "sintel",
+    "index": 10,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/ambush_2/frame_0011.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.19239401161123854,
+    "raw_shared_gauge_absrel": 0.7064093351364136,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.6443543040424312,
+        "weight_all": 0.28920307755470276,
+        "weight_available": 0.43124452233314514,
+        "normalized_change": 0.007649471051990986,
+        "history_better_fraction_available": 0.4200277390581929,
+        "current_history_inverse_error_corr": 0.8702522328145197,
+        "shared_gauge_absrel": 0.7376463413238525,
+        "oracle_shared_gauge_absrel": 0.6221237182617188,
+        "official_image_score": {
+          "absrel_img": 0.7869583964347839,
+          "delta1_img": 0.6586018133600917,
+          "rmse_img": 23.83820152282715
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.42246407325114677,
+        "weight_all": 0.2129816859960556,
+        "weight_available": 0.47727057337760925,
+        "normalized_change": 0.008403710089623928,
+        "history_better_fraction_available": 0.36776502399066885,
+        "current_history_inverse_error_corr": 0.8770497215277113,
+        "shared_gauge_absrel": 0.7560336589813232,
+        "oracle_shared_gauge_absrel": 0.6816519498825073,
+        "official_image_score": {
+          "absrel_img": 0.779184877872467,
+          "delta1_img": 0.6563843893348624,
+          "rmse_img": 23.10344696044922
+        }
+      }
+    }
+  },
+  {
+    "sequence": "ambush_2",
+    "dataset": "sintel",
+    "index": 11,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/ambush_2/frame_0012.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.21061048595183487,
+    "raw_shared_gauge_absrel": 0.5451828837394714,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.6007584038130734,
+        "weight_all": 0.2369178682565689,
+        "weight_available": 0.3791750371456146,
+        "normalized_change": 0.008343098685145378,
+        "history_better_fraction_available": 0.4495800042502899,
+        "current_history_inverse_error_corr": 0.8465047515128458,
+        "shared_gauge_absrel": 0.53349369764328,
+        "oracle_shared_gauge_absrel": 0.4436360001564026,
+        "official_image_score": {
+          "absrel_img": 0.5563399195671082,
+          "delta1_img": 0.7280855791284404,
+          "rmse_img": 21.26719856262207
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.46515060564793576,
+        "weight_all": 0.23858603835105896,
+        "weight_available": 0.4887281358242035,
+        "normalized_change": 0.010697757825255394,
+        "history_better_fraction_available": 0.2087994106118754,
+        "current_history_inverse_error_corr": 0.7461522928956008,
+        "shared_gauge_absrel": 0.5318818688392639,
+        "oracle_shared_gauge_absrel": 0.4756295084953308,
+        "official_image_score": {
+          "absrel_img": 0.5550281405448914,
+          "delta1_img": 0.7090918864678899,
+          "rmse_img": 20.811288833618164
+        }
+      }
+    }
+  },
+  {
+    "sequence": "ambush_2",
+    "dataset": "sintel",
+    "index": 12,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/ambush_2/frame_0013.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.2491981436353211,
+    "raw_shared_gauge_absrel": 0.5440080165863037,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.6606109339162844,
+        "weight_all": 0.2911728620529175,
+        "weight_available": 0.4226148724555969,
+        "normalized_change": 0.017893578857183456,
+        "history_better_fraction_available": 0.343718531628574,
+        "current_history_inverse_error_corr": 0.6833136112670777,
+        "shared_gauge_absrel": 0.5326830744743347,
+        "oracle_shared_gauge_absrel": 0.4405306875705719,
+        "official_image_score": {
+          "absrel_img": 0.5589538216590881,
+          "delta1_img": 0.6695411052178899,
+          "rmse_img": 28.403120040893555
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.42993836009174313,
+        "weight_all": 0.21990014612674713,
+        "weight_available": 0.483564168214798,
+        "normalized_change": 0.016505438834428787,
+        "history_better_fraction_available": 0.39822455613903474,
+        "current_history_inverse_error_corr": 0.5475907139616452,
+        "shared_gauge_absrel": 0.4967198371887207,
+        "oracle_shared_gauge_absrel": 0.43120071291923523,
+        "official_image_score": {
+          "absrel_img": 0.5456146597862244,
+          "delta1_img": 0.6767846903669725,
+          "rmse_img": 28.364492416381836
+        }
+      }
+    }
+  },
+  {
+    "sequence": "ambush_2",
+    "dataset": "sintel",
+    "index": 13,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/ambush_2/frame_0014.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.3073461690080275,
+    "raw_shared_gauge_absrel": 0.5824663639068604,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.5026765875860092,
+        "weight_all": 0.1877533495426178,
+        "weight_available": 0.3527948260307312,
+        "normalized_change": 0.013928457163274288,
+        "history_better_fraction_available": 0.3690732398508201,
+        "current_history_inverse_error_corr": 0.9133224320060719,
+        "shared_gauge_absrel": 0.5804539322853088,
+        "oracle_shared_gauge_absrel": 0.5495136380195618,
+        "official_image_score": {
+          "absrel_img": 0.57896888256073,
+          "delta1_img": 0.2893357583142202,
+          "rmse_img": 31.06926918029785
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.2882360055905963,
+        "weight_all": 0.13417872786521912,
+        "weight_available": 0.43894001841545105,
+        "normalized_change": 0.007867234759032726,
+        "history_better_fraction_available": 0.3590883306006046,
+        "current_history_inverse_error_corr": 0.9067837611231216,
+        "shared_gauge_absrel": 0.5871940851211548,
+        "oracle_shared_gauge_absrel": 0.5641047954559326,
+        "official_image_score": {
+          "absrel_img": 0.5833597183227539,
+          "delta1_img": 0.29643151519495414,
+          "rmse_img": 31.32656478881836
+        }
+      }
+    }
+  },
+  {
+    "sequence": "ambush_2",
+    "dataset": "sintel",
+    "index": 14,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/ambush_2/frame_0015.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.41792843319954126,
+    "raw_shared_gauge_absrel": 0.4785064458847046,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.496337890625,
+        "weight_all": 0.16905605792999268,
+        "weight_available": 0.32177600264549255,
+        "normalized_change": 0.017914818599820137,
+        "history_better_fraction_available": 0.1217074238369653,
+        "current_history_inverse_error_corr": 0.9227300517276438,
+        "shared_gauge_absrel": 0.511705219745636,
+        "oracle_shared_gauge_absrel": 0.4613545835018158,
+        "official_image_score": {
+          "absrel_img": 0.5110177993774414,
+          "delta1_img": 0.301231454271789,
+          "rmse_img": 31.71421241760254
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.3784538059059633,
+        "weight_all": 0.18888160586357117,
+        "weight_available": 0.48072338104248047,
+        "normalized_change": 0.03388484567403793,
+        "history_better_fraction_available": 0.07702141259188239,
+        "current_history_inverse_error_corr": 0.2552877724658257,
+        "shared_gauge_absrel": 0.508934497833252,
+        "oracle_shared_gauge_absrel": 0.45255520939826965,
+        "official_image_score": {
+          "absrel_img": 0.49287593364715576,
+          "delta1_img": 0.34044626218463303,
+          "rmse_img": 31.622528076171875
+        }
+      }
+    }
+  },
+  {
+    "sequence": "ambush_2",
+    "dataset": "sintel",
+    "index": 15,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/ambush_2/frame_0016.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.5292229608658257,
+    "raw_shared_gauge_absrel": 0.5031113624572754,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.5452376899369266,
+        "weight_all": 0.21103225648403168,
+        "weight_available": 0.3651456832885742,
+        "normalized_change": 0.008873583748936653,
+        "history_better_fraction_available": 0.29217554194446843,
+        "current_history_inverse_error_corr": 0.8139677970215718,
+        "shared_gauge_absrel": 0.5041292905807495,
+        "oracle_shared_gauge_absrel": 0.485019326210022,
+        "official_image_score": {
+          "absrel_img": 0.499064177274704,
+          "delta1_img": 0.5327663596616973,
+          "rmse_img": 36.421669006347656
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.5632749784977065,
+        "weight_all": 0.27365267276763916,
+        "weight_available": 0.47183477878570557,
+        "normalized_change": 0.009291627444326878,
+        "history_better_fraction_available": 0.2169220858749334,
+        "current_history_inverse_error_corr": 0.9265073864712605,
+        "shared_gauge_absrel": 0.5161905288696289,
+        "oracle_shared_gauge_absrel": 0.4915899634361267,
+        "official_image_score": {
+          "absrel_img": 0.512039303779602,
+          "delta1_img": 0.5193475845756881,
+          "rmse_img": 37.10242462158203
+        }
+      }
+    }
+  },
+  {
+    "sequence": "ambush_2",
+    "dataset": "sintel",
+    "index": 16,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/ambush_2/frame_0017.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.6560663345756881,
+    "raw_shared_gauge_absrel": 0.3179444372653961,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.5166597978784404,
+        "weight_all": 0.22729463875293732,
+        "weight_available": 0.4165393114089966,
+        "normalized_change": 0.014772332273423672,
+        "history_better_fraction_available": 0.2584297914770018,
+        "current_history_inverse_error_corr": 0.638908177679526,
+        "shared_gauge_absrel": 0.34667667746543884,
+        "oracle_shared_gauge_absrel": 0.2621065676212311,
+        "official_image_score": {
+          "absrel_img": 0.32928523421287537,
+          "delta1_img": 0.657806676462156,
+          "rmse_img": 31.985952377319336
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.5868827049885321,
+        "weight_all": 0.25737208127975464,
+        "weight_available": 0.425269216299057,
+        "normalized_change": 0.020382946357131004,
+        "history_better_fraction_available": 0.24430391341185093,
+        "current_history_inverse_error_corr": 0.6852549466719657,
+        "shared_gauge_absrel": 0.37886130809783936,
+        "oracle_shared_gauge_absrel": 0.23969818651676178,
+        "official_image_score": {
+          "absrel_img": 0.34557217359542847,
+          "delta1_img": 0.6308638546444955,
+          "rmse_img": 33.08023452758789
+        }
+      }
+    }
+  },
+  {
+    "sequence": "ambush_2",
+    "dataset": "sintel",
+    "index": 17,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/ambush_2/frame_0018.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.6965645606364679,
+    "raw_shared_gauge_absrel": 0.3267555236816406,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.7312750860091743,
+        "weight_all": 0.337822824716568,
+        "weight_available": 0.4456530511379242,
+        "normalized_change": 0.01035886537283659,
+        "history_better_fraction_available": 0.3678420033814413,
+        "current_history_inverse_error_corr": 0.8618701913293108,
+        "shared_gauge_absrel": 0.3314213752746582,
+        "oracle_shared_gauge_absrel": 0.25507545471191406,
+        "official_image_score": {
+          "absrel_img": 0.3250827193260193,
+          "delta1_img": 0.6360826404816514,
+          "rmse_img": 31.781404495239258
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.7948994767775229,
+        "weight_all": 0.37770935893058777,
+        "weight_available": 0.4662456810474396,
+        "normalized_change": 0.013496333733201027,
+        "history_better_fraction_available": 0.3378839878949771,
+        "current_history_inverse_error_corr": 0.7503409822712963,
+        "shared_gauge_absrel": 0.33801132440567017,
+        "oracle_shared_gauge_absrel": 0.2514602839946747,
+        "official_image_score": {
+          "absrel_img": 0.32959461212158203,
+          "delta1_img": 0.6338786553899083,
+          "rmse_img": 31.998882293701172
+        }
+      }
+    }
+  },
+  {
+    "sequence": "ambush_2",
+    "dataset": "sintel",
+    "index": 18,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/ambush_2/frame_0019.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.7022828268348624,
+    "raw_shared_gauge_absrel": 0.32086920738220215,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.7280049455275229,
+        "weight_all": 0.34689533710479736,
+        "weight_available": 0.460824579000473,
+        "normalized_change": 0.006166665814816952,
+        "history_better_fraction_available": 0.29615602348105396,
+        "current_history_inverse_error_corr": 0.9401048547722161,
+        "shared_gauge_absrel": 0.31887373328208923,
+        "oracle_shared_gauge_absrel": 0.2681272029876709,
+        "official_image_score": {
+          "absrel_img": 0.31826767325401306,
+          "delta1_img": 0.6446342818233946,
+          "rmse_img": 31.53386878967285
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.8451991649942661,
+        "weight_all": 0.40572309494018555,
+        "weight_available": 0.4731278121471405,
+        "normalized_change": 0.009636551141738892,
+        "history_better_fraction_available": 0.33817321273827283,
+        "current_history_inverse_error_corr": 0.8827724107804019,
+        "shared_gauge_absrel": 0.32152578234672546,
+        "oracle_shared_gauge_absrel": 0.2715276777744293,
+        "official_image_score": {
+          "absrel_img": 0.3127232491970062,
+          "delta1_img": 0.6579074684633027,
+          "rmse_img": 31.421586990356445
+        }
+      }
+    }
+  },
+  {
+    "sequence": "ambush_2",
+    "dataset": "sintel",
+    "index": 19,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/ambush_2/frame_0020.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.740234375,
+    "raw_shared_gauge_absrel": 0.33059853315353394,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.7760043362958715,
+        "weight_all": 0.3789215087890625,
+        "weight_available": 0.47386205196380615,
+        "normalized_change": 0.010858926922082901,
+        "history_better_fraction_available": 0.3245703663936177,
+        "current_history_inverse_error_corr": 0.8429414387505098,
+        "shared_gauge_absrel": 0.32055768370628357,
+        "oracle_shared_gauge_absrel": 0.2758936285972595,
+        "official_image_score": {
+          "absrel_img": 0.31957581639289856,
+          "delta1_img": 0.6620466599770642,
+          "rmse_img": 32.26155471801758
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.744010715309633,
+        "weight_all": 0.3527951240539551,
+        "weight_available": 0.4669840335845947,
+        "normalized_change": 0.01066894643008709,
+        "history_better_fraction_available": 0.346444935485619,
+        "current_history_inverse_error_corr": 0.8235145175795909,
+        "shared_gauge_absrel": 0.31915026903152466,
+        "oracle_shared_gauge_absrel": 0.25975650548934937,
+        "official_image_score": {
+          "absrel_img": 0.3099268674850464,
+          "delta1_img": 0.6753332855504587,
+          "rmse_img": 31.94849395751953
+        }
+      }
+    }
+  },
+  {
+    "sequence": "ambush_2",
+    "dataset": "sintel",
+    "index": 20,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/ambush_2/frame_0021.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.8259030963302753,
+    "raw_shared_gauge_absrel": 0.29179540276527405,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.7176636862098624,
+        "weight_all": 0.32361510396003723,
+        "weight_available": 0.4391736388206482,
+        "normalized_change": 0.014976750127971172,
+        "history_better_fraction_available": 0.21481784333246987,
+        "current_history_inverse_error_corr": 0.6319729473983992,
+        "shared_gauge_absrel": 0.29996785521507263,
+        "oracle_shared_gauge_absrel": 0.21361076831817627,
+        "official_image_score": {
+          "absrel_img": 0.2934109568595886,
+          "delta1_img": 0.7057433522075688,
+          "rmse_img": 30.86439323425293
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.7154216241399083,
+        "weight_all": 0.30915355682373047,
+        "weight_available": 0.4279096722602844,
+        "normalized_change": 0.01153166126459837,
+        "history_better_fraction_available": 0.27863560940484017,
+        "current_history_inverse_error_corr": 0.7002429484299235,
+        "shared_gauge_absrel": 0.3037794232368469,
+        "oracle_shared_gauge_absrel": 0.23014451563358307,
+        "official_image_score": {
+          "absrel_img": 0.29203692078590393,
+          "delta1_img": 0.7137215990538991,
+          "rmse_img": 30.982494354248047
+        }
+      }
+    }
+  },
+  {
+    "sequence": "market_6",
+    "dataset": "sintel",
+    "index": 10,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/market_6/frame_0011.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.5726346969604492,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.7444564399369266,
+        "weight_all": 0.3407229483127594,
+        "weight_available": 0.433669775724411,
+        "normalized_change": 0.020463356748223305,
+        "history_better_fraction_available": 0.6243316996266243,
+        "current_history_inverse_error_corr": 0.7528258743858649,
+        "shared_gauge_absrel": 0.43582361936569214,
+        "oracle_shared_gauge_absrel": 0.3029770255088806,
+        "official_image_score": {
+          "absrel_img": 0.48689037561416626,
+          "delta1_img": 0.5929548631020642,
+          "rmse_img": 17.70093536376953
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.8346831995412844,
+        "weight_all": 0.47941869497299194,
+        "weight_available": 0.5588926076889038,
+        "normalized_change": 0.013322265818715096,
+        "history_better_fraction_available": 0.3758694345455326,
+        "current_history_inverse_error_corr": 0.949570342208428,
+        "shared_gauge_absrel": 0.5204442143440247,
+        "oracle_shared_gauge_absrel": 0.46023499965667725,
+        "official_image_score": {
+          "absrel_img": 0.5316410660743713,
+          "delta1_img": 0.567458966456422,
+          "rmse_img": 18.50189208984375
+        }
+      }
+    }
+  },
+  {
+    "sequence": "market_6",
+    "dataset": "sintel",
+    "index": 11,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/market_6/frame_0012.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.40916696190834045,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.6859298846043578,
+        "weight_all": 0.29942265152931213,
+        "weight_available": 0.41032281517982483,
+        "normalized_change": 0.014065305702388287,
+        "history_better_fraction_available": 0.4874691013345611,
+        "current_history_inverse_error_corr": 0.7385020582707623,
+        "shared_gauge_absrel": 0.39983052015304565,
+        "oracle_shared_gauge_absrel": 0.3602524399757385,
+        "official_image_score": {
+          "absrel_img": 0.412038117647171,
+          "delta1_img": 0.49513286625573394,
+          "rmse_img": 14.679963111877441
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.8245502436926605,
+        "weight_all": 0.4660045802593231,
+        "weight_available": 0.553223729133606,
+        "normalized_change": 0.012628274969756603,
+        "history_better_fraction_available": 0.47126302521921487,
+        "current_history_inverse_error_corr": 0.9711597806007822,
+        "shared_gauge_absrel": 0.4148922860622406,
+        "oracle_shared_gauge_absrel": 0.38285261392593384,
+        "official_image_score": {
+          "absrel_img": 0.41774195432662964,
+          "delta1_img": 0.47449066442087157,
+          "rmse_img": 14.591388702392578
+        }
+      }
+    }
+  },
+  {
+    "sequence": "market_6",
+    "dataset": "sintel",
+    "index": 12,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/market_6/frame_0013.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.40548789501190186,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.634147434059633,
+        "weight_all": 0.2708863914012909,
+        "weight_available": 0.3983849585056305,
+        "normalized_change": 0.014660950750112534,
+        "history_better_fraction_available": 0.450092538958195,
+        "current_history_inverse_error_corr": 0.7892954308299999,
+        "shared_gauge_absrel": 0.39974918961524963,
+        "oracle_shared_gauge_absrel": 0.35357627272605896,
+        "official_image_score": {
+          "absrel_img": 0.40496039390563965,
+          "delta1_img": 0.5529068413130734,
+          "rmse_img": 15.14228343963623
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.7732762327981652,
+        "weight_all": 0.4123086631298065,
+        "weight_available": 0.5176355838775635,
+        "normalized_change": 0.018208228051662445,
+        "history_better_fraction_available": 0.18455567141698528,
+        "current_history_inverse_error_corr": 0.9449801907314995,
+        "shared_gauge_absrel": 0.4306182861328125,
+        "oracle_shared_gauge_absrel": 0.383800745010376,
+        "official_image_score": {
+          "absrel_img": 0.4379115700721741,
+          "delta1_img": 0.5093579773509175,
+          "rmse_img": 15.590781211853027
+        }
+      }
+    }
+  },
+  {
+    "sequence": "market_6",
+    "dataset": "sintel",
+    "index": 13,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/market_6/frame_0014.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.3987102806568146,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.6637287664850917,
+        "weight_all": 0.27823713421821594,
+        "weight_available": 0.39278414845466614,
+        "normalized_change": 0.017877841368317604,
+        "history_better_fraction_available": 0.6277406008821217,
+        "current_history_inverse_error_corr": 0.6105556447071986,
+        "shared_gauge_absrel": 0.36802491545677185,
+        "oracle_shared_gauge_absrel": 0.3130994439125061,
+        "official_image_score": {
+          "absrel_img": 0.3940073549747467,
+          "delta1_img": 0.5624148867545872,
+          "rmse_img": 14.463756561279297
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.7801704056766054,
+        "weight_all": 0.4306519329547882,
+        "weight_available": 0.5354516506195068,
+        "normalized_change": 0.03059624694287777,
+        "history_better_fraction_available": 0.3950901187994878,
+        "current_history_inverse_error_corr": 0.7996222445160407,
+        "shared_gauge_absrel": 0.4019363224506378,
+        "oracle_shared_gauge_absrel": 0.34081488847732544,
+        "official_image_score": {
+          "absrel_img": 0.4294843077659607,
+          "delta1_img": 0.527061532396789,
+          "rmse_img": 15.248824119567871
+        }
+      }
+    }
+  },
+  {
+    "sequence": "market_6",
+    "dataset": "sintel",
+    "index": 14,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/market_6/frame_0015.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.4012206792831421,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.7394907540137615,
+        "weight_all": 0.27199673652648926,
+        "weight_available": 0.34893369674682617,
+        "normalized_change": 0.021139031276106834,
+        "history_better_fraction_available": 0.5191909279249809,
+        "current_history_inverse_error_corr": 0.5304777597030489,
+        "shared_gauge_absrel": 0.3812233805656433,
+        "oracle_shared_gauge_absrel": 0.3056235611438751,
+        "official_image_score": {
+          "absrel_img": 0.425141841173172,
+          "delta1_img": 0.4643285908830275,
+          "rmse_img": 14.256505966186523
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.7665030103211009,
+        "weight_all": 0.40921980142593384,
+        "weight_available": 0.5158454179763794,
+        "normalized_change": 0.026608414947986603,
+        "history_better_fraction_available": 0.5429611707225845,
+        "current_history_inverse_error_corr": 0.8622526803630102,
+        "shared_gauge_absrel": 0.3868892192840576,
+        "oracle_shared_gauge_absrel": 0.3393111526966095,
+        "official_image_score": {
+          "absrel_img": 0.4255451560020447,
+          "delta1_img": 0.4739799849483945,
+          "rmse_img": 14.526222229003906
+        }
+      }
+    }
+  },
+  {
+    "sequence": "market_6",
+    "dataset": "sintel",
+    "index": 15,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/market_6/frame_0016.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 2.01584002293578e-05,
+    "raw_shared_gauge_absrel": 0.2952621877193451,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.762581081565367,
+        "weight_all": 0.2724914848804474,
+        "weight_available": 0.33887919783592224,
+        "normalized_change": 0.013657364062964916,
+        "history_better_fraction_available": 0.4511036376720074,
+        "current_history_inverse_error_corr": 0.6556135635688706,
+        "shared_gauge_absrel": 0.29400792717933655,
+        "oracle_shared_gauge_absrel": 0.25388574600219727,
+        "official_image_score": {
+          "absrel_img": 0.2985319197177887,
+          "delta1_img": 0.572417932912844,
+          "rmse_img": 9.843192100524902
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.7818950688073395,
+        "weight_all": 0.3966517746448517,
+        "weight_available": 0.4883795976638794,
+        "normalized_change": 0.01622920110821724,
+        "history_better_fraction_available": 0.48305584838206983,
+        "current_history_inverse_error_corr": 0.9164845998872471,
+        "shared_gauge_absrel": 0.29758620262145996,
+        "oracle_shared_gauge_absrel": 0.26642292737960815,
+        "official_image_score": {
+          "absrel_img": 0.30088332295417786,
+          "delta1_img": 0.5674320885894495,
+          "rmse_img": 9.849843978881836
+        }
+      }
+    }
+  },
+  {
+    "sequence": "market_6",
+    "dataset": "sintel",
+    "index": 16,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/market_6/frame_0017.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 3.135751146788991e-05,
+    "raw_shared_gauge_absrel": 0.2544650733470917,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.7356673774369266,
+        "weight_all": 0.29323744773864746,
+        "weight_available": 0.37784746289253235,
+        "normalized_change": 0.012397737242281437,
+        "history_better_fraction_available": 0.4764118630289634,
+        "current_history_inverse_error_corr": 0.8653618041540985,
+        "shared_gauge_absrel": 0.2583983540534973,
+        "oracle_shared_gauge_absrel": 0.22308935225009918,
+        "official_image_score": {
+          "absrel_img": 0.26432231068611145,
+          "delta1_img": 0.6099416750286697,
+          "rmse_img": 9.968111038208008
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.8181600308199541,
+        "weight_all": 0.46000388264656067,
+        "weight_available": 0.5419571399688721,
+        "normalized_change": 0.018829550594091415,
+        "history_better_fraction_available": 0.4692166809479877,
+        "current_history_inverse_error_corr": 0.9115051277056944,
+        "shared_gauge_absrel": 0.265685111284256,
+        "oracle_shared_gauge_absrel": 0.22468671202659607,
+        "official_image_score": {
+          "absrel_img": 0.27404534816741943,
+          "delta1_img": 0.5931183701261468,
+          "rmse_img": 10.093057632446289
+        }
+      }
+    }
+  },
+  {
+    "sequence": "market_6",
+    "dataset": "sintel",
+    "index": 17,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/market_6/frame_0018.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 2.239822247706422e-05,
+    "raw_shared_gauge_absrel": 0.19699639081954956,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.7169715811353211,
+        "weight_all": 0.2841636836528778,
+        "weight_available": 0.3762890696525574,
+        "normalized_change": 0.00936086941510439,
+        "history_better_fraction_available": 0.49494223716190466,
+        "current_history_inverse_error_corr": 0.9280570349799888,
+        "shared_gauge_absrel": 0.19752733409404755,
+        "oracle_shared_gauge_absrel": 0.17360179126262665,
+        "official_image_score": {
+          "absrel_img": 0.21401485800743103,
+          "delta1_img": 0.6676506952408257,
+          "rmse_img": 5.726297855377197
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.822998046875,
+        "weight_all": 0.46358993649482727,
+        "weight_available": 0.5452980995178223,
+        "normalized_change": 0.016351303085684776,
+        "history_better_fraction_available": 0.49434600028848324,
+        "current_history_inverse_error_corr": 0.9431212019071716,
+        "shared_gauge_absrel": 0.20109152793884277,
+        "oracle_shared_gauge_absrel": 0.17060446739196777,
+        "official_image_score": {
+          "absrel_img": 0.2328292280435562,
+          "delta1_img": 0.6495574111238532,
+          "rmse_img": 7.61808967590332
+        }
+      }
+    }
+  },
+  {
+    "sequence": "market_6",
+    "dataset": "sintel",
+    "index": 18,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/market_6/frame_0019.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 2.01584002293578e-05,
+    "raw_shared_gauge_absrel": 0.25271549820899963,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.748459002293578,
+        "weight_all": 0.3303067982196808,
+        "weight_available": 0.41688814759254456,
+        "normalized_change": 0.017871826887130737,
+        "history_better_fraction_available": 0.49697749581039025,
+        "current_history_inverse_error_corr": 0.8932075560496279,
+        "shared_gauge_absrel": 0.23902970552444458,
+        "oracle_shared_gauge_absrel": 0.17430509626865387,
+        "official_image_score": {
+          "absrel_img": 0.24219687283039093,
+          "delta1_img": 0.6638833142201835,
+          "rmse_img": 10.405993461608887
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.8760325580561926,
+        "weight_all": 0.49843719601631165,
+        "weight_available": 0.5548191666603088,
+        "normalized_change": 0.0236105527728796,
+        "history_better_fraction_available": 0.5472096584909375,
+        "current_history_inverse_error_corr": 0.9022725963436139,
+        "shared_gauge_absrel": 0.23743461072444916,
+        "oracle_shared_gauge_absrel": 0.16719533503055573,
+        "official_image_score": {
+          "absrel_img": 0.2410254180431366,
+          "delta1_img": 0.6788050100344036,
+          "rmse_img": 10.391680717468262
+        }
+      }
+    }
+  },
+  {
+    "sequence": "market_6",
+    "dataset": "sintel",
+    "index": 19,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/market_6/frame_0020.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.27219152450561523,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.7558862528669725,
+        "weight_all": 0.33909955620765686,
+        "weight_available": 0.4240110218524933,
+        "normalized_change": 0.01509486511349678,
+        "history_better_fraction_available": 0.5609287771574868,
+        "current_history_inverse_error_corr": 0.8335197581998871,
+        "shared_gauge_absrel": 0.2513720989227295,
+        "oracle_shared_gauge_absrel": 0.21330460906028748,
+        "official_image_score": {
+          "absrel_img": 0.25418394804000854,
+          "delta1_img": 0.6693305619266054,
+          "rmse_img": 10.903956413269043
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.8885912413990825,
+        "weight_all": 0.49831655621528625,
+        "weight_available": 0.5477964282035828,
+        "normalized_change": 0.02150658890604973,
+        "history_better_fraction_available": 0.5369551627831943,
+        "current_history_inverse_error_corr": 0.8953282386293792,
+        "shared_gauge_absrel": 0.24852976202964783,
+        "oracle_shared_gauge_absrel": 0.2140468955039978,
+        "official_image_score": {
+          "absrel_img": 0.25222352147102356,
+          "delta1_img": 0.6681927322247706,
+          "rmse_img": 10.943168640136719
+        }
+      }
+    }
+  },
+  {
+    "sequence": "market_6",
+    "dataset": "sintel",
+    "index": 20,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/market_6/frame_0021.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.2703215181827545,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.7759886575401376,
+        "weight_all": 0.35078635811805725,
+        "weight_available": 0.428130567073822,
+        "normalized_change": 0.011387071572244167,
+        "history_better_fraction_available": 0.5360498310006321,
+        "current_history_inverse_error_corr": 0.8945605009833509,
+        "shared_gauge_absrel": 0.2648613154888153,
+        "oracle_shared_gauge_absrel": 0.23700179159641266,
+        "official_image_score": {
+          "absrel_img": 0.2676613926887512,
+          "delta1_img": 0.624321333858945,
+          "rmse_img": 11.527440071105957
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.8345600093176605,
+        "weight_all": 0.4683097302913666,
+        "weight_available": 0.545386016368866,
+        "normalized_change": 0.016715923324227333,
+        "history_better_fraction_available": 0.5558680733546072,
+        "current_history_inverse_error_corr": 0.9104369868101182,
+        "shared_gauge_absrel": 0.2690785229206085,
+        "oracle_shared_gauge_absrel": 0.23985916376113892,
+        "official_image_score": {
+          "absrel_img": 0.27277350425720215,
+          "delta1_img": 0.6097848874713303,
+          "rmse_img": 11.552799224853516
+        }
+      }
+    }
+  },
+  {
+    "sequence": "market_6",
+    "dataset": "sintel",
+    "index": 21,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/market_6/frame_0022.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.2834673523902893,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.7153275516055045,
+        "weight_all": 0.3172045946121216,
+        "weight_available": 0.4163970947265625,
+        "normalized_change": 0.011569783091545105,
+        "history_better_fraction_available": 0.4420668319931865,
+        "current_history_inverse_error_corr": 0.9162119249342514,
+        "shared_gauge_absrel": 0.27770259976387024,
+        "oracle_shared_gauge_absrel": 0.2521880567073822,
+        "official_image_score": {
+          "absrel_img": 0.2786535322666168,
+          "delta1_img": 0.6081520570527523,
+          "rmse_img": 12.122108459472656
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.8376868011754587,
+        "weight_all": 0.4760777950286865,
+        "weight_available": 0.5535332560539246,
+        "normalized_change": 0.013779276981949806,
+        "history_better_fraction_available": 0.4752230632866039,
+        "current_history_inverse_error_corr": 0.9464430571159715,
+        "shared_gauge_absrel": 0.2802164554595947,
+        "oracle_shared_gauge_absrel": 0.25240111351013184,
+        "official_image_score": {
+          "absrel_img": 0.2817353904247284,
+          "delta1_img": 0.6045437034116973,
+          "rmse_img": 12.0906400680542
+        }
+      }
+    }
+  },
+  {
+    "sequence": "market_6",
+    "dataset": "sintel",
+    "index": 22,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/market_6/frame_0023.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.3127118945121765,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.7798702694954128,
+        "weight_all": 0.33812224864959717,
+        "weight_available": 0.4112389087677002,
+        "normalized_change": 0.014651820994913578,
+        "history_better_fraction_available": 0.4477661236587551,
+        "current_history_inverse_error_corr": 0.8341652207307121,
+        "shared_gauge_absrel": 0.30213358998298645,
+        "oracle_shared_gauge_absrel": 0.2680111229419708,
+        "official_image_score": {
+          "absrel_img": 0.3041032552719116,
+          "delta1_img": 0.5221697606077982,
+          "rmse_img": 12.896892547607422
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.8977722727924312,
+        "weight_all": 0.5058349370956421,
+        "weight_available": 0.5520291328430176,
+        "normalized_change": 0.023774007335305214,
+        "history_better_fraction_available": 0.4698108641470175,
+        "current_history_inverse_error_corr": 0.8211222268775699,
+        "shared_gauge_absrel": 0.2985241413116455,
+        "oracle_shared_gauge_absrel": 0.2616153359413147,
+        "official_image_score": {
+          "absrel_img": 0.3005583584308624,
+          "delta1_img": 0.5299173057626146,
+          "rmse_img": 12.849374771118164
+        }
+      }
+    }
+  },
+  {
+    "sequence": "market_6",
+    "dataset": "sintel",
+    "index": 23,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/market_6/frame_0024.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.34169793128967285,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.7876379730504587,
+        "weight_all": 0.3600654602050781,
+        "weight_available": 0.4332442879676819,
+        "normalized_change": 0.012220708653330803,
+        "history_better_fraction_available": 0.5098847724454859,
+        "current_history_inverse_error_corr": 0.8975405116866738,
+        "shared_gauge_absrel": 0.330641508102417,
+        "oracle_shared_gauge_absrel": 0.2980996370315552,
+        "official_image_score": {
+          "absrel_img": 0.33225780725479126,
+          "delta1_img": 0.45236794008027525,
+          "rmse_img": 13.338606834411621
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.8875855612098624,
+        "weight_all": 0.5042490363121033,
+        "weight_available": 0.5552065372467041,
+        "normalized_change": 0.015614364296197891,
+        "history_better_fraction_available": 0.46382941139360295,
+        "current_history_inverse_error_corr": 0.9403727636865268,
+        "shared_gauge_absrel": 0.33604997396469116,
+        "oracle_shared_gauge_absrel": 0.3004917502403259,
+        "official_image_score": {
+          "absrel_img": 0.33762261271476746,
+          "delta1_img": 0.45119427322247707,
+          "rmse_img": 13.299460411071777
+        }
+      }
+    }
+  },
+  {
+    "sequence": "market_6",
+    "dataset": "sintel",
+    "index": 24,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/market_6/frame_0025.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.3644405007362366,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.8006983765768348,
+        "weight_all": 0.33027997612953186,
+        "weight_available": 0.3898991346359253,
+        "normalized_change": 0.014827552251517773,
+        "history_better_fraction_available": 0.47265184638150626,
+        "current_history_inverse_error_corr": 0.8513987238582857,
+        "shared_gauge_absrel": 0.3561740815639496,
+        "oracle_shared_gauge_absrel": 0.3155194818973541,
+        "official_image_score": {
+          "absrel_img": 0.359135240316391,
+          "delta1_img": 0.3748880088876147,
+          "rmse_img": 13.70433235168457
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.8889249749139908,
+        "weight_all": 0.5012727975845337,
+        "weight_available": 0.5521435737609863,
+        "normalized_change": 0.022313328459858894,
+        "history_better_fraction_available": 0.49873637158486467,
+        "current_history_inverse_error_corr": 0.9121302881724954,
+        "shared_gauge_absrel": 0.35848429799079895,
+        "oracle_shared_gauge_absrel": 0.3140038251876831,
+        "official_image_score": {
+          "absrel_img": 0.36342906951904297,
+          "delta1_img": 0.38021430619266056,
+          "rmse_img": 13.736967086791992
+        }
+      }
+    }
+  },
+  {
+    "sequence": "market_6",
+    "dataset": "sintel",
+    "index": 25,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/market_6/frame_0026.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.4131350815296173,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.7069461367545872,
+        "weight_all": 0.32210302352905273,
+        "weight_available": 0.4271179139614105,
+        "normalized_change": 0.012396741658449173,
+        "history_better_fraction_available": 0.6130039984031733,
+        "current_history_inverse_error_corr": 0.9316510405773816,
+        "shared_gauge_absrel": 0.4027642011642456,
+        "oracle_shared_gauge_absrel": 0.3695227801799774,
+        "official_image_score": {
+          "absrel_img": 0.40502652525901794,
+          "delta1_img": 0.29101786482224773,
+          "rmse_img": 13.907511711120605
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.7477377795298165,
+        "weight_all": 0.42791515588760376,
+        "weight_available": 0.5523406267166138,
+        "normalized_change": 0.014837542548775673,
+        "history_better_fraction_available": 0.6045417238301212,
+        "current_history_inverse_error_corr": 0.9701946194379678,
+        "shared_gauge_absrel": 0.4004865884780884,
+        "oracle_shared_gauge_absrel": 0.3729761242866516,
+        "official_image_score": {
+          "absrel_img": 0.40343624353408813,
+          "delta1_img": 0.29406626290137616,
+          "rmse_img": 13.912820816040039
+        }
+      }
+    }
+  },
+  {
+    "sequence": "market_6",
+    "dataset": "sintel",
+    "index": 26,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/market_6/frame_0027.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.3868010640144348,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.6673012829701835,
+        "weight_all": 0.2546521723270416,
+        "weight_available": 0.35558369755744934,
+        "normalized_change": 0.01134553924202919,
+        "history_better_fraction_available": 0.2711847908541047,
+        "current_history_inverse_error_corr": 0.9441068190547535,
+        "shared_gauge_absrel": 0.3963930308818817,
+        "oracle_shared_gauge_absrel": 0.36347052454948425,
+        "official_image_score": {
+          "absrel_img": 0.39761194586753845,
+          "delta1_img": 0.34548138259747707,
+          "rmse_img": 14.23714542388916
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.6977897434059633,
+        "weight_all": 0.39515432715415955,
+        "weight_available": 0.5443792343139648,
+        "normalized_change": 0.018751710653305054,
+        "history_better_fraction_available": 0.28081004564451206,
+        "current_history_inverse_error_corr": 0.9546565132435093,
+        "shared_gauge_absrel": 0.4040141999721527,
+        "oracle_shared_gauge_absrel": 0.36219921708106995,
+        "official_image_score": {
+          "absrel_img": 0.41000184416770935,
+          "delta1_img": 0.3111695455848624,
+          "rmse_img": 14.376994132995605
+        }
+      }
+    }
+  },
+  {
+    "sequence": "market_6",
+    "dataset": "sintel",
+    "index": 27,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/market_6/frame_0028.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.4294525980949402,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.7833352745126146,
+        "weight_all": 0.36829400062561035,
+        "weight_available": 0.44464540481567383,
+        "normalized_change": 0.01599988527595997,
+        "history_better_fraction_available": 0.5908340982069076,
+        "current_history_inverse_error_corr": 0.9266463545589078,
+        "shared_gauge_absrel": 0.4162481427192688,
+        "oracle_shared_gauge_absrel": 0.3729987144470215,
+        "official_image_score": {
+          "absrel_img": 0.42484620213508606,
+          "delta1_img": 0.35429284331995414,
+          "rmse_img": 14.473791122436523
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.8124820814220184,
+        "weight_all": 0.44590654969215393,
+        "weight_available": 0.533181369304657,
+        "normalized_change": 0.017019683495163918,
+        "history_better_fraction_available": 0.5528885384734138,
+        "current_history_inverse_error_corr": 0.9665118304883037,
+        "shared_gauge_absrel": 0.41889336705207825,
+        "oracle_shared_gauge_absrel": 0.3809126615524292,
+        "official_image_score": {
+          "absrel_img": 0.4265926480293274,
+          "delta1_img": 0.35217173165137616,
+          "rmse_img": 14.467935562133789
+        }
+      }
+    }
+  },
+  {
+    "sequence": "market_6",
+    "dataset": "sintel",
+    "index": 28,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/market_6/frame_0029.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.37703731656074524,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.7432066191227065,
+        "weight_all": 0.31452298164367676,
+        "weight_available": 0.40025758743286133,
+        "normalized_change": 0.017383502796292305,
+        "history_better_fraction_available": 0.34400192878561847,
+        "current_history_inverse_error_corr": 0.8632765123677483,
+        "shared_gauge_absrel": 0.38781219720840454,
+        "oracle_shared_gauge_absrel": 0.3439401090145111,
+        "official_image_score": {
+          "absrel_img": 0.39151063561439514,
+          "delta1_img": 0.39172027307912843,
+          "rmse_img": 14.498027801513672
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.7825513367259175,
+        "weight_all": 0.4352484941482544,
+        "weight_available": 0.5408037304878235,
+        "normalized_change": 0.025640014559030533,
+        "history_better_fraction_available": 0.3215000243287414,
+        "current_history_inverse_error_corr": 0.882662329541228,
+        "shared_gauge_absrel": 0.3978757858276367,
+        "oracle_shared_gauge_absrel": 0.348775714635849,
+        "official_image_score": {
+          "absrel_img": 0.40303438901901245,
+          "delta1_img": 0.3688315295298165,
+          "rmse_img": 14.51849365234375
+        }
+      }
+    }
+  },
+  {
+    "sequence": "market_6",
+    "dataset": "sintel",
+    "index": 29,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/market_6/frame_0030.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.32701754570007324,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.5713607368119266,
+        "weight_all": 0.22812247276306152,
+        "weight_available": 0.36835142970085144,
+        "normalized_change": 0.00981802586466074,
+        "history_better_fraction_available": 0.40807238172894483,
+        "current_history_inverse_error_corr": 0.822591510735527,
+        "shared_gauge_absrel": 0.3292377293109894,
+        "oracle_shared_gauge_absrel": 0.30905139446258545,
+        "official_image_score": {
+          "absrel_img": 0.32898297905921936,
+          "delta1_img": 0.5130402451261468,
+          "rmse_img": 14.35770320892334
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.6160362313646789,
+        "weight_all": 0.34923553466796875,
+        "weight_available": 0.5426708459854126,
+        "normalized_change": 0.01771196909248829,
+        "history_better_fraction_available": 0.41611704564460184,
+        "current_history_inverse_error_corr": 0.769283593703977,
+        "shared_gauge_absrel": 0.33619606494903564,
+        "oracle_shared_gauge_absrel": 0.30934879183769226,
+        "official_image_score": {
+          "absrel_img": 0.3356994092464447,
+          "delta1_img": 0.5045110020068807,
+          "rmse_img": 14.394272804260254
+        }
+      }
+    }
+  },
+  {
+    "sequence": "alley_1",
+    "dataset": "sintel",
+    "index": 15,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/alley_1/frame_0016.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.6091861128807068,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.9523612206135321,
+        "weight_all": 0.39661842584609985,
+        "weight_available": 0.41085284948349,
+        "normalized_change": 0.004863442853093147,
+        "history_better_fraction_available": 0.3416361904537918,
+        "current_history_inverse_error_corr": 0.9665827819837923,
+        "shared_gauge_absrel": 0.6262298822402954,
+        "oracle_shared_gauge_absrel": 0.5950798988342285,
+        "official_image_score": {
+          "absrel_img": 0.6303597092628479,
+          "delta1_img": 0.47151394065366975,
+          "rmse_img": 13.514261245727539
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.9594054615825688,
+        "weight_all": 0.534706175327301,
+        "weight_available": 0.549896240234375,
+        "normalized_change": 0.007125547155737877,
+        "history_better_fraction_available": 0.35239762805248165,
+        "current_history_inverse_error_corr": 0.9790523467684185,
+        "shared_gauge_absrel": 0.6320404410362244,
+        "oracle_shared_gauge_absrel": 0.5950807929039001,
+        "official_image_score": {
+          "absrel_img": 0.6415218114852905,
+          "delta1_img": 0.4657844753440367,
+          "rmse_img": 13.614702224731445
+        }
+      }
+    }
+  },
+  {
+    "sequence": "alley_1",
+    "dataset": "sintel",
+    "index": 16,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/alley_1/frame_0017.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.570977509021759,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.9684229859518348,
+        "weight_all": 0.3992679715156555,
+        "weight_available": 0.40799233317375183,
+        "normalized_change": 0.008147201500833035,
+        "history_better_fraction_available": 0.49012873352668807,
+        "current_history_inverse_error_corr": 0.9586372528487456,
+        "shared_gauge_absrel": 0.5618340969085693,
+        "oracle_shared_gauge_absrel": 0.5291668176651001,
+        "official_image_score": {
+          "absrel_img": 0.5950326919555664,
+          "delta1_img": 0.4969112851204128,
+          "rmse_img": 13.075268745422363
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.9676793649655964,
+        "weight_all": 0.5456200242042542,
+        "weight_available": 0.5569111108779907,
+        "normalized_change": 0.011067015118896961,
+        "history_better_fraction_available": 0.4937481772267923,
+        "current_history_inverse_error_corr": 0.9656055195121639,
+        "shared_gauge_absrel": 0.5577920079231262,
+        "oracle_shared_gauge_absrel": 0.5288667678833008,
+        "official_image_score": {
+          "absrel_img": 0.6004448533058167,
+          "delta1_img": 0.4930610306766055,
+          "rmse_img": 13.154397964477539
+        }
+      }
+    }
+  },
+  {
+    "sequence": "alley_1",
+    "dataset": "sintel",
+    "index": 17,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/alley_1/frame_0018.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.5147817134857178,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.9766364141341743,
+        "weight_all": 0.40045326948165894,
+        "weight_available": 0.40602144598960876,
+        "normalized_change": 0.004505235701799393,
+        "history_better_fraction_available": 0.46250169138574376,
+        "current_history_inverse_error_corr": 0.9809388089067416,
+        "shared_gauge_absrel": 0.5415621399879456,
+        "oracle_shared_gauge_absrel": 0.5015406012535095,
+        "official_image_score": {
+          "absrel_img": 0.5442649722099304,
+          "delta1_img": 0.5200441692947247,
+          "rmse_img": 11.988144874572754
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.9731669294724771,
+        "weight_all": 0.5461649894714355,
+        "weight_available": 0.5550668835639954,
+        "normalized_change": 0.006217830814421177,
+        "history_better_fraction_available": 0.4650873219727309,
+        "current_history_inverse_error_corr": 0.9912319547303005,
+        "shared_gauge_absrel": 0.547612726688385,
+        "oracle_shared_gauge_absrel": 0.5016887784004211,
+        "official_image_score": {
+          "absrel_img": 0.5537681579589844,
+          "delta1_img": 0.5183441442087156,
+          "rmse_img": 12.198551177978516
+        }
+      }
+    }
+  },
+  {
+    "sequence": "alley_1",
+    "dataset": "sintel",
+    "index": 18,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/alley_1/frame_0019.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.6743347644805908,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.9834051569667431,
+        "weight_all": 0.4294421970844269,
+        "weight_available": 0.43363189697265625,
+        "normalized_change": 0.009473290294408798,
+        "history_better_fraction_available": 0.6859117878170161,
+        "current_history_inverse_error_corr": 0.9072444195318831,
+        "shared_gauge_absrel": 0.6558546423912048,
+        "oracle_shared_gauge_absrel": 0.602104127407074,
+        "official_image_score": {
+          "absrel_img": 0.6403490304946899,
+          "delta1_img": 0.4541821961009174,
+          "rmse_img": 13.840346336364746
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.9799535908830275,
+        "weight_all": 0.5530723333358765,
+        "weight_available": 0.5596836805343628,
+        "normalized_change": 0.013704122044146061,
+        "history_better_fraction_available": 0.6876328528915646,
+        "current_history_inverse_error_corr": 0.9060014177916186,
+        "shared_gauge_absrel": 0.6473984122276306,
+        "oracle_shared_gauge_absrel": 0.6017003655433655,
+        "official_image_score": {
+          "absrel_img": 0.6187885403633118,
+          "delta1_img": 0.4746810493119266,
+          "rmse_img": 13.53435230255127
+        }
+      }
+    }
+  },
+  {
+    "sequence": "alley_1",
+    "dataset": "sintel",
+    "index": 19,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/alley_1/frame_0020.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.6886308193206787,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.9745914564220184,
+        "weight_all": 0.43276873230934143,
+        "weight_available": 0.4393194317817688,
+        "normalized_change": 0.006799482274800539,
+        "history_better_fraction_available": 0.5996966354109211,
+        "current_history_inverse_error_corr": 0.9778843085245273,
+        "shared_gauge_absrel": 0.6665151715278625,
+        "oracle_shared_gauge_absrel": 0.6233757734298706,
+        "official_image_score": {
+          "absrel_img": 0.6859248280525208,
+          "delta1_img": 0.45453608801605505,
+          "rmse_img": 14.483429908752441
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.9610584504013762,
+        "weight_all": 0.5434145331382751,
+        "weight_available": 0.5578989386558533,
+        "normalized_change": 0.00834653154015541,
+        "history_better_fraction_available": 0.6038319373167582,
+        "current_history_inverse_error_corr": 0.9768717059010517,
+        "shared_gauge_absrel": 0.6571328639984131,
+        "oracle_shared_gauge_absrel": 0.6241512894630432,
+        "official_image_score": {
+          "absrel_img": 0.67840176820755,
+          "delta1_img": 0.45344753440366975,
+          "rmse_img": 14.38114070892334
+        }
+      }
+    }
+  },
+  {
+    "sequence": "alley_1",
+    "dataset": "sintel",
+    "index": 20,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/alley_1/frame_0021.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.6221879124641418,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.9587066370412844,
+        "weight_all": 0.4029676914215088,
+        "weight_available": 0.4135276973247528,
+        "normalized_change": 0.00869515910744667,
+        "history_better_fraction_available": 0.5743362583756203,
+        "current_history_inverse_error_corr": 0.950847832348033,
+        "shared_gauge_absrel": 0.5964169502258301,
+        "oracle_shared_gauge_absrel": 0.5461992621421814,
+        "official_image_score": {
+          "absrel_img": 0.6482792496681213,
+          "delta1_img": 0.4960422340883027,
+          "rmse_img": 14.104944229125977
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.9487259891055045,
+        "weight_all": 0.5279730558395386,
+        "weight_available": 0.5466087460517883,
+        "normalized_change": 0.011651593260467052,
+        "history_better_fraction_available": 0.5791246824624857,
+        "current_history_inverse_error_corr": 0.9560220588634943,
+        "shared_gauge_absrel": 0.5864610075950623,
+        "oracle_shared_gauge_absrel": 0.5469599366188049,
+        "official_image_score": {
+          "absrel_img": 0.6591615676879883,
+          "delta1_img": 0.48889944094036697,
+          "rmse_img": 14.270591735839844
+        }
+      }
+    }
+  },
+  {
+    "sequence": "alley_1",
+    "dataset": "sintel",
+    "index": 21,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/alley_1/frame_0022.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.6462075710296631,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.928558629587156,
+        "weight_all": 0.40361884236335754,
+        "weight_available": 0.4255218207836151,
+        "normalized_change": 0.006823324598371983,
+        "history_better_fraction_available": 0.42878369772872,
+        "current_history_inverse_error_corr": 0.978682531512846,
+        "shared_gauge_absrel": 0.6450007557868958,
+        "oracle_shared_gauge_absrel": 0.6197425723075867,
+        "official_image_score": {
+          "absrel_img": 0.6355378031730652,
+          "delta1_img": 0.5045557984518348,
+          "rmse_img": 14.007624626159668
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.9430525193520642,
+        "weight_all": 0.5147693157196045,
+        "weight_available": 0.5357423424720764,
+        "normalized_change": 0.008023673668503761,
+        "history_better_fraction_available": 0.4344941917494579,
+        "current_history_inverse_error_corr": 0.9855850969777535,
+        "shared_gauge_absrel": 0.6426728963851929,
+        "oracle_shared_gauge_absrel": 0.6195545792579651,
+        "official_image_score": {
+          "absrel_img": 0.6314246654510498,
+          "delta1_img": 0.5048604142775229,
+          "rmse_img": 13.949599266052246
+        }
+      }
+    }
+  },
+  {
+    "sequence": "alley_1",
+    "dataset": "sintel",
+    "index": 22,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/alley_1/frame_0023.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.6505537033081055,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.9028163524942661,
+        "weight_all": 0.40618664026260376,
+        "weight_available": 0.440415620803833,
+        "normalized_change": 0.005901766009628773,
+        "history_better_fraction_available": 0.5039856106183712,
+        "current_history_inverse_error_corr": 0.9677414531368117,
+        "shared_gauge_absrel": 0.6430209875106812,
+        "oracle_shared_gauge_absrel": 0.6086446642875671,
+        "official_image_score": {
+          "absrel_img": 0.6464878916740417,
+          "delta1_img": 0.5296395678038991,
+          "rmse_img": 14.522721290588379
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.9325163954988532,
+        "weight_all": 0.5046696662902832,
+        "weight_available": 0.5309121012687683,
+        "normalized_change": 0.007790601812303066,
+        "history_better_fraction_available": 0.5133342140343714,
+        "current_history_inverse_error_corr": 0.975551918184788,
+        "shared_gauge_absrel": 0.638751745223999,
+        "oracle_shared_gauge_absrel": 0.607450544834137,
+        "official_image_score": {
+          "absrel_img": 0.6444931626319885,
+          "delta1_img": 0.5235494911123854,
+          "rmse_img": 14.473027229309082
+        }
+      }
+    }
+  },
+  {
+    "sequence": "alley_1",
+    "dataset": "sintel",
+    "index": 23,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/alley_1/frame_0024.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.6443738341331482,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.8887144316227065,
+        "weight_all": 0.39084741473197937,
+        "weight_available": 0.43055108189582825,
+        "normalized_change": 0.006482182070612907,
+        "history_better_fraction_available": 0.6590973816658644,
+        "current_history_inverse_error_corr": 0.9652154200774083,
+        "shared_gauge_absrel": 0.6451093554496765,
+        "oracle_shared_gauge_absrel": 0.6125181913375854,
+        "official_image_score": {
+          "absrel_img": 0.6348626613616943,
+          "delta1_img": 0.5492760894495413,
+          "rmse_img": 14.49441909790039
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.9217764478211009,
+        "weight_all": 0.4891519844532013,
+        "weight_available": 0.5202042460441589,
+        "normalized_change": 0.009104864671826363,
+        "history_better_fraction_available": 0.6613986489770132,
+        "current_history_inverse_error_corr": 0.9551221934370777,
+        "shared_gauge_absrel": 0.6420761942863464,
+        "oracle_shared_gauge_absrel": 0.6109561324119568,
+        "official_image_score": {
+          "absrel_img": 0.640821635723114,
+          "delta1_img": 0.5485257489965596,
+          "rmse_img": 14.617036819458008
+        }
+      }
+    }
+  },
+  {
+    "sequence": "alley_1",
+    "dataset": "sintel",
+    "index": 24,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/alley_1/frame_0025.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.6914851069450378,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.8929992115825688,
+        "weight_all": 0.3892628252506256,
+        "weight_available": 0.4272088408470154,
+        "normalized_change": 0.010164549574255943,
+        "history_better_fraction_available": 0.6511141432484223,
+        "current_history_inverse_error_corr": 0.9643137860949258,
+        "shared_gauge_absrel": 0.6632603406906128,
+        "oracle_shared_gauge_absrel": 0.589524507522583,
+        "official_image_score": {
+          "absrel_img": 0.679377555847168,
+          "delta1_img": 0.5492111346043578,
+          "rmse_img": 15.089834213256836
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.92724609375,
+        "weight_all": 0.482973575592041,
+        "weight_available": 0.5115334391593933,
+        "normalized_change": 0.012900632806122303,
+        "history_better_fraction_available": 0.6487359353788329,
+        "current_history_inverse_error_corr": 0.9765458736238273,
+        "shared_gauge_absrel": 0.6449638605117798,
+        "oracle_shared_gauge_absrel": 0.585035502910614,
+        "official_image_score": {
+          "absrel_img": 0.6705176830291748,
+          "delta1_img": 0.5494776734518348,
+          "rmse_img": 14.981673240661621
+        }
+      }
+    }
+  },
+  {
+    "sequence": "alley_1",
+    "dataset": "sintel",
+    "index": 25,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/alley_1/frame_0026.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.7274777293205261,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.9182912844036697,
+        "weight_all": 0.4296824634075165,
+        "weight_available": 0.45978668332099915,
+        "normalized_change": 0.0063663930632174015,
+        "history_better_fraction_available": 0.6405884132063691,
+        "current_history_inverse_error_corr": 0.9817064995670822,
+        "shared_gauge_absrel": 0.7190377712249756,
+        "oracle_shared_gauge_absrel": 0.6816772222518921,
+        "official_image_score": {
+          "absrel_img": 0.711622953414917,
+          "delta1_img": 0.5021367904243119,
+          "rmse_img": 15.388470649719238
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.9305655103211009,
+        "weight_all": 0.49564439058303833,
+        "weight_available": 0.5242322683334351,
+        "normalized_change": 0.006850467994809151,
+        "history_better_fraction_available": 0.6357879383051239,
+        "current_history_inverse_error_corr": 0.9880259348853785,
+        "shared_gauge_absrel": 0.7162781953811646,
+        "oracle_shared_gauge_absrel": 0.6838961243629456,
+        "official_image_score": {
+          "absrel_img": 0.7100128531455994,
+          "delta1_img": 0.505180708858945,
+          "rmse_img": 15.395153045654297
+        }
+      }
+    }
+  },
+  {
+    "sequence": "alley_1",
+    "dataset": "sintel",
+    "index": 26,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/alley_1/frame_0027.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.7040866017341614,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.9130501003440367,
+        "weight_all": 0.4068402349948883,
+        "weight_available": 0.4379411041736603,
+        "normalized_change": 0.008139455690979958,
+        "history_better_fraction_available": 0.3413100646642659,
+        "current_history_inverse_error_corr": 0.9570936172512724,
+        "shared_gauge_absrel": 0.7169101238250732,
+        "oracle_shared_gauge_absrel": 0.6794067621231079,
+        "official_image_score": {
+          "absrel_img": 0.7139065861701965,
+          "delta1_img": 0.48758914492545874,
+          "rmse_img": 15.414650917053223
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.9300413919151376,
+        "weight_all": 0.4978660047054291,
+        "weight_available": 0.5272762775421143,
+        "normalized_change": 0.00967065803706646,
+        "history_better_fraction_available": 0.359172025142692,
+        "current_history_inverse_error_corr": 0.9680377429387088,
+        "shared_gauge_absrel": 0.7175084352493286,
+        "oracle_shared_gauge_absrel": 0.679415762424469,
+        "official_image_score": {
+          "absrel_img": 0.7225748896598816,
+          "delta1_img": 0.4880415890194954,
+          "rmse_img": 15.533592224121094
+        }
+      }
+    }
+  },
+  {
+    "sequence": "alley_1",
+    "dataset": "sintel",
+    "index": 27,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/alley_1/frame_0028.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.6782839298248291,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.9427322247706422,
+        "weight_all": 0.4531736373901367,
+        "weight_available": 0.4744749963283539,
+        "normalized_change": 0.00678939837962389,
+        "history_better_fraction_available": 0.4263404736562001,
+        "current_history_inverse_error_corr": 0.9775717439629267,
+        "shared_gauge_absrel": 0.6818187832832336,
+        "oracle_shared_gauge_absrel": 0.6542385816574097,
+        "official_image_score": {
+          "absrel_img": 0.6960083842277527,
+          "delta1_img": 0.49070249784977066,
+          "rmse_img": 15.257669448852539
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.9578958213876146,
+        "weight_all": 0.5336564779281616,
+        "weight_available": 0.5506368279457092,
+        "normalized_change": 0.0078571243211627,
+        "history_better_fraction_available": 0.4309180528730364,
+        "current_history_inverse_error_corr": 0.980674196215836,
+        "shared_gauge_absrel": 0.681362509727478,
+        "oracle_shared_gauge_absrel": 0.6547480821609497,
+        "official_image_score": {
+          "absrel_img": 0.6988992691040039,
+          "delta1_img": 0.49189408328555045,
+          "rmse_img": 15.297212600708008
+        }
+      }
+    }
+  },
+  {
+    "sequence": "alley_1",
+    "dataset": "sintel",
+    "index": 28,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/alley_1/frame_0029.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.6701992750167847,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.959098605934633,
+        "weight_all": 0.47444698214530945,
+        "weight_available": 0.4897574186325073,
+        "normalized_change": 0.0045717088505625725,
+        "history_better_fraction_available": 0.42738607623019925,
+        "current_history_inverse_error_corr": 0.9921649749746174,
+        "shared_gauge_absrel": 0.6804857850074768,
+        "oracle_shared_gauge_absrel": 0.6611319184303284,
+        "official_image_score": {
+          "absrel_img": 0.6755988597869873,
+          "delta1_img": 0.4980043183772936,
+          "rmse_img": 14.96510124206543
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.9729832640481652,
+        "weight_all": 0.5543907284736633,
+        "weight_available": 0.5642382502555847,
+        "normalized_change": 0.005338252056390047,
+        "history_better_fraction_available": 0.4353363934788514,
+        "current_history_inverse_error_corr": 0.9915331866943066,
+        "shared_gauge_absrel": 0.6818872690200806,
+        "oracle_shared_gauge_absrel": 0.6610608696937561,
+        "official_image_score": {
+          "absrel_img": 0.6782661080360413,
+          "delta1_img": 0.49749587872706424,
+          "rmse_img": 15.004101753234863
+        }
+      }
+    }
+  },
+  {
+    "sequence": "alley_1",
+    "dataset": "sintel",
+    "index": 29,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/alley_1/frame_0030.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.6724081039428711,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.9828160837155964,
+        "weight_all": 0.47596314549446106,
+        "weight_available": 0.4810204803943634,
+        "normalized_change": 0.00613500876352191,
+        "history_better_fraction_available": 0.4489348028222939,
+        "current_history_inverse_error_corr": 0.9899599397822598,
+        "shared_gauge_absrel": 0.6761434078216553,
+        "oracle_shared_gauge_absrel": 0.6469317674636841,
+        "official_image_score": {
+          "absrel_img": 0.6719926595687866,
+          "delta1_img": 0.4869955920298165,
+          "rmse_img": 14.971573829650879
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.9813646788990825,
+        "weight_all": 0.5537487864494324,
+        "weight_available": 0.5598384141921997,
+        "normalized_change": 0.0074902926571667194,
+        "history_better_fraction_available": 0.45006208004674264,
+        "current_history_inverse_error_corr": 0.987309852134679,
+        "shared_gauge_absrel": 0.6749586462974548,
+        "oracle_shared_gauge_absrel": 0.6467152833938599,
+        "official_image_score": {
+          "absrel_img": 0.672518789768219,
+          "delta1_img": 0.48783776519495414,
+          "rmse_img": 14.966963768005371
+        }
+      }
+    }
+  },
+  {
+    "sequence": "alley_1",
+    "dataset": "sintel",
+    "index": 30,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/alley_1/frame_0031.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.7204408049583435,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.9855217889908257,
+        "weight_all": 0.49339210987091064,
+        "weight_available": 0.49837228655815125,
+        "normalized_change": 0.006645844783633947,
+        "history_better_fraction_available": 0.7739931818181818,
+        "current_history_inverse_error_corr": 0.9946303630081856,
+        "shared_gauge_absrel": 0.6836318373680115,
+        "oracle_shared_gauge_absrel": 0.6310177445411682,
+        "official_image_score": {
+          "absrel_img": 0.7019416689872742,
+          "delta1_img": 0.44507955848623854,
+          "rmse_img": 15.320080757141113
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.9851970147649083,
+        "weight_all": 0.5517148971557617,
+        "weight_available": 0.5567978620529175,
+        "normalized_change": 0.007984788157045841,
+        "history_better_fraction_available": 0.776064839549397,
+        "current_history_inverse_error_corr": 0.9920210815648606,
+        "shared_gauge_absrel": 0.6718136668205261,
+        "oracle_shared_gauge_absrel": 0.6310147047042847,
+        "official_image_score": {
+          "absrel_img": 0.6953287124633789,
+          "delta1_img": 0.4484012148795872,
+          "rmse_img": 15.254405975341797
+        }
+      }
+    }
+  },
+  {
+    "sequence": "alley_1",
+    "dataset": "sintel",
+    "index": 31,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/alley_1/frame_0032.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.7477068305015564,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.972732403956422,
+        "weight_all": 0.5041518807411194,
+        "weight_available": 0.5156047940254211,
+        "normalized_change": 0.003077911678701639,
+        "history_better_fraction_available": 0.4691335282875498,
+        "current_history_inverse_error_corr": 0.9960104900720251,
+        "shared_gauge_absrel": 0.7354820370674133,
+        "oracle_shared_gauge_absrel": 0.7068321108818054,
+        "official_image_score": {
+          "absrel_img": 0.7398891448974609,
+          "delta1_img": 0.417648455418578,
+          "rmse_img": 15.836577415466309
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.9733819524082569,
+        "weight_all": 0.5491818785667419,
+        "weight_available": 0.56136155128479,
+        "normalized_change": 0.003923008684068918,
+        "history_better_fraction_available": 0.4726333471397671,
+        "current_history_inverse_error_corr": 0.9938138844902792,
+        "shared_gauge_absrel": 0.732016384601593,
+        "oracle_shared_gauge_absrel": 0.7066707611083984,
+        "official_image_score": {
+          "absrel_img": 0.7390562891960144,
+          "delta1_img": 0.41771788990825687,
+          "rmse_img": 15.843608856201172
+        }
+      }
+    }
+  },
+  {
+    "sequence": "alley_1",
+    "dataset": "sintel",
+    "index": 32,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/alley_1/frame_0033.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.7540249824523926,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.9883596437786697,
+        "weight_all": 0.4992506504058838,
+        "weight_available": 0.5030372738838196,
+        "normalized_change": 0.00362253375351429,
+        "history_better_fraction_available": 0.5501159162139929,
+        "current_history_inverse_error_corr": 0.9974334677670402,
+        "shared_gauge_absrel": 0.7516332268714905,
+        "oracle_shared_gauge_absrel": 0.7219563126564026,
+        "official_image_score": {
+          "absrel_img": 0.7574079036712646,
+          "delta1_img": 0.4149270713876147,
+          "rmse_img": 16.024253845214844
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.9854881916571101,
+        "weight_all": 0.5595537424087524,
+        "weight_available": 0.5650051832199097,
+        "normalized_change": 0.004538648296147585,
+        "history_better_fraction_available": 0.5515915315294839,
+        "current_history_inverse_error_corr": 0.9961134703045811,
+        "shared_gauge_absrel": 0.7482412457466125,
+        "oracle_shared_gauge_absrel": 0.7218791246414185,
+        "official_image_score": {
+          "absrel_img": 0.7563753724098206,
+          "delta1_img": 0.4154982260607798,
+          "rmse_img": 16.031755447387695
+        }
+      }
+    }
+  },
+  {
+    "sequence": "alley_1",
+    "dataset": "sintel",
+    "index": 33,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/alley_1/frame_0034.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.7516898512840271,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.9888098480504587,
+        "weight_all": 0.5090286135673523,
+        "weight_available": 0.5128448009490967,
+        "normalized_change": 0.003579971380531788,
+        "history_better_fraction_available": 0.6651535332119203,
+        "current_history_inverse_error_corr": 0.9972350857177134,
+        "shared_gauge_absrel": 0.7405461072921753,
+        "oracle_shared_gauge_absrel": 0.7189944982528687,
+        "official_image_score": {
+          "absrel_img": 0.7541254758834839,
+          "delta1_img": 0.40586251075114677,
+          "rmse_img": 15.831511497497559
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.9887829701834863,
+        "weight_all": 0.559730052947998,
+        "weight_available": 0.563765287399292,
+        "normalized_change": 0.004377466626465321,
+        "history_better_fraction_available": 0.6628995868217897,
+        "current_history_inverse_error_corr": 0.9962945586578899,
+        "shared_gauge_absrel": 0.7370898127555847,
+        "oracle_shared_gauge_absrel": 0.7193441390991211,
+        "official_image_score": {
+          "absrel_img": 0.7555884718894958,
+          "delta1_img": 0.40822328340022934,
+          "rmse_img": 15.866333961486816
+        }
+      }
+    }
+  },
+  {
+    "sequence": "alley_1",
+    "dataset": "sintel",
+    "index": 34,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/MPI-Sintel/raw/sintel-rgb/training/final/alley_1/frame_0035.png",
+    "gt_valid_fraction": 1.0,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.7450448274612427,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.9887224949827982,
+        "weight_all": 0.512556254863739,
+        "weight_available": 0.5160968899726868,
+        "normalized_change": 0.0033763181418180466,
+        "history_better_fraction_available": 0.43167530905309803,
+        "current_history_inverse_error_corr": 0.9978291796346332,
+        "shared_gauge_absrel": 0.7496328949928284,
+        "oracle_shared_gauge_absrel": 0.7341020107269287,
+        "official_image_score": {
+          "absrel_img": 0.7495094537734985,
+          "delta1_img": 0.4011499247419725,
+          "rmse_img": 15.799976348876953
+        }
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.9886037844036697,
+        "weight_all": 0.5649124383926392,
+        "weight_available": 0.5689732432365417,
+        "normalized_change": 0.003924372605979443,
+        "history_better_fraction_available": 0.4309024505183789,
+        "current_history_inverse_error_corr": 0.9971079505371302,
+        "shared_gauge_absrel": 0.7506163716316223,
+        "oracle_shared_gauge_absrel": 0.7341511845588684,
+        "official_image_score": {
+          "absrel_img": 0.7505393624305725,
+          "delta1_img": 0.40065716384747707,
+          "rmse_img": 15.801230430603027
+        }
+      }
+    }
+  },
+  {
+    "sequence": "rgbd_bonn_static",
+    "dataset": "bonn",
+    "index": 240,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/Bonn-RGBD/raw/bonn/rgbd_bonn_dataset/rgbd_bonn_static/rgb/1548263184.90223.png",
+    "gt_valid_fraction": 0.8880631510416667,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.010702086725519162,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.8881834809924747,
+        "weight_all": 0.4848024249076843,
+        "weight_available": 0.531939685344696,
+        "normalized_change": 0.02228361926972866,
+        "history_better_fraction_available": 0.5229460026082506,
+        "current_history_inverse_error_corr": 0.5671118186942739,
+        "shared_gauge_absrel": 0.00980753489097818,
+        "oracle_shared_gauge_absrel": 0.00604120186675763,
+        "official_image_score": null
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 1.0,
+        "weight_all": 0.45949292182922363,
+        "weight_available": 0.45949292182922363,
+        "normalized_change": 0.015705343335866928,
+        "history_better_fraction_available": 0.546564863111362,
+        "current_history_inverse_error_corr": 0.7622694438484005,
+        "shared_gauge_absrel": 0.00960523338217855,
+        "oracle_shared_gauge_absrel": 0.006343307696304957,
+        "official_image_score": null
+      }
+    }
+  },
+  {
+    "sequence": "rgbd_bonn_static",
+    "dataset": "bonn",
+    "index": 241,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/Bonn-RGBD/raw/bonn/rgbd_bonn_dataset/rgbd_bonn_static/rgb/1548263184.93580.png",
+    "gt_valid_fraction": 0.8882259114583333,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.011201687233207656,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.8749409044099054,
+        "weight_all": 0.45752397179603577,
+        "weight_available": 0.5111886262893677,
+        "normalized_change": 0.009499473497271538,
+        "history_better_fraction_available": 0.5758841245041656,
+        "current_history_inverse_error_corr": 0.8955432146360035,
+        "shared_gauge_absrel": 0.0102618588250211,
+        "oracle_shared_gauge_absrel": 0.008376277602350567,
+        "official_image_score": null
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 1.0,
+        "weight_all": 0.471882700920105,
+        "weight_available": 0.471882700920105,
+        "normalized_change": 0.015240585431456566,
+        "history_better_fraction_available": 0.5074304687700422,
+        "current_history_inverse_error_corr": 0.7604672208924748,
+        "shared_gauge_absrel": 0.009749407571929622,
+        "oracle_shared_gauge_absrel": 0.006839216058533849,
+        "official_image_score": null
+      }
+    }
+  },
+  {
+    "sequence": "rgbd_bonn_static",
+    "dataset": "bonn",
+    "index": 242,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/Bonn-RGBD/raw/bonn/rgbd_bonn_dataset/rgbd_bonn_static/rgb/1548263184.96932.png",
+    "gt_valid_fraction": 0.8886979166666666,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.016589983846799192,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.8650991912324913,
+        "weight_all": 0.4442882537841797,
+        "weight_available": 0.497647762298584,
+        "normalized_change": 0.013679979369044304,
+        "history_better_fraction_available": 0.6131197100504279,
+        "current_history_inverse_error_corr": 0.9095099379189459,
+        "shared_gauge_absrel": 0.015038815694306863,
+        "oracle_shared_gauge_absrel": 0.012390103760180762,
+        "official_image_score": null
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 1.0,
+        "weight_all": 0.46788814663887024,
+        "weight_available": 0.46788814663887024,
+        "normalized_change": 0.0211864672601223,
+        "history_better_fraction_available": 0.6528856297251363,
+        "current_history_inverse_error_corr": 0.7837925607402138,
+        "shared_gauge_absrel": 0.013653116116310085,
+        "oracle_shared_gauge_absrel": 0.00861880528538232,
+        "official_image_score": null
+      }
+    }
+  },
+  {
+    "sequence": "rgbd_bonn_static",
+    "dataset": "bonn",
+    "index": 243,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/Bonn-RGBD/raw/bonn/rgbd_bonn_dataset/rgbd_bonn_static/rgb/1548263185.00286.png",
+    "gt_valid_fraction": 0.8886588541666667,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.022033212427144493,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.8710127620917523,
+        "weight_all": 0.4614534080028534,
+        "weight_available": 0.5144417881965637,
+        "normalized_change": 0.011686143465340137,
+        "history_better_fraction_available": 0.5872791578876538,
+        "current_history_inverse_error_corr": 0.9679148397314413,
+        "shared_gauge_absrel": 0.021571405447918534,
+        "oracle_shared_gauge_absrel": 0.01915497157458888,
+        "official_image_score": null
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 1.0,
+        "weight_all": 0.4679235816001892,
+        "weight_available": 0.4679235816001892,
+        "normalized_change": 0.015154640190303326,
+        "history_better_fraction_available": 0.7531172617913816,
+        "current_history_inverse_error_corr": 0.9596192612897083,
+        "shared_gauge_absrel": 0.019450767845916074,
+        "oracle_shared_gauge_absrel": 0.015488263892486174,
+        "official_image_score": null
+      }
+    }
+  },
+  {
+    "sequence": "rgbd_bonn_static",
+    "dataset": "bonn",
+    "index": 244,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/Bonn-RGBD/raw/bonn/rgbd_bonn_dataset/rgbd_bonn_static/rgb/1548263185.03638.png",
+    "gt_valid_fraction": 0.8885970052083333,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.01935128484275825,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.8545738285643113,
+        "weight_all": 0.4729855954647064,
+        "weight_available": 0.536651074886322,
+        "normalized_change": 0.017005115747451782,
+        "history_better_fraction_available": 0.1417572949129583,
+        "current_history_inverse_error_corr": 0.9734339179226729,
+        "shared_gauge_absrel": 0.022583021217955378,
+        "oracle_shared_gauge_absrel": 0.018736127725432056,
+        "official_image_score": null
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 1.0,
+        "weight_all": 0.46420106291770935,
+        "weight_available": 0.46420106291770935,
+        "normalized_change": 0.007005684077739716,
+        "history_better_fraction_available": 0.25532920355927424,
+        "current_history_inverse_error_corr": 0.9928910095363944,
+        "shared_gauge_absrel": 0.020366151687285516,
+        "oracle_shared_gauge_absrel": 0.018756712973221748,
+        "official_image_score": null
+      }
+    }
+  },
+  {
+    "sequence": "rgbd_bonn_static",
+    "dataset": "bonn",
+    "index": 245,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/Bonn-RGBD/raw/bonn/rgbd_bonn_dataset/rgbd_bonn_static/rgb/1548263185.06990.png",
+    "gt_valid_fraction": 0.8889029947916667,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.02073974777723623,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.848727986494355,
+        "weight_all": 0.44797924160957336,
+        "weight_available": 0.5102353096008301,
+        "normalized_change": 0.012779003009200096,
+        "history_better_fraction_available": 0.3402527582055807,
+        "current_history_inverse_error_corr": 0.9646937831109091,
+        "shared_gauge_absrel": 0.02239475646076631,
+        "oracle_shared_gauge_absrel": 0.01951080689001017,
+        "official_image_score": null
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 1.0,
+        "weight_all": 0.4745239317417145,
+        "weight_available": 0.4745239317417145,
+        "normalized_change": 0.011013973504304886,
+        "history_better_fraction_available": 0.548121184600342,
+        "current_history_inverse_error_corr": 0.9720440963214808,
+        "shared_gauge_absrel": 0.019812855056826895,
+        "oracle_shared_gauge_absrel": 0.01725177303934688,
+        "official_image_score": null
+      }
+    }
+  },
+  {
+    "sequence": "rgbd_bonn_static",
+    "dataset": "bonn",
+    "index": 246,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/Bonn-RGBD/raw/bonn/rgbd_bonn_dataset/rgbd_bonn_static/rgb/1548263185.10345.png",
+    "gt_valid_fraction": 0.8890592447916666,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.028062316349049026,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.8283239174132887,
+        "weight_all": 0.4255971610546112,
+        "weight_available": 0.4945715069770813,
+        "normalized_change": 0.010179203934967518,
+        "history_better_fraction_available": 0.6489428946519266,
+        "current_history_inverse_error_corr": 0.979699318037901,
+        "shared_gauge_absrel": 0.02708815485503712,
+        "oracle_shared_gauge_absrel": 0.024981912984664786,
+        "official_image_score": null
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 1.0,
+        "weight_all": 0.45631876587867737,
+        "weight_available": 0.45631876587867737,
+        "normalized_change": 0.01857830584049225,
+        "history_better_fraction_available": 0.8363973213141525,
+        "current_history_inverse_error_corr": 0.961813875262444,
+        "shared_gauge_absrel": 0.024717837908101132,
+        "oracle_shared_gauge_absrel": 0.01982478037893686,
+        "official_image_score": null
+      }
+    }
+  },
+  {
+    "sequence": "rgbd_bonn_static",
+    "dataset": "bonn",
+    "index": 247,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/Bonn-RGBD/raw/bonn/rgbd_bonn_dataset/rgbd_bonn_static/rgb/1548263185.13698.png",
+    "gt_valid_fraction": 0.8891634114583333,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.026396790769518712,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.8097462575644973,
+        "weight_all": 0.4355093538761139,
+        "weight_available": 0.5176408886909485,
+        "normalized_change": 0.017991023138165474,
+        "history_better_fraction_available": 0.239344795938205,
+        "current_history_inverse_error_corr": 0.963462221294008,
+        "shared_gauge_absrel": 0.029255823472933977,
+        "oracle_shared_gauge_absrel": 0.02528115802046552,
+        "official_image_score": null
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.9999890170638218,
+        "weight_all": 0.48880666494369507,
+        "weight_available": 0.488808274269104,
+        "normalized_change": 0.014158796519041061,
+        "history_better_fraction_available": 0.39101878834917336,
+        "current_history_inverse_error_corr": 0.9685632408479314,
+        "shared_gauge_absrel": 0.026936284544824177,
+        "oracle_shared_gauge_absrel": 0.02386121914195115,
+        "official_image_score": null
+      }
+    }
+  },
+  {
+    "sequence": "rgbd_bonn_static",
+    "dataset": "bonn",
+    "index": 248,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/Bonn-RGBD/raw/bonn/rgbd_bonn_dataset/rgbd_bonn_static/rgb/1548263185.17050.png",
+    "gt_valid_fraction": 0.8891829427083333,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.03097152144431304,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.8434380228220401,
+        "weight_all": 0.4182915985584259,
+        "weight_available": 0.47621849179267883,
+        "normalized_change": 0.010535482317209244,
+        "history_better_fraction_available": 0.6459974564978667,
+        "current_history_inverse_error_corr": 0.9795214820305598,
+        "shared_gauge_absrel": 0.030153156225851765,
+        "oracle_shared_gauge_absrel": 0.027855790822736325,
+        "official_image_score": null
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 1.0,
+        "weight_all": 0.474473237991333,
+        "weight_available": 0.474473237991333,
+        "normalized_change": 0.014394550584256649,
+        "history_better_fraction_available": 0.8316975219379331,
+        "current_history_inverse_error_corr": 0.9807032327026356,
+        "shared_gauge_absrel": 0.028476920092790636,
+        "oracle_shared_gauge_absrel": 0.02492723558871084,
+        "official_image_score": null
+      }
+    }
+  },
+  {
+    "sequence": "rgbd_bonn_static",
+    "dataset": "bonn",
+    "index": 249,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/Bonn-RGBD/raw/bonn/rgbd_bonn_dataset/rgbd_bonn_static/rgb/1548263185.20402.png",
+    "gt_valid_fraction": 0.88916015625,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.027703871162425633,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.8939630239794985,
+        "weight_all": 0.46964728832244873,
+        "weight_available": 0.5119708776473999,
+        "normalized_change": 0.016999760642647743,
+        "history_better_fraction_available": 0.12619478594186398,
+        "current_history_inverse_error_corr": 0.9763616484472193,
+        "shared_gauge_absrel": 0.030727142980297068,
+        "oracle_shared_gauge_absrel": 0.026899299978484174,
+        "official_image_score": null
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 1.0,
+        "weight_all": 0.4726810157299042,
+        "weight_available": 0.4726810157299042,
+        "normalized_change": 0.010897924192249775,
+        "history_better_fraction_available": 0.1835291964122277,
+        "current_history_inverse_error_corr": 0.9778208570108766,
+        "shared_gauge_absrel": 0.029147342076765913,
+        "oracle_shared_gauge_absrel": 0.026601581756865778,
+        "official_image_score": null
+      }
+    }
+  },
+  {
+    "sequence": "rgbd_bonn_static",
+    "dataset": "bonn",
+    "index": 250,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/Bonn-RGBD/raw/bonn/rgbd_bonn_dataset/rgbd_bonn_static/rgb/1548263185.23797.png",
+    "gt_valid_fraction": 0.8895833333333333,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.020790198183584657,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.8241181206088993,
+        "weight_all": 0.43251869082450867,
+        "weight_available": 0.5031233429908752,
+        "normalized_change": 0.0222918801009655,
+        "history_better_fraction_available": 0.19389472282041606,
+        "current_history_inverse_error_corr": 0.9420411763556203,
+        "shared_gauge_absrel": 0.02469133414092105,
+        "oracle_shared_gauge_absrel": 0.019546573801893705,
+        "official_image_score": null
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 1.0,
+        "weight_all": 0.48346367478370667,
+        "weight_available": 0.48346367478370667,
+        "normalized_change": 0.019135043025016785,
+        "history_better_fraction_available": 0.22323258196721313,
+        "current_history_inverse_error_corr": 0.9586325054918621,
+        "shared_gauge_absrel": 0.023454859259558418,
+        "oracle_shared_gauge_absrel": 0.019078849232639784,
+        "official_image_score": null
+      }
+    }
+  },
+  {
+    "sequence": "rgbd_bonn_static",
+    "dataset": "bonn",
+    "index": 251,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/Bonn-RGBD/raw/bonn/rgbd_bonn_dataset/rgbd_bonn_static/rgb/1548263185.27151.png",
+    "gt_valid_fraction": 0.8894270833333333,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.03172202530116847,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.8553646717807577,
+        "weight_all": 0.43825164437294006,
+        "weight_available": 0.4940170645713806,
+        "normalized_change": 0.02026902325451374,
+        "history_better_fraction_available": 0.8567773294596364,
+        "current_history_inverse_error_corr": 0.9726423009866436,
+        "shared_gauge_absrel": 0.0277609730631588,
+        "oracle_shared_gauge_absrel": 0.023550784064693568,
+        "official_image_score": null
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 1.0,
+        "weight_all": 0.45461127161979675,
+        "weight_available": 0.45461127161979675,
+        "normalized_change": 0.025562096387147903,
+        "history_better_fraction_available": 0.8417462083504128,
+        "current_history_inverse_error_corr": 0.9645286611127691,
+        "shared_gauge_absrel": 0.026594380543171606,
+        "oracle_shared_gauge_absrel": 0.019583177484169826,
+        "official_image_score": null
+      }
+    }
+  },
+  {
+    "sequence": "rgbd_bonn_static",
+    "dataset": "bonn",
+    "index": 252,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/Bonn-RGBD/raw/bonn/rgbd_bonn_dataset/rgbd_bonn_static/rgb/1548263185.30504.png",
+    "gt_valid_fraction": 0.8895833333333333,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.0215048512853237,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.874443793911007,
+        "weight_all": 0.46023762226104736,
+        "weight_available": 0.510852038860321,
+        "normalized_change": 0.026596974581480026,
+        "history_better_fraction_available": 0.10802283150882126,
+        "current_history_inverse_error_corr": 0.9565360044604844,
+        "shared_gauge_absrel": 0.027289352601516825,
+        "oracle_shared_gauge_absrel": 0.02081918416791282,
+        "official_image_score": null
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 1.0,
+        "weight_all": 0.46508267521858215,
+        "weight_available": 0.46508267521858215,
+        "normalized_change": 0.020071690902113914,
+        "history_better_fraction_available": 0.12438158665105387,
+        "current_history_inverse_error_corr": 0.9699267976217072,
+        "shared_gauge_absrel": 0.02576707466659795,
+        "oracle_shared_gauge_absrel": 0.0208084532619347,
+        "official_image_score": null
+      }
+    }
+  },
+  {
+    "sequence": "rgbd_bonn_static",
+    "dataset": "bonn",
+    "index": 253,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/Bonn-RGBD/raw/bonn/rgbd_bonn_dataset/rgbd_bonn_static/rgb/1548263185.33854.png",
+    "gt_valid_fraction": 0.889541015625,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.014176937426126952,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.837613030479348,
+        "weight_all": 0.4113692045211792,
+        "weight_available": 0.4717899262905121,
+        "normalized_change": 0.022425711154937744,
+        "history_better_fraction_available": 0.22957115146007726,
+        "current_history_inverse_error_corr": 0.8100844586794146,
+        "shared_gauge_absrel": 0.016584337879279196,
+        "oracle_shared_gauge_absrel": 0.01165944551544992,
+        "official_image_score": null
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 1.0,
+        "weight_all": 0.47684916853904724,
+        "weight_available": 0.47684916853904724,
+        "normalized_change": 0.02215787023305893,
+        "history_better_fraction_available": 0.2861962842201949,
+        "current_history_inverse_error_corr": 0.8624635455980351,
+        "shared_gauge_absrel": 0.01601252173210729,
+        "oracle_shared_gauge_absrel": 0.011191156293842737,
+        "official_image_score": null
+      }
+    }
+  },
+  {
+    "sequence": "rgbd_bonn_static",
+    "dataset": "bonn",
+    "index": 254,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/Bonn-RGBD/raw/bonn/rgbd_bonn_dataset/rgbd_bonn_static/rgb/1548263185.37206.png",
+    "gt_valid_fraction": 0.8898079427083333,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.02221230989815334,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.8194396174853392,
+        "weight_all": 0.4127815365791321,
+        "weight_available": 0.4823707044124603,
+        "normalized_change": 0.015587788075208664,
+        "history_better_fraction_available": 0.7929846021973901,
+        "current_history_inverse_error_corr": 0.9176409358638373,
+        "shared_gauge_absrel": 0.018949388297858128,
+        "oracle_shared_gauge_absrel": 0.015117571930796297,
+        "official_image_score": null
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 1.0,
+        "weight_all": 0.434966504573822,
+        "weight_available": 0.434966504573822,
+        "normalized_change": 0.019472531974315643,
+        "history_better_fraction_available": 0.7867707582614167,
+        "current_history_inverse_error_corr": 0.9106525845508645,
+        "shared_gauge_absrel": 0.018030044098439398,
+        "oracle_shared_gauge_absrel": 0.011824617369918557,
+        "official_image_score": null
+      }
+    }
+  },
+  {
+    "sequence": "rgbd_bonn_static",
+    "dataset": "bonn",
+    "index": 255,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/Bonn-RGBD/raw/bonn/rgbd_bonn_dataset/rgbd_bonn_static/rgb/1548263185.40557.png",
+    "gt_valid_fraction": 0.8897526041666667,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.04050474051853979,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.8736847496817057,
+        "weight_all": 0.4514751434326172,
+        "weight_available": 0.5030032992362976,
+        "normalized_change": 0.03289913758635521,
+        "history_better_fraction_available": 0.8523068934616383,
+        "current_history_inverse_error_corr": 0.9399643467180466,
+        "shared_gauge_absrel": 0.03376521789603336,
+        "oracle_shared_gauge_absrel": 0.02684946159321023,
+        "official_image_score": null
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 1.0,
+        "weight_all": 0.4463927447795868,
+        "weight_available": 0.4463927447795868,
+        "normalized_change": 0.03756561875343323,
+        "history_better_fraction_available": 0.831091858984678,
+        "current_history_inverse_error_corr": 0.9350594650891118,
+        "shared_gauge_absrel": 0.03289866732219899,
+        "oracle_shared_gauge_absrel": 0.02199814476808794,
+        "official_image_score": null
+      }
+    }
+  },
+  {
+    "sequence": "rgbd_bonn_static",
+    "dataset": "bonn",
+    "index": 256,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/Bonn-RGBD/raw/bonn/rgbd_bonn_dataset/rgbd_bonn_static/rgb/1548263185.43907.png",
+    "gt_valid_fraction": 0.8887076822916666,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.026917670614118618,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.9352773331477486,
+        "weight_all": 0.459432989358902,
+        "weight_available": 0.4855954945087433,
+        "normalized_change": 0.03080044500529766,
+        "history_better_fraction_available": 0.10184420050050716,
+        "current_history_inverse_error_corr": 0.9617856982120254,
+        "shared_gauge_absrel": 0.03342054176221536,
+        "oracle_shared_gauge_absrel": 0.02563565574872232,
+        "official_image_score": null
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 1.0,
+        "weight_all": 0.48571503162384033,
+        "weight_available": 0.48571503162384033,
+        "normalized_change": 0.028619037941098213,
+        "history_better_fraction_available": 0.10620451190611367,
+        "current_history_inverse_error_corr": 0.9685648354451166,
+        "shared_gauge_absrel": 0.032822549647449656,
+        "oracle_shared_gauge_absrel": 0.025584559638328164,
+        "official_image_score": null
+      }
+    }
+  },
+  {
+    "sequence": "rgbd_bonn_static",
+    "dataset": "bonn",
+    "index": 257,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/Bonn-RGBD/raw/bonn/rgbd_bonn_dataset/rgbd_bonn_static/rgb/1548263185.47258.png",
+    "gt_valid_fraction": 0.889423828125,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.013230623849529286,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.925341560803862,
+        "weight_all": 0.4460022449493408,
+        "weight_available": 0.47364017367362976,
+        "normalized_change": 0.027872487902641296,
+        "history_better_fraction_available": 0.1567404442475636,
+        "current_history_inverse_error_corr": 0.8613457924861186,
+        "shared_gauge_absrel": 0.018548830528446202,
+        "oracle_shared_gauge_absrel": 0.011476216806812815,
+        "official_image_score": null
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 1.0,
+        "weight_all": 0.4830709993839264,
+        "weight_available": 0.4830709993839264,
+        "normalized_change": 0.028463013470172882,
+        "history_better_fraction_available": 0.16275971613762713,
+        "current_history_inverse_error_corr": 0.8809664057782216,
+        "shared_gauge_absrel": 0.018772783511584568,
+        "oracle_shared_gauge_absrel": 0.011419939481176025,
+        "official_image_score": null
+      }
+    }
+  },
+  {
+    "sequence": "rgbd_bonn_static",
+    "dataset": "bonn",
+    "index": 258,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/Bonn-RGBD/raw/bonn/rgbd_bonn_dataset/rgbd_bonn_static/rgb/1548263185.50612.png",
+    "gt_valid_fraction": 0.8884798177083333,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.029310164161090235,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.9398331507541923,
+        "weight_all": 0.5291797518730164,
+        "weight_available": 0.5569201707839966,
+        "normalized_change": 0.03265468403697014,
+        "history_better_fraction_available": 0.817838054880925,
+        "current_history_inverse_error_corr": 0.8601785055265497,
+        "shared_gauge_absrel": 0.02179429725767544,
+        "oracle_shared_gauge_absrel": 0.015688100719479226,
+        "official_image_score": null
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 1.0,
+        "weight_all": 0.4577881693840027,
+        "weight_available": 0.4577881693840027,
+        "normalized_change": 0.03072899766266346,
+        "history_better_fraction_available": 0.8094533250775808,
+        "current_history_inverse_error_corr": 0.8612565859671422,
+        "shared_gauge_absrel": 0.02220568351268573,
+        "oracle_shared_gauge_absrel": 0.01316796802878833,
+        "official_image_score": null
+      }
+    }
+  },
+  {
+    "sequence": "rgbd_bonn_static",
+    "dataset": "bonn",
+    "index": 259,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/Bonn-RGBD/raw/bonn/rgbd_bonn_dataset/rgbd_bonn_static/rgb/1548263185.53961.png",
+    "gt_valid_fraction": 0.8890397135416667,
+    "gt_ge72_fraction": 0.0,
+    "raw_shared_gauge_absrel": 0.018270448791610876,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.8889946652118353,
+        "weight_all": 0.38752081990242004,
+        "weight_available": 0.42558541893959045,
+        "normalized_change": 0.05052046850323677,
+        "history_better_fraction_available": 0.344342575660225,
+        "current_history_inverse_error_corr": -0.32886899401288927,
+        "shared_gauge_absrel": 0.01216331864830576,
+        "oracle_shared_gauge_absrel": 0.00471717222648124,
+        "official_image_score": null
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.9991688422008472,
+        "weight_all": 0.464165598154068,
+        "weight_available": 0.4644343852996826,
+        "normalized_change": 0.0618315264582634,
+        "history_better_fraction_available": 0.3218780003371371,
+        "current_history_inverse_error_corr": -0.23632558288425828,
+        "shared_gauge_absrel": 0.012872386665703225,
+        "oracle_shared_gauge_absrel": 0.0034961111851429015,
+        "official_image_score": null
+      }
+    }
+  },
+  {
+    "sequence": "2011_09_26_drive_0079_sync",
+    "dataset": "kitti",
+    "index": 35,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/KITTI/raw/2011_09_26/2011_09_26_drive_0079_sync/image_02/data/0000000040.png",
+    "gt_valid_fraction": 0.11892798401749809,
+    "gt_ge72_fraction": 0.0009231938888184929,
+    "raw_shared_gauge_absrel": 0.14176472833160716,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.9168220408015495,
+        "weight_all": 0.4703500270843506,
+        "weight_available": 0.506098747253418,
+        "normalized_change": 0.007428274489939213,
+        "history_better_fraction_available": 0.5553625019744116,
+        "current_history_inverse_error_corr": 0.9664528378526921,
+        "shared_gauge_absrel": 0.1335417483085204,
+        "oracle_shared_gauge_absrel": 0.11917411762361954,
+        "official_image_score": null
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.9934471335734845,
+        "weight_all": 0.449898898601532,
+        "weight_available": 0.45231032371520996,
+        "normalized_change": 0.006875359453260899,
+        "history_better_fraction_available": 0.31324137679707004,
+        "current_history_inverse_error_corr": 0.9742773008168236,
+        "shared_gauge_absrel": 0.134875492858548,
+        "oracle_shared_gauge_absrel": 0.12269876644544347,
+        "official_image_score": null
+      }
+    }
+  },
+  {
+    "sequence": "2011_09_26_drive_0079_sync",
+    "dataset": "kitti",
+    "index": 36,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/KITTI/raw/2011_09_26/2011_09_26_drive_0079_sync/image_02/data/0000000041.png",
+    "gt_valid_fraction": 0.1222433198136523,
+    "gt_ge72_fraction": 0.0008453234242643045,
+    "raw_shared_gauge_absrel": 0.1234571539322248,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.9208389834985823,
+        "weight_all": 0.44882526993751526,
+        "weight_available": 0.4825544059276581,
+        "normalized_change": 0.0074444725178182125,
+        "history_better_fraction_available": 0.46553702570379435,
+        "current_history_inverse_error_corr": 0.9528407244788153,
+        "shared_gauge_absrel": 0.11989616815397303,
+        "oracle_shared_gauge_absrel": 0.10933807613947676,
+        "official_image_score": null
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.9956677174506454,
+        "weight_all": 0.4206671714782715,
+        "weight_available": 0.42214763164520264,
+        "normalized_change": 0.005656867753714323,
+        "history_better_fraction_available": 0.29378990749420736,
+        "current_history_inverse_error_corr": 0.9795657139611376,
+        "shared_gauge_absrel": 0.12625893253549622,
+        "oracle_shared_gauge_absrel": 0.1162973600225829,
+        "official_image_score": null
+      }
+    }
+  },
+  {
+    "sequence": "2011_09_26_drive_0079_sync",
+    "dataset": "kitti",
+    "index": 37,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/KITTI/raw/2011_09_26/2011_09_26_drive_0079_sync/image_02/data/0000000042.png",
+    "gt_valid_fraction": 0.12482239272520602,
+    "gt_ge72_fraction": 0.0006381400803711561,
+    "raw_shared_gauge_absrel": 0.0945755058157726,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.9315982821958918,
+        "weight_all": 0.450653076171875,
+        "weight_available": 0.47755247354507446,
+        "normalized_change": 0.006888721603900194,
+        "history_better_fraction_available": 0.3282791817087846,
+        "current_history_inverse_error_corr": 0.9570546449879302,
+        "shared_gauge_absrel": 0.09349773768660495,
+        "oracle_shared_gauge_absrel": 0.0850022396402718,
+        "official_image_score": null
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.9940670219554681,
+        "weight_all": 0.4232647120952606,
+        "weight_available": 0.4250888228416443,
+        "normalized_change": 0.007016203831881285,
+        "history_better_fraction_available": 0.25252875756892273,
+        "current_history_inverse_error_corr": 0.9693407971496488,
+        "shared_gauge_absrel": 0.09461001270860406,
+        "oracle_shared_gauge_absrel": 0.08536549703421219,
+        "official_image_score": null
+      }
+    }
+  },
+  {
+    "sequence": "2011_09_26_drive_0079_sync",
+    "dataset": "kitti",
+    "index": 38,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/KITTI/raw/2011_09_26/2011_09_26_drive_0079_sync/image_02/data/0000000043.png",
+    "gt_valid_fraction": 0.1331171906619477,
+    "gt_ge72_fraction": 0.0007600996215674225,
+    "raw_shared_gauge_absrel": 0.08258555718848011,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.9119901672219167,
+        "weight_all": 0.4129873514175415,
+        "weight_available": 0.44684597849845886,
+        "normalized_change": 0.006315093487501144,
+        "history_better_fraction_available": 0.37336856291672577,
+        "current_history_inverse_error_corr": 0.950939865641418,
+        "shared_gauge_absrel": 0.08245244558439921,
+        "oracle_shared_gauge_absrel": 0.0735230063630014,
+        "official_image_score": null
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.9976711841381765,
+        "weight_all": 0.4609344005584717,
+        "weight_available": 0.46179676055908203,
+        "normalized_change": 0.006456806790083647,
+        "history_better_fraction_available": 0.38252553088020746,
+        "current_history_inverse_error_corr": 0.9705498292892936,
+        "shared_gauge_absrel": 0.0834511007035805,
+        "oracle_shared_gauge_absrel": 0.07333773007811924,
+        "official_image_score": null
+      }
+    }
+  },
+  {
+    "sequence": "2011_09_26_drive_0079_sync",
+    "dataset": "kitti",
+    "index": 39,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/KITTI/raw/2011_09_26/2011_09_26_drive_0079_sync/image_02/data/0000000044.png",
+    "gt_valid_fraction": 0.13380178597569903,
+    "gt_ge72_fraction": 0.0008366585146093448,
+    "raw_shared_gauge_absrel": 0.08638442637925642,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.918232719783756,
+        "weight_all": 0.4431540369987488,
+        "weight_available": 0.4745748043060303,
+        "normalized_change": 0.008130518719553947,
+        "history_better_fraction_available": 0.5499036271245838,
+        "current_history_inverse_error_corr": 0.9510318644102391,
+        "shared_gauge_absrel": 0.0798571399638083,
+        "oracle_shared_gauge_absrel": 0.06849752770534878,
+        "official_image_score": null
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.9991472518985712,
+        "weight_all": 0.4648329019546509,
+        "weight_available": 0.46511203050613403,
+        "normalized_change": 0.0078095681965351105,
+        "history_better_fraction_available": 0.520056683682507,
+        "current_history_inverse_error_corr": 0.9596083727697015,
+        "shared_gauge_absrel": 0.0804364409358503,
+        "oracle_shared_gauge_absrel": 0.06864381123673588,
+        "official_image_score": null
+      }
+    }
+  },
+  {
+    "sequence": "2011_09_26_drive_0079_sync",
+    "dataset": "kitti",
+    "index": 40,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/KITTI/raw/2011_09_26/2011_09_26_drive_0079_sync/image_02/data/0000000045.png",
+    "gt_valid_fraction": 0.14080920027211588,
+    "gt_ge72_fraction": 0.000626844221566499,
+    "raw_shared_gauge_absrel": 0.07464108873453364,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.9246105156940388,
+        "weight_all": 0.45979365706443787,
+        "weight_available": 0.4900096654891968,
+        "normalized_change": 0.009273547679185867,
+        "history_better_fraction_available": 0.3595641246114161,
+        "current_history_inverse_error_corr": 0.9388977764904154,
+        "shared_gauge_absrel": 0.07718762204460539,
+        "oracle_shared_gauge_absrel": 0.06532369926081055,
+        "official_image_score": null
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.9999847111165472,
+        "weight_all": 0.3875972032546997,
+        "weight_available": 0.3875962197780609,
+        "normalized_change": 0.007283808197826147,
+        "history_better_fraction_available": 0.3757759226982234,
+        "current_history_inverse_error_corr": 0.9365667859750991,
+        "shared_gauge_absrel": 0.07656195885678181,
+        "oracle_shared_gauge_absrel": 0.06482456283054525,
+        "official_image_score": null
+      }
+    }
+  },
+  {
+    "sequence": "2011_09_26_drive_0079_sync",
+    "dataset": "kitti",
+    "index": 41,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/KITTI/raw/2011_09_26/2011_09_26_drive_0079_sync/image_02/data/0000000046.png",
+    "gt_valid_fraction": 0.13788998251913853,
+    "gt_ge72_fraction": 0.0008586907308238747,
+    "raw_shared_gauge_absrel": 0.07171162081502622,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.9455902327832508,
+        "weight_all": 0.4464266896247864,
+        "weight_available": 0.4663677215576172,
+        "normalized_change": 0.0051369452849030495,
+        "history_better_fraction_available": 0.4242809497077568,
+        "current_history_inverse_error_corr": 0.9621901141040171,
+        "shared_gauge_absrel": 0.07157876513289765,
+        "oracle_shared_gauge_absrel": 0.06457132109847029,
+        "official_image_score": null
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.9977517915411157,
+        "weight_all": 0.4820747971534729,
+        "weight_available": 0.4827164113521576,
+        "normalized_change": 0.005090517457574606,
+        "history_better_fraction_available": 0.4172156414790242,
+        "current_history_inverse_error_corr": 0.9533344973313306,
+        "shared_gauge_absrel": 0.07239504908402827,
+        "oracle_shared_gauge_absrel": 0.06462142421942658,
+        "official_image_score": null
+      }
+    }
+  },
+  {
+    "sequence": "2011_09_26_drive_0079_sync",
+    "dataset": "kitti",
+    "index": 42,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/KITTI/raw/2011_09_26/2011_09_26_drive_0079_sync/image_02/data/0000000047.png",
+    "gt_valid_fraction": 0.13615696608023975,
+    "gt_ge72_fraction": 0.0009802991493533188,
+    "raw_shared_gauge_absrel": 0.07839861347804296,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.9220029725200013,
+        "weight_all": 0.4772561490535736,
+        "weight_available": 0.5111294388771057,
+        "normalized_change": 0.005771995987743139,
+        "history_better_fraction_available": 0.5902800404712499,
+        "current_history_inverse_error_corr": 0.9639847481389928,
+        "shared_gauge_absrel": 0.07252806192760447,
+        "oracle_shared_gauge_absrel": 0.06560053841599656,
+        "official_image_score": null
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.9987034753185973,
+        "weight_all": 0.5034944415092468,
+        "weight_available": 0.5040258765220642,
+        "normalized_change": 0.005818611476570368,
+        "history_better_fraction_available": 0.5442498891773795,
+        "current_history_inverse_error_corr": 0.9541597250516264,
+        "shared_gauge_absrel": 0.0725160175498078,
+        "oracle_shared_gauge_absrel": 0.06505342577154208,
+        "official_image_score": null
+      }
+    }
+  },
+  {
+    "sequence": "2011_09_26_drive_0079_sync",
+    "dataset": "kitti",
+    "index": 43,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/KITTI/raw/2011_09_26/2011_09_26_drive_0079_sync/image_02/data/0000000048.png",
+    "gt_valid_fraction": 0.13776727203837177,
+    "gt_ge72_fraction": 0.0011094790136575304,
+    "raw_shared_gauge_absrel": 0.08486653407149601,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.9302590867893865,
+        "weight_all": 0.41717156767845154,
+        "weight_available": 0.442735493183136,
+        "normalized_change": 0.011059511452913284,
+        "history_better_fraction_available": 0.39616334346810905,
+        "current_history_inverse_error_corr": 0.8808205924178031,
+        "shared_gauge_absrel": 0.08413782431788137,
+        "oracle_shared_gauge_absrel": 0.06946216015713426,
+        "official_image_score": null
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.999656217770416,
+        "weight_all": 0.4090266525745392,
+        "weight_available": 0.4091116786003113,
+        "normalized_change": 0.009827335365116596,
+        "history_better_fraction_available": 0.4066935534296255,
+        "current_history_inverse_error_corr": 0.8661160900955658,
+        "shared_gauge_absrel": 0.08433184834089553,
+        "oracle_shared_gauge_absrel": 0.06898750075751531,
+        "official_image_score": null
+      }
+    }
+  },
+  {
+    "sequence": "2011_09_26_drive_0079_sync",
+    "dataset": "kitti",
+    "index": 44,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/KITTI/raw/2011_09_26/2011_09_26_drive_0079_sync/image_02/data/0000000049.png",
+    "gt_valid_fraction": 0.14841725007965417,
+    "gt_ge72_fraction": 0.0010298661174047373,
+    "raw_shared_gauge_absrel": 0.08974828536608855,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.9269665366037626,
+        "weight_all": 0.47815626859664917,
+        "weight_available": 0.5097522139549255,
+        "normalized_change": 0.009034966118633747,
+        "history_better_fraction_available": 0.6558695584139205,
+        "current_history_inverse_error_corr": 0.9418678685847137,
+        "shared_gauge_absrel": 0.07712629301006615,
+        "oracle_shared_gauge_absrel": 0.06724903364745353,
+        "official_image_score": null
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.9956339478684673,
+        "weight_all": 0.48452526330947876,
+        "weight_available": 0.4858778715133667,
+        "normalized_change": 0.008821173571050167,
+        "history_better_fraction_available": 0.6337121212121212,
+        "current_history_inverse_error_corr": 0.9083056434779577,
+        "shared_gauge_absrel": 0.0783073387039637,
+        "oracle_shared_gauge_absrel": 0.06722640688477646,
+        "official_image_score": null
+      }
+    }
+  },
+  {
+    "sequence": "2011_09_26_drive_0079_sync",
+    "dataset": "kitti",
+    "index": 45,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/KITTI/raw/2011_09_26/2011_09_26_drive_0079_sync/image_02/data/0000000050.png",
+    "gt_valid_fraction": 0.15052485640720936,
+    "gt_ge72_fraction": 0.0008295194508009153,
+    "raw_shared_gauge_absrel": 0.08413090643225073,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.934754004576659,
+        "weight_all": 0.4446676969528198,
+        "weight_available": 0.47162944078445435,
+        "normalized_change": 0.006907423958182335,
+        "history_better_fraction_available": 0.4209125126227853,
+        "current_history_inverse_error_corr": 0.9594858868819988,
+        "shared_gauge_absrel": 0.0818767897610273,
+        "oracle_shared_gauge_absrel": 0.07369440105768676,
+        "official_image_score": null
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.9977974828375286,
+        "weight_all": 0.4618024528026581,
+        "weight_available": 0.4627177119255066,
+        "normalized_change": 0.00749586708843708,
+        "history_better_fraction_available": 0.4108734913854886,
+        "current_history_inverse_error_corr": 0.9272697691356238,
+        "shared_gauge_absrel": 0.08343781355672042,
+        "oracle_shared_gauge_absrel": 0.07234472434140968,
+        "official_image_score": null
+      }
+    }
+  },
+  {
+    "sequence": "2011_09_26_drive_0079_sync",
+    "dataset": "kitti",
+    "index": 46,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/KITTI/raw/2011_09_26/2011_09_26_drive_0079_sync/image_02/data/0000000051.png",
+    "gt_valid_fraction": 0.15139028821893272,
+    "gt_ge72_fraction": 0.0009812007622081284,
+    "raw_shared_gauge_absrel": 0.0911373860464584,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.9497881175165667,
+        "weight_all": 0.4527377486228943,
+        "weight_available": 0.47267886996269226,
+        "normalized_change": 0.007434725295752287,
+        "history_better_fraction_available": 0.4076746867092872,
+        "current_history_inverse_error_corr": 0.9347251145000529,
+        "shared_gauge_absrel": 0.08423208725808363,
+        "oracle_shared_gauge_absrel": 0.0740575635787623,
+        "official_image_score": null
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.9995307300702483,
+        "weight_all": 0.4275554418563843,
+        "weight_available": 0.4277192950248718,
+        "normalized_change": 0.008401620201766491,
+        "history_better_fraction_available": 0.3956806897238544,
+        "current_history_inverse_error_corr": 0.8874393918210128,
+        "shared_gauge_absrel": 0.0845312742590629,
+        "oracle_shared_gauge_absrel": 0.0738047089148433,
+        "official_image_score": null
+      }
+    }
+  },
+  {
+    "sequence": "2011_09_26_drive_0079_sync",
+    "dataset": "kitti",
+    "index": 47,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/KITTI/raw/2011_09_26/2011_09_26_drive_0079_sync/image_02/data/0000000052.png",
+    "gt_valid_fraction": 0.1614460891954498,
+    "gt_ge72_fraction": 0.001080100809408878,
+    "raw_shared_gauge_absrel": 0.08249610499548815,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.9558092088594935,
+        "weight_all": 0.4637950658798218,
+        "weight_available": 0.4824069142341614,
+        "normalized_change": 0.005513903219252825,
+        "history_better_fraction_available": 0.379985769890763,
+        "current_history_inverse_error_corr": 0.9596725549854175,
+        "shared_gauge_absrel": 0.08284103803414555,
+        "oracle_shared_gauge_absrel": 0.07648380127753754,
+        "official_image_score": null
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.9991865907484698,
+        "weight_all": 0.44299665093421936,
+        "weight_available": 0.4432786703109741,
+        "normalized_change": 0.007240422070026398,
+        "history_better_fraction_available": 0.36642555917365077,
+        "current_history_inverse_error_corr": 0.905748952690308,
+        "shared_gauge_absrel": 0.08484033927057451,
+        "oracle_shared_gauge_absrel": 0.07558207980322186,
+        "official_image_score": null
+      }
+    }
+  },
+  {
+    "sequence": "2011_09_26_drive_0079_sync",
+    "dataset": "kitti",
+    "index": 48,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/KITTI/raw/2011_09_26/2011_09_26_drive_0079_sync/image_02/data/0000000053.png",
+    "gt_valid_fraction": 0.16198429305846185,
+    "gt_ge72_fraction": 0.001182834283587842,
+    "raw_shared_gauge_absrel": 0.09362907701520257,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.9580027377962069,
+        "weight_all": 0.45211556553840637,
+        "weight_available": 0.46739062666893005,
+        "normalized_change": 0.006588338874280453,
+        "history_better_fraction_available": 0.5459955884189059,
+        "current_history_inverse_error_corr": 0.9492095079956018,
+        "shared_gauge_absrel": 0.0852344892911254,
+        "oracle_shared_gauge_absrel": 0.07390614541060939,
+        "official_image_score": null
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.9964382068763872,
+        "weight_all": 0.4460296034812927,
+        "weight_available": 0.4473162889480591,
+        "normalized_change": 0.00731429411098361,
+        "history_better_fraction_available": 0.5322574191397133,
+        "current_history_inverse_error_corr": 0.8879933152345372,
+        "shared_gauge_absrel": 0.08552231388609782,
+        "oracle_shared_gauge_absrel": 0.07200109094408758,
+        "official_image_score": null
+      }
+    }
+  },
+  {
+    "sequence": "2011_09_26_drive_0079_sync",
+    "dataset": "kitti",
+    "index": 49,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/KITTI/raw/2011_09_26/2011_09_26_drive_0079_sync/image_02/data/0000000054.png",
+    "gt_valid_fraction": 0.15900694928827921,
+    "gt_ge72_fraction": 0.0010966693744922827,
+    "raw_shared_gauge_absrel": 0.07928084765455809,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.9622529109125373,
+        "weight_all": 0.5028278827667236,
+        "weight_available": 0.5170164108276367,
+        "normalized_change": 0.006515439134091139,
+        "history_better_fraction_available": 0.5240319675821702,
+        "current_history_inverse_error_corr": 0.9560886380122233,
+        "shared_gauge_absrel": 0.0782730051165547,
+        "oracle_shared_gauge_absrel": 0.07098010216137096,
+        "official_image_score": null
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.9908881668020579,
+        "weight_all": 0.474378377199173,
+        "weight_available": 0.477806955575943,
+        "normalized_change": 0.006681072525680065,
+        "history_better_fraction_available": 0.4491234782133439,
+        "current_history_inverse_error_corr": 0.8968301379204648,
+        "shared_gauge_absrel": 0.0803478426667662,
+        "oracle_shared_gauge_absrel": 0.07174006665604782,
+        "official_image_score": null
+      }
+    }
+  },
+  {
+    "sequence": "2011_09_26_drive_0079_sync",
+    "dataset": "kitti",
+    "index": 50,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/KITTI/raw/2011_09_26/2011_09_26_drive_0079_sync/image_02/data/0000000055.png",
+    "gt_valid_fraction": 0.15661947695195777,
+    "gt_ge72_fraction": 0.0013195694904537395,
+    "raw_shared_gauge_absrel": 0.0969344993186578,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.9550796552624706,
+        "weight_all": 0.462832510471344,
+        "weight_available": 0.47875338792800903,
+        "normalized_change": 0.0055599394254386425,
+        "history_better_fraction_available": 0.5039074305945339,
+        "current_history_inverse_error_corr": 0.9755345601534103,
+        "shared_gauge_absrel": 0.08775852995888231,
+        "oracle_shared_gauge_absrel": 0.08123976908318624,
+        "official_image_score": null
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.9975670437519759,
+        "weight_all": 0.509953498840332,
+        "weight_available": 0.5110280513763428,
+        "normalized_change": 0.005793270654976368,
+        "history_better_fraction_available": 0.5069308567806653,
+        "current_history_inverse_error_corr": 0.9253908845008633,
+        "shared_gauge_absrel": 0.08843749306026112,
+        "oracle_shared_gauge_absrel": 0.08164914916336162,
+        "official_image_score": null
+      }
+    }
+  },
+  {
+    "sequence": "2011_09_26_drive_0079_sync",
+    "dataset": "kitti",
+    "index": 51,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/KITTI/raw/2011_09_26/2011_09_26_drive_0079_sync/image_02/data/0000000056.png",
+    "gt_valid_fraction": 0.15360984094999441,
+    "gt_ge72_fraction": 0.00133140863033089,
+    "raw_shared_gauge_absrel": 0.09239213747485465,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.9489019382506693,
+        "weight_all": 0.4901145100593567,
+        "weight_available": 0.5110815167427063,
+        "normalized_change": 0.006504586432129145,
+        "history_better_fraction_available": 0.48309628251140946,
+        "current_history_inverse_error_corr": 0.9743970143361171,
+        "shared_gauge_absrel": 0.0872802045594903,
+        "oracle_shared_gauge_absrel": 0.07910308838281013,
+        "official_image_score": null
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.9992992586156153,
+        "weight_all": 0.5139260292053223,
+        "weight_available": 0.5141887068748474,
+        "normalized_change": 0.0069581447169184685,
+        "history_better_fraction_available": 0.4764175420389044,
+        "current_history_inverse_error_corr": 0.9386457573129571,
+        "shared_gauge_absrel": 0.08851661185459916,
+        "oracle_shared_gauge_absrel": 0.07928666899201393,
+        "official_image_score": null
+      }
+    }
+  },
+  {
+    "sequence": "2011_09_26_drive_0079_sync",
+    "dataset": "kitti",
+    "index": 52,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/KITTI/raw/2011_09_26/2011_09_26_drive_0079_sync/image_02/data/0000000057.png",
+    "gt_valid_fraction": 0.15649891928664308,
+    "gt_ge72_fraction": 0.0013618543228557673,
+    "raw_shared_gauge_absrel": 0.07884417195086532,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.951207098149804,
+        "weight_all": 0.4483304023742676,
+        "weight_available": 0.46483346819877625,
+        "normalized_change": 0.009315532632172108,
+        "history_better_fraction_available": 0.2388355411580957,
+        "current_history_inverse_error_corr": 0.9628312460445301,
+        "shared_gauge_absrel": 0.08439302739333816,
+        "oracle_shared_gauge_absrel": 0.07216567928585627,
+        "official_image_score": null
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.9973313157713736,
+        "weight_all": 0.3935149013996124,
+        "weight_available": 0.3944259285926819,
+        "normalized_change": 0.008705063723027706,
+        "history_better_fraction_available": 0.288271885905022,
+        "current_history_inverse_error_corr": 0.9592502191145815,
+        "shared_gauge_absrel": 0.0844041356723735,
+        "oracle_shared_gauge_absrel": 0.07122869483274148,
+        "official_image_score": null
+      }
+    }
+  },
+  {
+    "sequence": "2011_09_26_drive_0079_sync",
+    "dataset": "kitti",
+    "index": 53,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/KITTI/raw/2011_09_26/2011_09_26_drive_0079_sync/image_02/data/0000000058.png",
+    "gt_valid_fraction": 0.15659149035108114,
+    "gt_ge72_fraction": 0.001416041133932745,
+    "raw_shared_gauge_absrel": 0.09936786594974399,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.9610244988864143,
+        "weight_all": 0.5008472800254822,
+        "weight_available": 0.5158999562263489,
+        "normalized_change": 0.006345415022224188,
+        "history_better_fraction_available": 0.6940331602363274,
+        "current_history_inverse_error_corr": 0.9772114626206921,
+        "shared_gauge_absrel": 0.08691759481686233,
+        "oracle_shared_gauge_absrel": 0.07804915231352853,
+        "official_image_score": null
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.996700486678215,
+        "weight_all": 0.49648797512054443,
+        "weight_available": 0.4977293610572815,
+        "normalized_change": 0.0059839095920324326,
+        "history_better_fraction_available": 0.689922480620155,
+        "current_history_inverse_error_corr": 0.9724725725344547,
+        "shared_gauge_absrel": 0.08750823546278104,
+        "oracle_shared_gauge_absrel": 0.07833583441064969,
+        "official_image_score": null
+      }
+    }
+  },
+  {
+    "sequence": "2011_09_26_drive_0079_sync",
+    "dataset": "kitti",
+    "index": 54,
+    "rgb": "/home/hjr/Documents/ResourcesLow/Datasets/KITTI/raw/2011_09_26/2011_09_26_drive_0079_sync/image_02/data/0000000059.png",
+    "gt_valid_fraction": 0.16106719367588934,
+    "gt_ge72_fraction": 0.0013633265167007499,
+    "raw_shared_gauge_absrel": 0.11351491384024323,
+    "models": {
+      "farneback_unet_guided_lr3e-4": {
+        "availability": 0.9523103038079581,
+        "weight_all": 0.4916461706161499,
+        "weight_available": 0.5097268223762512,
+        "normalized_change": 0.007004833314567804,
+        "history_better_fraction_available": 0.674886665076001,
+        "current_history_inverse_error_corr": 0.969299651876195,
+        "shared_gauge_absrel": 0.09948231072942375,
+        "oracle_shared_gauge_absrel": 0.09096668635691119,
+        "official_image_score": null
+      },
+      "raft_unet_guided_lr3e-4": {
+        "availability": 0.999264872956681,
+        "weight_all": 0.49197378754615784,
+        "weight_available": 0.4922628402709961,
+        "normalized_change": 0.006472163833677769,
+        "history_better_fraction_available": 0.6343463256734705,
+        "current_history_inverse_error_corr": 0.9697229072978276,
+        "shared_gauge_absrel": 0.10076905214500155,
+        "oracle_shared_gauge_absrel": 0.09080061832462871,
+        "official_image_score": null
+      }
+    }
+  }
+]

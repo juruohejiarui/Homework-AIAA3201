@@ -58,13 +58,14 @@ def test_cli_defaults_and_output_namespaces(monkeypatch, tmp_path, scope, settin
     args = ['comparison', '--config', 'c.yaml', '--checkpoint', 'best.pt',
             '--output', str(tmp_path), '--scope', scope, '--model', 'unidepthv2']
     monkeypatch.setattr(sys, 'argv', args)
-    monkeypatch.setattr(comparison, 'load_config', lambda p: {})
-    monkeypatch.setattr(comparison, 'pin', lambda *a: tmp_path / 'checkpoint.pt')
-    monkeypatch.setattr(comparison, 'scope_counts', lambda *a: {'source': {'frames': 731}})
+    from explore_a.evaluation import session
     observed = []
-    monkeypatch.setattr(comparison, 'run_scope', lambda a, *rest: observed.append(a))
+    monkeypatch.setattr(session, 'run', lambda *a, **kw: observed.append((a,kw)))
     comparison.main()
-    assert observed[0].setting == setting
-    root = comparison.scope_root(observed[0])
-    assert root.name == ('vda-long' if scope == 'benchmark' else 'full-official-validation')
-    assert (root / 'protocol.json').exists()
+    args, options = observed[0]
+    assert args[2] == [scope]
+    assert options['setting'] == ('long' if scope == 'tum-validation' else setting)
+    import json
+    models = json.loads((tmp_path/'requested_models.json').read_text())
+    assert models[0]['adapter'] == 'unidepthv2'
+    assert models[0]['kind'] == 'frozen'

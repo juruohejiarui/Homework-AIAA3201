@@ -15,6 +15,7 @@ from explore_a.frontend import kind
 from explore_a.online.cache_components import CacheComponents, digest, image_identity
 from explore_a.online.components import LocalExecutor, validate
 from explore_a.online.pool import Workers
+from explore_a.online.routing import profiles, for_phase
 from explore_a.remote_online.policy import settings as remote_settings, route
 
 
@@ -34,6 +35,7 @@ class Component:
     future: object = None
     values: dict | None = None
     representation: str = ""
+    position: int = 0
     buffered: bool = False
     consumed: bool = False
     leased: bool = False
@@ -46,14 +48,13 @@ class FrozenPipeline:
         self.backend = config.get('execution', {}).get('backend', 'online')
         self.policy = cache_settings(config) or {'probability':0., 'max_inflight':4}
         self.remote_policy = remote_settings(config)
-        self.pc = self.policy['probability'] if self.backend == 'hybrid' else 0.
-        if self.backend == 'cache':
-            self.pc = 1.
-        self.pr = self.remote_policy['probability'] if self.remote_policy['enabled'] else 0.
+        self.routing = profiles(config)
         self.seed, self.batch = config['training']['seed'], config['training']['effective_batch']
+        self.evaluation_seed = config['data']['seed']
         self.local = LocalExecutor(config, device)
         self.cache = CacheComponents(config) if self.backend != 'online' else None
         self.condition, self.jobs = Condition(), OrderedDict()
+        self.pending, self.ticket_sequence = {}, 0
         self.counts, self.phase, self.closed = Counter(), 'evaluation', False
         self.main_thread, self.client = get_ident(), None
         self.cache_pool, self.remote_pool = None, None
@@ -65,13 +66,35 @@ class FrozenPipeline:
         with self.condition:
             return dict(self.counts)
 
-    def prepare(self, row, occurrence, flows=None, teacher=None, phase=None, native=False):
+    def prepare(self, row, occurrence, flows=None, teacher=None, phase=None, native=False,
+                scope=None):
         teacher = self.teacher if teacher is None else teacher
-        return {'occurrence':occurrence, 'phase':phase or self.phase, 'native':native,
+        phase = phase or self.phase
+        with self.condition:
+            token = self.ticket_sequence
+            self.ticket_sequence += 1
+            self.pending[token] = (phase, occurrence, scope)
+        return {'occurrence':occurrence, 'phase':phase, 'native':native, 'token':token,
                 'flows':{self.flows[0]:teacher} if flows is None else flows}
 
-    def _origin(self, raw, operation, old, flow, native, occurrence):
-        chosen = route(self.seed, occurrence, self.batch, self.pc, self.pr)
+    def cancel_ticket(self, ticket):
+        with self.condition:
+            self.pending.pop(ticket.get('token'), None)
+            self.condition.notify_all()
+
+    def cancel_prepared(self, scope):
+        with self.condition:
+            self.pending = {k:v for k,v in self.pending.items() if v[2] is not scope}
+            self.condition.notify_all()
+
+    def _origin(self, raw, operation, old, flow, native, occurrence, phase, key=None):
+        policy = for_phase(self.routing, phase)
+        pc, pr = policy['cache'], policy['remote']
+        # Route immutable inputs, never the first decoder thread to finish a pair.
+        # Current/previous occurrences of a frame must select the same executor.
+        routing_id = int(key[:16], 16) if key else occurrence
+        seed = self.seed if phase == 'train' else getattr(self, 'evaluation_seed', self.seed)
+        chosen = route(seed, routing_id, 1, pc, pr)
         self.counts['route_'+chosen] += 1
         binding = None
         if chosen == 'cache':
@@ -81,15 +104,17 @@ class FrozenPipeline:
                 return 'cache', binding, binding[2] if operation == 'prediction' else native
             if self.backend == 'cache':
                 raise FileNotFoundError('Assigned cache component unavailable: '+raw['row']['id'])
-            denominator = 1-self.pc
-            probability = self.pr/denominator if denominator > 0 else 0.
+            denominator = 1-pc
+            probability = pr/denominator if denominator > 0 else 0.
             # Availability is resolved before submission, not by retrying a failed executor.
-            value = random.Random(f'missing-component:{self.seed}:{occurrence}').random()
+            value = random.Random(f'missing-component:{seed}:{routing_id}').random()
             chosen = 'remote' if value < probability else 'local'
         return chosen, binding, native
 
     def submit_component(self, raw, operation, old=False, flow=None, native=False, dependency=None):
         ticket = raw['frozen_ticket']
+        position = (0 if old else 1) if operation == 'prediction' else (
+            2+2*self.flows.index(flow)+int(operation == 'teacher'))
         images = ([raw['images'][old]] if operation == 'prediction' else
                   [raw['fitted'][True], raw['fitted'][False]])
         identities = [image_identity(raw, old)] if operation == 'prediction' else [
@@ -101,17 +126,20 @@ class FrozenPipeline:
                 raise RuntimeError('Frozen pipeline closed')
             job = self.jobs.get(key)
             if job is not None:
-                job.order = min(job.order, ticket['occurrence'])
+                if (ticket['occurrence'], position) < (job.order, job.position):
+                    job.order, job.position = ticket['occurrence'], position
                 self.jobs.move_to_end(key)
                 self.counts['component_reuse'] += 1
                 return job
             origin, binding, native = self._origin(raw, operation, old, flow, native,
-                                                   ticket['occurrence'])
+                                                   ticket['occurrence'], ticket['phase'], key)
             job = Component(key, operation, images, tuple(raw['canvas']), flow, native, origin,
                             ticket['phase'], ticket['occurrence'], binding, dependency,
-                            representation=kind(self.config))
+                            representation=kind(self.config), position=position)
             self.jobs[key] = job
             self.counts[origin+'_assigned'] += 1
+            group = 'train' if ticket['phase'] == 'train' else 'evaluation'
+            self.counts[group+'_'+origin+'_assigned'] += 1
             # Evict only consumed results. Submitted and prefetched work stays owned and bounded
             # by the loader window, not by an unbounded executor queue.
             for old_key in list(self.jobs):
@@ -124,7 +152,9 @@ class FrozenPipeline:
     def submit_decoded(self, raw):
         if 'frozen_jobs' in raw:
             return
-        ticket = raw.setdefault('frozen_ticket', self.prepare(raw['row'], 0))
+        if 'frozen_ticket' not in raw:
+            raw['frozen_ticket'] = self.prepare(raw['row'], 0)
+        ticket = raw['frozen_ticket']
         jobs = {}
         for old, prefix in ((True, 'previous'), (False, 'current')):
             jobs[prefix+'_depth'] = self.submit_component(
@@ -136,12 +166,14 @@ class FrozenPipeline:
                 jobs['teacher_'+flow] = self.submit_component(
                     raw, 'teacher', flow=flow, dependency=job)
         raw['frozen_jobs'] = jobs
+        self.cancel_ticket(ticket)
 
     def _notify(self, future):
         with self.condition:
             self.condition.notify_all()
 
     def _execute(self, job):
+        started = time.monotonic()
         images = list(job.images)
         if job.dependency is not None:
             images.append(job.dependency.values['backward'])
@@ -155,11 +187,20 @@ class FrozenPipeline:
         else:
             values = self.local.execute(job.operation, images, job.canvas,
                                         flow=job.flow, native=job.native)
-        return validate(job.operation, values, job.canvas, images[0].shape, self.config, job.native)
+        result = validate(job.operation, values, job.canvas, images[0].shape,
+                          self.config, job.native)
+        with self.condition:
+            self.counts[job.origin+'_task_s'] += time.monotonic()-started
+        return result
 
     def _activate(self, phase):
-        for job in sorted(self.jobs.values(), key=lambda item:item.order):
-            if job.phase != phase or job.values is not None or job.future is not None:
+        # Never let later decoded results fill all leases ahead of an earlier undecoded pair.
+        # Completed results keep their leases until consumed; the frontier prevents inversion.
+        frontier = min((order for p,order,scope in self.pending.values() if p == phase),
+                       default=float('inf'))
+        for job in sorted(self.jobs.values(), key=lambda item:(item.order,item.position)):
+            if (job.phase != phase or job.order > frontier or job.values is not None
+                    or job.future is not None):
                 continue
             if job.dependency is not None and job.dependency.values is None:
                 continue
@@ -179,7 +220,8 @@ class FrozenPipeline:
                     self.remote_pool = Workers(self.remote_policy['send_ahead'], 'frozen-rpc')
                 pool = self.remote_pool
             job.leased = True
-            job.future = pool.submit(lambda job=job:self._execute(job), priority=job.order)
+            priority = job.order*(3+2*len(self.flows))+job.position
+            job.future = pool.submit(lambda job=job:self._execute(job), priority=priority)
             job.future.add_done_callback(self._notify)
             active = sum(j.leased and j.origin == job.origin for j in self.jobs.values())
             self.counts[job.origin+'_inflight_peak'] = max(
@@ -195,7 +237,7 @@ class FrozenPipeline:
     def _pump(self, phase):
         self._harvest()
         self._activate(phase)
-        local = next((j for j in sorted(self.jobs.values(), key=lambda j:j.order)
+        local = next((j for j in sorted(self.jobs.values(), key=lambda j:(j.order,j.position))
                       if j.phase == phase and j.origin == 'local' and j.values is None
                       and (j.dependency is None or j.dependency.values is not None)), None)
         if local is not None:
@@ -237,15 +279,17 @@ class FrozenPipeline:
         if previous != phase:
             # Drain submitted work into the bounded CPU result window before nested dev/test.
             with self.condition:
-                active = [j for j in self.jobs.values() if j.phase == previous]
+                active = sorted((j for j in self.jobs.values() if j.phase == previous),
+                                key=lambda j:(j.order,j.position))
             began = time.monotonic()
             for job in active:
                 if not job.consumed:
                     self.resolve(job, consume=False)
             while True:
                 with self.condition:
-                    outstanding = [j for j in self.jobs.values()
-                                   if j.phase == previous and j.leased]
+                    outstanding = sorted((j for j in self.jobs.values()
+                                          if j.phase == previous and j.leased),
+                                         key=lambda j:(j.order,j.position))
                 if not outstanding:
                     break
                 for job in outstanding:
@@ -310,3 +354,4 @@ class FrozenPipeline:
             if pool is not None:
                 pool.close()
         self.jobs.clear()
+        self.pending.clear()

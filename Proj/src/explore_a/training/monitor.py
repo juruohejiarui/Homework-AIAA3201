@@ -19,9 +19,11 @@ class HeldoutMonitor:
         self.observer = observer
         self.root, self.dataset, self.config = Path(root), dataset, config
         self.occlusion, self.device = occlusion, device
+        self.evaluation_protocol = identity.get("evaluation_protocol", {"schema":"shared-case-v1"})
         bind_identity(self.root / "heldout_identity.json", {
             "input": identity["input"], "experiment": identity["experiment"],
             "teacher": identity.get("teacher"),
+            "evaluation_protocol": self.evaluation_protocol,
             "split": "test", "protocol": "metric depth, final-evaluation clipping, macro v1",
         })
         self.log = self.root / "heldout.jsonl"
@@ -29,6 +31,11 @@ class HeldoutMonitor:
         self.steps = {record["step"] for record in self.records}
         self.baseline_path = self.root / "heldout_baseline.json"
         self.baseline = read_json(self.baseline_path) if self.baseline_path.exists() else None
+        if self.baseline is not None and self.baseline.get("evaluation_protocol") != self.evaluation_protocol:
+            from explore_a.evaluation.session import identity as digest
+            archived = self.baseline_path.with_name("heldout_baseline-before-"+digest(self.baseline)[:12]+".json")
+            if not archived.exists():write_json(archived,self.baseline)
+            self.baseline = None
         if self.records:
             self._write_csv()  # Recover if interrupted after JSONL append but before CSV replace.
 
@@ -49,9 +56,11 @@ class HeldoutMonitor:
             include_baseline=self.baseline is None, step=step,
         )
         if baseline is not None:
+            baseline["evaluation_protocol"] = self.evaluation_protocol
             self.baseline = baseline
             write_json(self.baseline_path, baseline)
         record = {"step": step, "split": "test", "selection_use": "monitor_only",
+                  "evaluation_protocol": self.evaluation_protocol,
                   "duration_s": time.monotonic() - began,
                   "task": "metric_depth",
                   "counts_note": "valid pixels are measured GT depth pixels",
@@ -100,4 +109,4 @@ class HeldoutMonitor:
 
 def differences(current, baseline):
     """Signed current-minus-baseline: negative depth errors / positive delta accuracy improve."""
-    return {key: current[key] - baseline[key] for key in current}
+    return {key: current[key] - baseline[key] for key in current if key in baseline}

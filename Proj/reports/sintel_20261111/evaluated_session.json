@@ -1,0 +1,226 @@
+{
+  "schema": "shared-case-v2-ac-sintel",
+  "numeric": {
+    "geometry": {
+      "epsilon": 1e-06,
+      "fb_relative": 0.01,
+      "fb_absolute_px2": 0.5,
+      "raft_updates": 12
+    },
+    "frontend": {
+      "name": "da2"
+    },
+    "dev_fraction": 0.1,
+    "raft_bidirectional_batch": true,
+    "routing": {
+      "cache": 0.3,
+      "remote": 0.4
+    },
+    "execution": {
+      "remote_cases": 0.2
+    },
+    "weights": {
+      "da2": "715fade13be8f229f8a70cc02066f656f2423a59effd0579197bbf57860e1378",
+      "raft": "ff5fadd56d26b40647388883af1547351ea17868b765c05b27231e72dd16a322"
+    },
+    "source": "ee2b5dd4028f64bd71baf38a5a2cc2c7f840c882159b0f5a473022b1390f06bb"
+  },
+  "models": [
+    {
+      "entry": {
+        "name": "da2_fp32",
+        "kind": "frozen",
+        "adapter": "da2",
+        "config": "configs/explore_a/mixed_h5_da2.yaml",
+        "weights": "checkpoints/depth_anything_v2_vits.pth",
+        "load_param": {
+          "fp32": true,
+          "input_size": 518,
+          "align_corners": false
+        }
+      },
+      "checkpoint_sha256": "715fade13be8f229f8a70cc02066f656f2423a59effd0579197bbf57860e1378",
+      "implementation_sha256": "7f3881070de1d917623e6ccab22e25acca2290c05fd8445abd3c9afbf3fa6ef7"
+    },
+    {
+      "entry": {
+        "name": "farneback_lr3e-4_mean3",
+        "kind": "ensemble",
+        "members": [
+          "farneback_unet_guided_lr3e-4",
+          "farneback_unet_guided_lr3e-4_seed_1",
+          "farneback_unet_guided_lr3e-4_seed_2"
+        ]
+      },
+      "checkpoint_sha256": "52b28c913b806305faa1c3f29e4325101886ff1e5326431c6704157162718f97",
+      "implementation_sha256": "9bf1befc0f74b496abd82cf3f828beefb353dca8b14c0a1b6516dc1f6deccc56"
+    },
+    {
+      "entry": {
+        "name": "farneback_raft_lr3e-4_mean6",
+        "kind": "ensemble",
+        "members": [
+          "farneback_unet_guided_lr3e-4",
+          "farneback_unet_guided_lr3e-4_seed_1",
+          "farneback_unet_guided_lr3e-4_seed_2",
+          "raft_unet_guided_lr3e-4",
+          "raft_unet_guided_lr3e-4_seed_1",
+          "raft_unet_guided_lr3e-4_seed_2"
+        ]
+      },
+      "checkpoint_sha256": "eaf3a4dd60ed44fe3ea63047b61d9f9494dcb2bcffd2b439c680607371a0faeb",
+      "implementation_sha256": "9bf1befc0f74b496abd82cf3f828beefb353dca8b14c0a1b6516dc1f6deccc56"
+    },
+    {
+      "entry": {
+        "name": "farneback_unet_guided_lr1e-4",
+        "config": "configs/explore_a/mixed_h5_da2.yaml",
+        "checkpoint": "outputs/explore_a/mixed_h5_balanced/runs_da2_guided_30k/farneback-rule-unet_guided/best.pt"
+      },
+      "checkpoint_sha256": "3c4b717bb70e6462daad3609bdadeb665b72647309fd1cfd6f235cb92fbb6cbd",
+      "implementation_sha256": "186f0043877e95f46e578ba6ef5987d4c494c3f2ad3e43097b5be82923a98a63"
+    },
+    {
+      "entry": {
+        "name": "farneback_unet_guided_lr3e-4",
+        "config": "configs/explore_a/mixed_h5_da2_lr3e4.yaml",
+        "checkpoint": "outputs/explore_a/mixed_h5_balanced/runs_da2_guided_30k_lr3e4/farneback-rule-unet_guided/best.pt"
+      },
+      "checkpoint_sha256": "0225faad6ba0bb23826201a125a694d49c3eb5a754acc8143782f638c4f5490b",
+      "implementation_sha256": "186f0043877e95f46e578ba6ef5987d4c494c3f2ad3e43097b5be82923a98a63"
+    },
+    {
+      "entry": {
+        "name": "farneback_unet_guided_lr3e-4_seed_1",
+        "config": "configs/explore_a/mixed_h5_da2_lr3e4_diffseed_1.yaml",
+        "checkpoint": "outputs/explore_a/mixed_h5_balanced/runs_da2_guided_30k_lr3e4_seed_1/farneback-rule-unet_guided/best.pt"
+      },
+      "checkpoint_sha256": "7330f0769d5eb0055c12216dacfece118dd4db9e24b04be0d81b28cdc3057347",
+      "implementation_sha256": "186f0043877e95f46e578ba6ef5987d4c494c3f2ad3e43097b5be82923a98a63"
+    },
+    {
+      "entry": {
+        "name": "farneback_unet_guided_lr3e-4_seed_2",
+        "config": "configs/explore_a/mixed_h5_da2_lr3e4_diffseed_2.yaml",
+        "checkpoint": "outputs/explore_a/mixed_h5_balanced/runs_da2_guided_30k_lr3e4_seed_2/farneback-rule-unet_guided/best.pt"
+      },
+      "checkpoint_sha256": "82259f7c9c07e243dd7d74e22bb8f3b303eaaa8d6875923e82638f28227af148",
+      "implementation_sha256": "186f0043877e95f46e578ba6ef5987d4c494c3f2ad3e43097b5be82923a98a63"
+    },
+    {
+      "entry": {
+        "name": "farneback_unet_guided_seed_1",
+        "config": "configs/explore_a/mixed_h5_da2_diffseed_1.yaml",
+        "checkpoint": "outputs/explore_a/mixed_h5_balanced/runs_da2_guided_30k_seed_1/farneback-rule-unet_guided/best.pt"
+      },
+      "checkpoint_sha256": "cf6b53e01d91352f873b95d3a9087dd73ecd505c019f71221c152b9b9f24d8bb",
+      "implementation_sha256": "186f0043877e95f46e578ba6ef5987d4c494c3f2ad3e43097b5be82923a98a63"
+    },
+    {
+      "entry": {
+        "name": "farneback_unet_guided_seed_2",
+        "config": "configs/explore_a/mixed_h5_da2_diffseed_2.yaml",
+        "checkpoint": "outputs/explore_a/mixed_h5_balanced/runs_da2_guided_30k_seed_2/farneback-rule-unet_guided/best.pt"
+      },
+      "checkpoint_sha256": "428980600e46936c1ed448427546c86c1c2e96dc120e66f15313c764737fa05b",
+      "implementation_sha256": "186f0043877e95f46e578ba6ef5987d4c494c3f2ad3e43097b5be82923a98a63"
+    },
+    {
+      "entry": {
+        "name": "raft_lr3e-4_mean3",
+        "kind": "ensemble",
+        "members": [
+          "raft_unet_guided_lr3e-4",
+          "raft_unet_guided_lr3e-4_seed_1",
+          "raft_unet_guided_lr3e-4_seed_2"
+        ]
+      },
+      "checkpoint_sha256": "4348dd0c118543721c624ca499c543dae68bda6029619bc1a2ce4ad62883569a",
+      "implementation_sha256": "9bf1befc0f74b496abd82cf3f828beefb353dca8b14c0a1b6516dc1f6deccc56"
+    },
+    {
+      "entry": {
+        "name": "raft_unet_guided_lr3e-4",
+        "config": "configs/explore_a/mixed_h5_da2_lr3e4.yaml",
+        "checkpoint": "outputs/explore_a/mixed_h5_balanced/runs_da2_guided_30k_lr3e4/raft-rule-unet_guided/best.pt"
+      },
+      "checkpoint_sha256": "959e53ca0890e52463766278b02f9704f28e1bfd362958e690220bb7ef957811",
+      "implementation_sha256": "186f0043877e95f46e578ba6ef5987d4c494c3f2ad3e43097b5be82923a98a63"
+    },
+    {
+      "entry": {
+        "name": "raft_unet_guided_lr3e-4_seed_1",
+        "config": "configs/explore_a/mixed_h5_da2_lr3e4_diffseed_1.yaml",
+        "checkpoint": "outputs/explore_a/mixed_h5_balanced/runs_da2_guided_30k_lr3e4_seed_1/raft-rule-unet_guided/best.pt"
+      },
+      "checkpoint_sha256": "ad0086bdf549fd1f689dd7db244375b1fb4d1a6c3b5e4c87a5573338cc447193",
+      "implementation_sha256": "186f0043877e95f46e578ba6ef5987d4c494c3f2ad3e43097b5be82923a98a63"
+    },
+    {
+      "entry": {
+        "name": "raft_unet_guided_lr3e-4_seed_2",
+        "config": "configs/explore_a/mixed_h5_da2_lr3e4_diffseed_2.yaml",
+        "checkpoint": "outputs/explore_a/mixed_h5_balanced/runs_da2_guided_30k_lr3e4_seed_2/raft-rule-unet_guided/best.pt"
+      },
+      "checkpoint_sha256": "2a30b8a0a1656549f534817dfa850056cffe5a8fd595be0fdf7ab7f9a6db6a45",
+      "implementation_sha256": "186f0043877e95f46e578ba6ef5987d4c494c3f2ad3e43097b5be82923a98a63"
+    },
+    {
+      "entry": {
+        "name": "unet_guided_mean",
+        "kind": "ensemble",
+        "members": [
+          "farneback_unet_guided_lr1e-4",
+          "farneback_unet_guided_seed_1",
+          "farneback_unet_guided_seed_2"
+        ]
+      },
+      "checkpoint_sha256": "78a58f8ee5bb310ac1e0a5c6bacb3e0420e453dabdfb0010f977fdc11ec4e566",
+      "implementation_sha256": "9bf1befc0f74b496abd82cf3f828beefb353dca8b14c0a1b6516dc1f6deccc56"
+    },
+    {
+      "entry": {
+        "name": "unidepthv2",
+        "kind": "frozen",
+        "adapter": "unidepthv2",
+        "config": "configs/explore_a/mixed_h5_da2.yaml",
+        "weights": "checkpoints/unidepth-v2-vits14",
+        "load_param": {
+          "fp32": true
+        }
+      },
+      "checkpoint_sha256": "d0d71c926676eace08e10d1a76cd3f4d9409ba0b3e672f8958b38c91d912de69",
+      "implementation_sha256": "79a4246883ef915150f2c950eeab08af3548e19ffa40ff30ba263dae4cc5af97"
+    }
+  ],
+  "data": {
+    "datasets": [
+      "kitti",
+      "tum",
+      "nyuv2"
+    ],
+    "seed": 2026,
+    "dev_fraction": 0.15,
+    "sync_tolerance_s": 0.02,
+    "max_frame_gap_s": 0.1,
+    "canvas_kitti": [
+      256,
+      832
+    ],
+    "canvas_indoor": [
+      384,
+      512
+    ],
+    "min_depth_m": 0.1,
+    "indoor_max_depth_m": 10.0,
+    "kitti_max_depth_m": 80.0,
+    "nyu_h5_root": "/home/hjr/Documents/Resources/Datasets/nyu_depth_v2/h5",
+    "scene_groups": null,
+    "scannet_train_list": null,
+    "scannet_val_list": null,
+    "nyu_raw_root": null
+  },
+  "setting": "long",
+  "full_dev": false,
+  "manifest_sha256": "42fc7f37c3d9db502f44eeaec2995d8925717dba9d6e7531c10dfa4f58978557"
+}

@@ -41,7 +41,8 @@ def run(model, output, benchmark_root, datasets=("bonn",), setting="long", tum_r
     identity = {"model": model, "size": "Small", "precision": "fp32", "setting": setting,
                 "benchmark_root": str(benchmark_root), "datasets": list(datasets),
                 "resolution": "upstream; same actual DA-V2/VDA input-size rule",
-                "weights": str(CHECKPOINTS / WEIGHTS[model]), "prediction_storage": "memory"}
+                "weights": str(CHECKPOINTS / WEIGHTS[model]), "prediction_storage": "memory",
+                "scoring": "v2; AC Sintel final image scores + video SSI + ordinal"}
     if model == "unidepthv2":
         from depth_project.models.unidepth import REVISION
         identity.update(revision=REVISION, resolution_level=9, intrinsics="RGB-only estimated",
@@ -56,7 +57,10 @@ def run(model, output, benchmark_root, datasets=("bonn",), setting="long", tum_r
     for dataset in datasets:
         dataset_root = benchmark_root_for(dataset, benchmark_root, tum_root)
         manifest = json.loads((dataset_root / MANIFESTS[dataset]).read_text())
-        sequences = select_sequences(manifest, "full" if dataset == "tum-validation" else setting)
+        from explore_a.evaluation.sintel_ac import prepare_manifest, frame_mean
+        prepare_manifest(manifest, dataset_root)
+        sequences = (manifest["sequences"] if dataset == "sintel" else
+                     select_sequences(manifest, "full" if dataset == "tum-validation" else setting))
         for sequence in sequences:
             for frame in sequence["frames"]:
                 for key in ("image", "gt"):
@@ -80,7 +84,9 @@ def run(model, output, benchmark_root, datasets=("bonn",), setting="long", tum_r
                                    for frame in sequence["frames"]])
                 ratio = max(images.shape[1:3]) / min(images.shape[1:3])
                 adapter.input_size = (round(int(518 * 1.777 / ratio) / 14) * 14
-                                      if model == "da2" and ratio > 1.78 else 518)
+                                      if model == "da2" and dataset != "sintel" and ratio > 1.78 else 518)
+                if model == "da2":
+                    adapter.align_corners = dataset != "sintel"
                 predictions, profile = predict(adapter, images)
                 del images
             if adapter.kind == "metric_m":
@@ -88,6 +94,11 @@ def run(model, output, benchmark_root, datasets=("bonn",), setting="long", tum_r
                     raise ValueError("Metric reference returned nonpositive depth")
                 predictions = [1 / value for value in predictions]
             metrics = official_score(predictions, sequence["frames"], manifest["config"])
+            if adapter.kind == "relative_inverse" or dataset == "sintel":
+                from explore_a.evaluation.part2_protocol import aligned_sequence_scores
+                metrics.update(aligned_sequence_scores(
+                    predictions, sequence["frames"], manifest["config"],
+                    f"{dataset}:{sequence['name']}"))
             if adapter.kind == "metric_m":
                 if dataset == "tum-validation":
                     unaligned = metric_scores(predictions, sequence["frames"], manifest["config"])
@@ -105,7 +116,12 @@ def run(model, output, benchmark_root, datasets=("bonn",), setting="long", tum_r
         result = {"dataset": dataset, "model": model, "setting": setting,
                   "sequences": records, "total_frames": sum(r["frames"] for r in records),
                   "mean": {key: float(np.mean([r[key] for r in records]))
-                           for key in ("abs_rel", "rmse", "delta1")}}
+                           for key in records[0] if key in ("abs_rel", "rmse", "delta1")
+                           or key.endswith(("_img", "_video"))
+                           or key in ("ordinal_accuracy", "ordinal_pairs")}}
+        if dataset == "sintel":
+            result["mean"].update(frame_mean(records))
+            result["scoring_protocol"] = manifest["config"]["image_scoring"]
         if model == "unidepthv2":
             result["mean"]["metric_absrel_secondary"] = float(np.mean(
                 [r["metric_absrel_secondary"] for r in records]))

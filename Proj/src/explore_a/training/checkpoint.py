@@ -1,6 +1,8 @@
 """Local training checkpoints include optimizer, AMP, RNG and the next update index."""
 from pathlib import Path
+import hashlib
 import random
+import shutil
 
 import numpy as np
 import torch
@@ -30,6 +32,22 @@ def save_checkpoint(path, model, optimizer, scheduler, scaler, step, best, ident
 
 def load_model_state(model, state):
     model.load_state_dict(state)
+
+
+def archive_checkpoint(path, target):
+    """Idempotent atomic backup; interruption never removes the current best."""
+    path, target = Path(path), Path(target)
+    def digest(value):
+        with value.open("rb") as stream:
+            return hashlib.file_digest(stream,"sha256").hexdigest()
+    source_hash = digest(path)
+    if target.exists() and digest(target) != source_hash:
+        target = target.with_name(target.stem+"-"+source_hash[:12]+target.suffix)
+    if not target.exists():
+        pending = target.with_suffix(".tmp")
+        shutil.copyfile(path,pending)
+        pending.replace(target)
+    return target
 
 
 def load_checkpoint(path, model, optimizer=None, scheduler=None, scaler=None, identity=None):

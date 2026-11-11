@@ -57,7 +57,7 @@ def test_snapshot_does_not_follow_best_updates(tmp_path):
 def test_unidepth_benchmark_converts_metric_depth_to_inverse(monkeypatch, tmp_path):
     from explore_a.evaluation import part2_references as ref
 
-    manifest = {"config": {"crop": [0, 4, 0, 6]}, "sequences": [
+    manifest = {"dataset": "bonn", "config": {"crop": [0, 4, 0, 6]}, "sequences": [
         {"name": "sequence", "frames": [{"image": "rgb.png", "gt": "gt.npy"}]}]}
     write_json(tmp_path / ref.MANIFESTS["bonn"], manifest)
     monkeypatch.setattr(ref, "select_sequences", lambda m, s: m["sequences"])

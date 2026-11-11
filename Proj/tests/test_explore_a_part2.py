@@ -101,6 +101,12 @@ def test_part2_pins_checkpoint_and_first_frame_has_no_history(tmp_path, monkeypa
         def submit_decoded(self, raw):
             pass
 
+        def cancel_prepared(self, scope):
+            pass
+
+        def cancel_ticket(self, ticket):
+            pass
+
         def input_phase(self, phase):
             from contextlib import nullcontext
             return nullcontext()

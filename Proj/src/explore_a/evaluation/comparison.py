@@ -46,7 +46,7 @@ def cohort(config, split, full_dev=False):
     rows = [r for r in load_manifest(config)["samples"] if r["split"] == split]
     if split == "dev" and not full_dev:
         rows = select_dev(rows, config["training"]["dev_sample_fraction"],
-                          config["training"]["seed"])
+                          config.get("data", {}).get("seed", config["training"]["seed"]))
     if not rows:
         raise ValueError("Empty comparison cohort")
     return rows
@@ -78,9 +78,10 @@ def pin(config, checkpoint, output):
 def run_split(config, checkpoint, output, split, model, full_dev):
     rows = cohort(config, split, full_dev)
     root = output / ("dev-full" if split == "dev" and full_dev else split)
+    from explore_a.training.dev_subset import selection_record
     ids = [r["id"] for r in rows]
     write_json(root / "cohort.json", {
-        "split": split, "sample_ids": ids, "pairs": len(rows),
+        **selection_record(rows), "split": split, "sample_ids": ids, "pairs": len(rows),
         "sha256": hashlib.sha256("\n".join(ids).encode()).hexdigest(),
         "dev_selection": "full" if full_dev else "same fixed subset as training"})
     if model != "fusion":
@@ -141,6 +142,29 @@ def main():
         parser.error("TUM has no published short/long frame cap; use --setting full")
     if args.scope == "benchmark" and args.setting == "full":
         parser.error("VDA main table uses --setting long (up to 500 frames), not full")
+    if args.scope in ("dev", "test", "benchmark", "tum-validation"):
+        from explore_a.evaluation.session import run as run_session
+        from depth_project.inference.__main__ import WEIGHTS
+        from depth_project.paths import CHECKPOINTS
+        models = []
+        if args.model in ("all", "fusion"):
+            models.append({"name": "fusion", "config": str(args.config.resolve()),
+                           "checkpoint": str(args.checkpoint.resolve())})
+        if args.model in ("all", "da2"):
+            models.append({"name": "da2", "kind": "frozen", "adapter": "da2",
+                           "config": str(args.config.resolve()), "weights": str(CHECKPOINTS/WEIGHTS["da2"]),
+                           "reuse_frontend": True, "load_param": {"fp32": False}})
+        if args.model in ("all", "unidepthv2"):
+            models.append({"name": "unidepthv2", "kind": "frozen", "adapter": "unidepthv2",
+                           "config": str(args.config.resolve()), "weights": str(CHECKPOINTS/WEIGHTS["unidepthv2"]),
+                           "load_param": {"fp32": True}})
+        args.output.mkdir(parents=True, exist_ok=True)
+        registry = args.output/"requested_models.json"
+        write_json(registry, models)
+        run_session(registry, args.output, [args.scope], args.benchmark_root, args.tum_root,
+                    setting="long" if args.scope == "tum-validation" else args.setting,
+                    datasets=args.datasets, full_dev=args.full_dev)
+        return
     config = load_config(args.config)
     checkpoint = pin(config, args.checkpoint, args.output)
     # Keep short/long receipts separate; a changed setting must not reuse earlier metrics.

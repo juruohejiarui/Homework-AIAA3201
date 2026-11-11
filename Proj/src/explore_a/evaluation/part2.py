@@ -95,7 +95,7 @@ def evaluate_part2(config, checkpoint, output, benchmark_root, setting="long",
                 "datasets": list(datasets), "benchmark_root": str(benchmark_root),
                 "precision": "DA-V2-S fp16; fusion follows checkpoint AMP setting",
                 "execution": "blocking frozen components v2; cache/DGX/local",
-                "protocol": "Part2 frozen cohort, crop and upstream inverse-depth SSI evaluator",
+                "protocol": "v2; AC Sintel final image scores; whole-video SSI retained",
                 "input": "full selected images under Part2 crop; existing trained fusion canvas",
                 "recurrence": "raw previous depth; no recurrent output state; first frame raw",
                 "provenance": "independent benchmark root; no training manifest changes"}
@@ -118,8 +118,10 @@ def evaluate_part2(config, checkpoint, output, benchmark_root, setting="long",
             dataset_root = benchmark_root_for(dataset, benchmark_root, tum_root)
             path = dataset_root / MANIFESTS[dataset]
             manifest = json.loads(path.read_text())
+            from explore_a.evaluation.sintel_ac import prepare_manifest, frame_mean
+            prepare_manifest(manifest, dataset_root)
             selected_setting = "full" if dataset == "tum-validation" else setting
-            sequences = select_sequences(manifest, selected_setting)
+            sequences = manifest["sequences"] if dataset == "sintel" else select_sequences(manifest, selected_setting)
             # Keep an explicit relocated copy; original frozen manifests are never overwritten.
             for sequence in sequences:
                 for frame in sequence["frames"]:
@@ -191,6 +193,10 @@ def evaluate_part2(config, checkpoint, output, benchmark_root, setting="long",
                         arrays, frames, manifest["config"])
                 for name, predictions in arrays.items():
                     metrics = official_score(predictions, frames, manifest["config"])
+                    from explore_a.evaluation.part2_protocol import aligned_sequence_scores
+                    metrics.update(aligned_sequence_scores(
+                        predictions, frames, manifest["config"],
+                        f"{dataset}:{sequence['name']}"))
                     if dataset == "tum-validation" and not inverse_frontend:
                         unaligned = metric_scores(predictions, frames, manifest["config"])
                         metrics["metric_absrel_secondary"] = unaligned.get("abs_rel")
@@ -209,6 +215,10 @@ def evaluate_part2(config, checkpoint, output, benchmark_root, setting="long",
                                       for metric in records[0]["branches"][name]}
                                for name in records[0]["branches"]},
                       "efficiency_note": "Concurrent training; no isolated latency claim"}
+            if dataset == "sintel":
+                for branch in result["mean"]:
+                    result["mean"][branch].update(frame_mean(records, branch))
+                result["scoring_protocol"] = manifest["config"]["image_scoring"]
             if inverse_frontend:
                 fixed = [r["baseline_fixed_ssi"]["branches"] for r in records]
                 result["baseline_fixed_ssi_mean"] = {

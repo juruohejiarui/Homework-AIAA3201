@@ -95,6 +95,15 @@ def load_config(path=DEFAULT_CONFIG):
     if "remote_online" in config:
         from explore_a.remote_online.policy import settings as remote_settings
         config["remote_online"] = remote_settings(config)
+    from explore_a.online.routing import profiles
+    profiles(config)
+    evaluation = config.setdefault("evaluation_execution", {})
+    if set(evaluation) - {"remote_cases"}:
+        raise ValueError("evaluation_execution accepts remote_cases only")
+    fraction = evaluation.setdefault("remote_cases", 0.)
+    if (isinstance(fraction, bool) or not isinstance(fraction, (int, float))
+            or not math.isfinite(fraction) or not 0 <= fraction <= 1):
+        raise ValueError("evaluation_execution.remote_cases must be in [0,1]")
     limit = config.setdefault("cache_policy", {}).setdefault("max_rgb_frames", 4000)
     if not isinstance(limit, int) or isinstance(limit, bool) or limit < 1:
         raise ValueError("cache_policy.max_rgb_frames must be a positive integer")

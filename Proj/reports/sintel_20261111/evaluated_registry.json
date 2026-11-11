@@ -1,0 +1,83 @@
+[
+  {
+    "name": "farneback_unet_guided_lr1e-4",
+    "config": "configs/explore_a/mixed_h5_da2.yaml",
+    "checkpoint": "outputs/explore_a/mixed_h5_balanced/runs_da2_guided_30k/farneback-rule-unet_guided/best.pt"
+  },
+  {
+    "name": "farneback_unet_guided_seed_1",
+    "config": "configs/explore_a/mixed_h5_da2_diffseed_1.yaml",
+    "checkpoint": "outputs/explore_a/mixed_h5_balanced/runs_da2_guided_30k_seed_1/farneback-rule-unet_guided/best.pt"
+  },
+  {
+    "name": "farneback_unet_guided_seed_2",
+    "config": "configs/explore_a/mixed_h5_da2_diffseed_2.yaml",
+    "checkpoint": "outputs/explore_a/mixed_h5_balanced/runs_da2_guided_30k_seed_2/farneback-rule-unet_guided/best.pt"
+  },
+  {
+    "name": "farneback_unet_guided_lr3e-4",
+    "config": "configs/explore_a/mixed_h5_da2_lr3e4.yaml",
+    "checkpoint": "outputs/explore_a/mixed_h5_balanced/runs_da2_guided_30k_lr3e4/farneback-rule-unet_guided/best.pt"
+  },
+  {
+    "name": "farneback_unet_guided_lr3e-4_seed_1",
+    "config": "configs/explore_a/mixed_h5_da2_lr3e4_diffseed_1.yaml",
+    "checkpoint": "outputs/explore_a/mixed_h5_balanced/runs_da2_guided_30k_lr3e4_seed_1/farneback-rule-unet_guided/best.pt"
+  },
+  {
+    "name": "farneback_unet_guided_lr3e-4_seed_2",
+    "config": "configs/explore_a/mixed_h5_da2_lr3e4_diffseed_2.yaml",
+    "checkpoint": "outputs/explore_a/mixed_h5_balanced/runs_da2_guided_30k_lr3e4_seed_2/farneback-rule-unet_guided/best.pt"
+  },
+  {
+    "name": "raft_unet_guided_lr3e-4",
+    "config": "configs/explore_a/mixed_h5_da2_lr3e4.yaml",
+    "checkpoint": "outputs/explore_a/mixed_h5_balanced/runs_da2_guided_30k_lr3e4/raft-rule-unet_guided/best.pt"
+  },
+  {
+    "name": "raft_unet_guided_lr3e-4_seed_1",
+    "config": "configs/explore_a/mixed_h5_da2_lr3e4_diffseed_1.yaml",
+    "checkpoint": "outputs/explore_a/mixed_h5_balanced/runs_da2_guided_30k_lr3e4_seed_1/raft-rule-unet_guided/best.pt"
+  },
+  {
+    "name": "raft_unet_guided_lr3e-4_seed_2",
+    "config": "configs/explore_a/mixed_h5_da2_lr3e4_diffseed_2.yaml",
+    "checkpoint": "outputs/explore_a/mixed_h5_balanced/runs_da2_guided_30k_lr3e4_seed_2/raft-rule-unet_guided/best.pt"
+  },
+  {
+    "name": "da2_fp32",
+    "kind": "frozen",
+    "adapter": "da2",
+    "config": "configs/explore_a/mixed_h5_da2.yaml",
+    "weights": "checkpoints/depth_anything_v2_vits.pth",
+    "load_param": {"fp32": true, "input_size": 518, "align_corners": false}
+  },
+  {
+    "name": "unidepthv2",
+    "kind": "frozen",
+    "adapter": "unidepthv2",
+    "config": "configs/explore_a/mixed_h5_da2.yaml",
+    "weights": "checkpoints/unidepth-v2-vits14",
+    "load_param": {"fp32": true}
+  },
+  {
+    "name": "unet_guided_mean",
+    "kind": "ensemble",
+    "members": ["farneback_unet_guided_lr1e-4", "farneback_unet_guided_seed_1", "farneback_unet_guided_seed_2"]
+  },
+  {
+    "name": "farneback_lr3e-4_mean3",
+    "kind": "ensemble",
+    "members": ["farneback_unet_guided_lr3e-4", "farneback_unet_guided_lr3e-4_seed_1", "farneback_unet_guided_lr3e-4_seed_2"]
+  },
+  {
+    "name": "raft_lr3e-4_mean3",
+    "kind": "ensemble",
+    "members": ["raft_unet_guided_lr3e-4", "raft_unet_guided_lr3e-4_seed_1", "raft_unet_guided_lr3e-4_seed_2"]
+  },
+  {
+    "name": "farneback_raft_lr3e-4_mean6",
+    "kind": "ensemble",
+    "members": ["farneback_unet_guided_lr3e-4", "farneback_unet_guided_lr3e-4_seed_1", "farneback_unet_guided_lr3e-4_seed_2", "raft_unet_guided_lr3e-4", "raft_unet_guided_lr3e-4_seed_1", "raft_unet_guided_lr3e-4_seed_2"]
+  }
+]

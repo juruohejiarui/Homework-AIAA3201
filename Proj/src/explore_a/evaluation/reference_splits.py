@@ -44,10 +44,12 @@ def run(config, rows, model, output):
         ids = [r["id"] for r in selected]
         if receipt.exists():
             record = json.loads(receipt.read_text())
-            if record["sample_ids"] != ids:
+            if record["sample_ids"] != ids or record.get("scoring") != "dual-v1":
                 raise ValueError("Reference receipt has different frame IDs")
             records.append(record)
             continue
+        from explore_a.evaluation.alignment import RelativeScores
+        aligned = RelativeScores()
         scores, valid_frames = [], 0
         for number, row in enumerate(selected):
             rgb, gt = read_frame(row)
@@ -59,7 +61,11 @@ def run(config, rows, model, output):
             if valid.any():
                 if adapter is None:
                     adapter = load_model(model, CHECKPOINTS / WEIGHTS[model], fp32=True)
-                prediction = canvas_prediction(adapter.predict(rgb), target, valid,
+                raw_prediction = adapter.predict(rgb)
+                if adapter.kind == "relative_inverse":
+                    field, _ = fit_image(np.asarray(raw_prediction, np.float32), canvas)
+                    scores.append(aligned.add(row, field, target, valid, (minimum, maximum)))
+                prediction = canvas_prediction(raw_prediction, target, valid,
                                                canvas, adapter.kind)
                 scores.append(frame_scores(torch.from_numpy(prediction),
                                            torch.from_numpy(target), torch.from_numpy(valid),
@@ -67,7 +73,9 @@ def run(config, rows, model, output):
                 valid_frames += 1
             if (number + 1) % 50 == 0:
                 print("REFERENCE", model, key[:2], number + 1, "/", len(selected), flush=True)
-        record = {"dataset": key[0], "sequence": key[1], "camera": key[2],
+        for row, values, count in aligned.finish():
+            scores.append(values)
+        record = {"scoring": "dual-v1", "dataset": key[0], "sequence": key[1], "camera": key[2],
                   "sample_ids": ids, "metrics": average(scores),
                   "coverage": {"pairs": len(selected), "valid_gt_frames": valid_frames}}
         write_json(receipt, record)

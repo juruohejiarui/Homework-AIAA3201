@@ -95,7 +95,7 @@ def test_monitor_cannot_change_updates_or_best_development_checkpoint(tmp_path, 
             assert [record["step"] for record in records] == [0, 1, 2]
             assert all(record["split"] == "test" for record in records)
             expected_metrics = {"ssi_"+m for m in DEPTH_METRICS}
-            assert all(set(record["macro_mean"]) == expected_metrics for record in records)
+            assert all(set(record["macro_mean"]) >= expected_metrics for record in records)
             assert all(record["counts"]["valid_frames"] == 2 for record in records)
             assert all({s["sequence"] for s in record["sequences"]} == {"test"}
                        for record in records)

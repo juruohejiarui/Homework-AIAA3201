@@ -18,14 +18,13 @@ def gpu_session():
 
 
 def predict(adapter, frames, fps=1):
+    from depth_project.models.api import ModelInput
     torch.cuda.synchronize()
     torch.cuda.reset_peak_memory_stats()
     started = time.perf_counter()
     with torch.inference_mode():
-        if hasattr(adapter, "predict_video"):
-            depths = adapter.predict_video(frames, fps)
-        else:
-            depths = np.stack([adapter.predict(frame) for frame in frames])
+        parameters = {"fps": fps} if adapter.capability == "sequence" else {}
+        depths = adapter.forward(ModelInput(rgb=frames), **parameters).numpy()
     torch.cuda.synchronize()
     seconds = time.perf_counter() - started
     depths = np.asarray(depths, dtype=np.float32)

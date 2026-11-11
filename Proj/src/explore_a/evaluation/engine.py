@@ -56,8 +56,12 @@ def evaluate_specs(config, specs, split="test", device="cuda", output=None, rows
         config = copy.deepcopy(config)
         config["paths"]["runs"] = str(output)
     manifest = load_manifest(config)
-    rows = ([row for row in manifest["samples"] if row["split"] == split]
-            if rows is None else rows)
+    if rows is None:
+        rows = [row for row in manifest["samples"] if row["split"] == split]
+        if split == "dev":
+            from explore_a.training.dev_subset import select_dev
+            rows = select_dev(rows, config["training"]["dev_sample_fraction"],
+                              config["data"]["seed"])
     if any(row["split"] != split for row in rows):
         raise ValueError("Explicit evaluation rows contain a different split")
     if not rows:

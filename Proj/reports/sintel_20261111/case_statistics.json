@@ -1,0 +1,68 @@
+[
+  {
+    "scope": "benchmark",
+    "dataset": "bonn",
+    "case_units": 26,
+    "improved": 26,
+    "worse": 0,
+    "bootstrap_95": [
+      0.8740775250725656,
+      1.131293046150253
+    ]
+  },
+  {
+    "scope": "benchmark",
+    "dataset": "kitti",
+    "case_units": 13,
+    "improved": 12,
+    "worse": 1,
+    "bootstrap_95": [
+      1.8051486011499789,
+      2.8458587667962325
+    ]
+  },
+  {
+    "scope": "benchmark",
+    "dataset": "sintel",
+    "case_units": 23,
+    "improved": 14,
+    "worse": 9,
+    "bootstrap_95": [
+      -0.519278989012893,
+      0.5849752519661247
+    ]
+  },
+  {
+    "scope": "test",
+    "dataset": "kitti",
+    "case_units": 26,
+    "improved": 23,
+    "worse": 3,
+    "bootstrap_95": [
+      1.919456331293574,
+      2.669291746262746
+    ]
+  },
+  {
+    "scope": "test",
+    "dataset": "nyuv2",
+    "case_units": 9,
+    "improved": 9,
+    "worse": 0,
+    "bootstrap_95": [
+      1.732549972444122,
+      3.0851294317813878
+    ]
+  },
+  {
+    "scope": "test",
+    "dataset": "tum",
+    "case_units": 20,
+    "improved": 20,
+    "worse": 0,
+    "bootstrap_95": [
+      2.0299024479467374,
+      2.7375464024481326
+    ]
+  }
+]

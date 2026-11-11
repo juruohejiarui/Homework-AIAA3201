@@ -14,13 +14,13 @@ def test_exact_source_budgets_coverage_and_determinism():
     state = random.getstate()
     selected = select_dev(rows, .1)
     assert len(selected) == 60
-    for source in ("kitti", "tum", "nyuv2"):
+    for source, expected in (("kitti", 22), ("tum", 15), ("nyuv2", 23)):
         subset = [r for r in selected if r["dataset"] == source]
-        assert len(subset) == 20
+        assert len(subset) == expected
         assert {r["sequence"] for r in subset} == {"0", "1", "2"}
-    assert all(any(r is original for original in rows) for r in selected)
+    assert all({k: v for k, v in r.items() if k != "evaluation_clip"} in rows for r in selected)
     assert selected == select_dev(rows, .1)
-    assert {r["id"] for r in select_dev(rows[::-1], .1)} == {r["id"] for r in selected}
+    assert select_dev(rows[::-1], .1) == selected
     assert state == random.getstate()
     assert select_dev(rows, 1) is rows
 

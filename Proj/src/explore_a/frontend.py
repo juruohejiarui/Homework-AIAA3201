@@ -39,7 +39,8 @@ class DA2Frontend:
         ratio = max(rgb.shape[:2]) / min(rgb.shape[:2])
         self.adapter.input_size = (round(int(518 * 1.777 / ratio) / 14) * 14
                                    if ratio > 1.78 else 518)
-        return self.adapter.predict(rgb).astype(np.float32)
+        from depth_project.models.api import ModelInput
+        return self.adapter.forward(ModelInput(rgb=rgb)).numpy()[0]
 
 
 def make(config):

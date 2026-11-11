@@ -25,6 +25,29 @@ def test_history_uses_paths_in_records_and_normalizes_drive_alias(tmp_path):
     assert result == {drive + "_sync": [str(path)]}
 
 
+def test_frozen_diagnostic_scope_does_not_expand_training_exclusions(tmp_path):
+    old_drive = "2011_09_26_drive_0002_sync"
+    new_drive = "2011_09_26_drive_0009_sync"
+    put(tmp_path / "old/run.json", json.dumps({"sequence": old_drive}))
+    path = tmp_path / "audit/metrics.json"
+    put(path, json.dumps({"model": "DA-V2-S", "weight_sha256": "frozen-weight",
+                          "records": [{"image": f"/{new_drive}/image_02/data/1.png"}]}))
+    assert new_drive in evaluation_history([tmp_path])
+    scope = {"schema": 1, "role": "frozen_frontend_diagnostic", "result": "metrics.json",
+             "uses_fusion_checkpoint": False, "model": "DA-V2-S",
+             "weight_sha256": "frozen-weight"}
+    put(path.parent / "evaluation_scope.json", json.dumps(scope))
+    assert evaluation_history([tmp_path]) == {old_drive: [str(tmp_path / "old/run.json")]}
+    # A learned-model result or stale weight declaration cannot inherit the exemption.
+    for changed in ({"uses_fusion_checkpoint": True}, {"weight_sha256": "other-weight"},
+                    {"model": "unet_guided"}, {"result": "other.json"}):
+        put(path.parent / "evaluation_scope.json", json.dumps({**scope, **changed}))
+        assert new_drive in evaluation_history([tmp_path])
+    put(path.parent / "evaluation_scope.json", json.dumps(scope))
+    put(tmp_path / "real-test/run.json", json.dumps({"sequence": new_drive}))
+    assert new_drive in evaluation_history([tmp_path])
+
+
 def test_kitti_excludes_whole_drive_both_cameras_and_uses_raw_previous(tmp_path):
     names = [f"2011_09_26_drive_{i:04d}_sync" for i in range(1, 5)]
     for name in names:

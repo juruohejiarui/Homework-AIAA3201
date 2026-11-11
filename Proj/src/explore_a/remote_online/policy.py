@@ -46,7 +46,10 @@ def settings(config):
 
 def enabled(config):
     policy = settings(config)
-    return policy["enabled"] and policy["probability"] > 0
+    if not policy["enabled"]:
+        return False
+    from explore_a.online.routing import profiles
+    return any(p["remote"] > 0 for p in profiles(config).values())
 
 
 def route(seed, occurrence, batch, cache_probability, remote_probability):

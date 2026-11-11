@@ -8,6 +8,9 @@
 - [三模型结构](src/explore_a/FUSION_MODELS.md)
 - [基础数据、双目、独立模型工具](GUIDE_zh.md)
 - [方法和评价协议](paper_reproduction_zh.md)
+- [共享评估与 DGX 执行](UNIFIED_EXECUTION_zh.md)
+- [模型列表与 ensemble 评估](ENSEMBLE_EVALUATION_zh.md)
+- [实验结果分析与诊断图](reports/README.md)
 
 训练数据位于 `~/Documents/Resources/Datasets`；KITTI／Sintel／Bonn benchmark
 仍位于 `~/Documents/ResourcesLow/Datasets`，TUM 官方 validation 下载到前者。

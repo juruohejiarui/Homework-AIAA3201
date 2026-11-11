@@ -11,7 +11,7 @@ from explore_a.matrix import experiments
 
 def test_three_small_configs_have_identical_non_output_settings():
     configs = experiments()
-    assert len(list(DEFAULT_CONFIG.parent.glob('*.yaml'))) == 3
+    assert len(configs) == 3
     reference = load_config()
     for config, fusion in configs:
         actual = copy.deepcopy(config)

@@ -10,7 +10,7 @@ ConvGRU、全局上下文与局部纠偏；`final_flow` 使用当前帧 S 分支
 历史无效时精确返回原始当前预测。GT 仅用于损失和评分，不进入前向或远端请求。
 
 训练保持 KITTI:NYUv2:TUM=3:3:2，先按视频帧对数平方根抽序列，再抽帧对；
-30,000 步，有效 batch 8，固定 10% dev，每 2,000 步 dev，best 按 dev SSI AbsRel。
+30,000 步，有效 batch 8，固定 3,341 对连续片段 dev，每 2,000 步 dev，best 按逐图对齐 AbsRel。
 开发、测试的 AbsRel/RMSE/δ 是相对逆深度 SSI 对齐后的深度指标，不是未对齐米制结果。
 
 三个配置文件是同一实验设置的三个入口：`mixed_h5_da2.yaml` 包含公共设置，
@@ -32,8 +32,9 @@ bash "$PWD/Proj/explore_a.sh" --config "$cfg" check-weights
 python -m explore_a.remote_online.sync --config "$cfg"
 ```
 
-冻结组件统一经阻塞式 hybrid 分配：缓存 20%、DGX 28%、本机 52%。缓存提交前缺项
-按 DGX:本机=28:52 分配；提交后损坏、身份冲突或 RPC 失败直接报错。所有阶段复用
+冻结组件统一经阻塞式 hybrid 分配：训练缓存/DGX/本机=38%/49%/13%，
+评价=42%/46%/12%。缓存提交前缺项按该阶段 DGX:本机比例重新分配；
+提交后损坏、身份冲突或 RPC 失败直接报错。所有阶段复用
 相同流水线；本机 CUDA 由主线程执行，DGX 仅传内存 RGB／FP32 预测，不传 GT。
 消费端不写预测缓存。更改配置和代码后需要重启，运行中不热更新。
 
@@ -56,6 +57,9 @@ bash "$PWD/Proj/explore_a.sh" --config "$cfg" train \
 
 每 1,000 步原子保存 `last.pt`。终端按一次 Ctrl+C 停止；可以恢复到最近已完成的
 checkpoint，不承诺保存中断中的优化步。后台进程用 `kill -INT <训练主进程PID>`。
+中断时先关闭本次冻结/评价 RPC，再取消排队读取；CPU 读取线程不阻塞进程退出，
+不在中断清理时重绘曲线。正常运行仍完整消费任务，不增加推理超时或失败回退。
+`explore_a.sh` 默认设置 `OMP_NUM_THREADS=1`，保留用户显式设置；冻结 DGX 服务沿用该值。
 恢复重新执行相同命令，自动加载该模型目录的 `last.pt`，不需要 `--resume`。
 首次训练没有旧结果可恢复。`best.pt` 用于评价，`last.pt` 用于续训。
 
@@ -183,3 +187,162 @@ bash "$PWD/Proj/explore_a.sh" --config "$cfg" evaluate-final --split test \
   --final-checkpoint "$runs/runs_da2_final_30k/$flow-rule-final_flow/best.pt" \
   --output "$PWD/Proj/outputs/explore_a/da2_three_heads_$flow"
 ```
+
+## Continuous development cohort and quantitative video evaluation
+
+The shared `select_dev` entry now uses protocol `continuous-sqrt-332-v1` instead of
+scattered 10% pairs. No preparation command is required. With the current manifest it
+selects 3,341 pairs: KITTI 1,253, NYUv2 H5 1,253, TUM 835; all 21/47/9 sequences remain.
+Quotas follow square-root sequence size. Exact existing endpoints form clips; camera,
+scene and original matching gaps are never bridged. The seed is 2026. Model, flow,
+validation iteration and manifest row order do not change the selection.
+Training writes `dev_selection.json`; comparison and oracle also record IDs and clip
+boundaries. Current cohort SHA-256:
+`9813043ebd074c37f00a35a5f0d92f6d3f43c152b8c3df080466b83555cd130b`.
+Full-dev comparison remains available with `--full-dev`.
+
+`absrel_img`, `rmse_img`, `delta1_img` fit each image to GT inverse depth.
+`absrel_video`, `rmse_video`, `delta1_video` fit one gauge per whole evaluated video,
+or per selected dev clip. Disconnected dev clips never share a gauge. These are
+GT-assisted relative scores, not raw metric accuracy. Existing `ssi_*` image fields
+remain available. Best selection retains image AbsRel, equal sequence then source
+weighting. On resume with a changed cohort, old best is archived, current weights are
+re-evaluated, and the new best comparison is initialized on that cohort.
+
+`ordinal_accuracy` uses raw inverse-depth ordering with deterministic frame-ID point
+pairs: at most 4,096 candidates, GT depth ratio at least 1.1, at most 1,024 retained.
+Ties are incorrect; absent eligible pairs yield no score. It is a project sensor-GT
+ranking diagnostic, not the DA-2K annotation benchmark. All branches use the same pairs.
+
+NYUv2 H5 is an additional video experiment like KITTI/TUM. The course NYUv2 Labeled
+654-image metric evaluation stays separate: UniDepthV2 raw meters, no test alignment.
+The DA video metrics do not replace that requirement. Native/canvas differences and
+existing benchmark masks/crops remain explicit. Video visualizations still use fixed
+clip-wide normalization anchored to the unchanged baseline.
+
+### Complete development oracle
+
+```bash
+conda activate aiaa3201
+export PYTHONPATH="$PWD/Proj/src${PYTHONPATH:+:$PYTHONPATH}"
+cfg="$PWD/Proj/configs/explore_a/mixed_h5_da2.yaml"
+python -m explore_a.evaluation.relative_oracle --config "$cfg" \
+  --output "$PWD/Proj/outputs/explore_a/da_continuous_dev_oracle_20261102"
+# Separate RAFT run; same fixed cohort and eight oracle candidates:
+python -m explore_a.evaluation.relative_oracle --config "$cfg" --flow raft \
+  --output "$PWD/Proj/outputs/explore_a/da_continuous_dev_oracle_raft"
+```
+
+The same command resumes. Complete clips commit atomically; partial CPU staging is
+reused. The run evaluates every selected pair with `--flow farneback` (default) or
+`--flow raft`, both with rule occlusion and the configured cache/DGX/local pipeline.
+Use a separate output directory for each flow. Resume checks the flow and, for RAFT,
+its weight identity; existing Farneback results remain resumable with the default command.
+GT stays local; shared prediction NPZ files are read-only.
+Temporary `.npy` inference staging is under the oracle output on the system filesystem,
+not in the shared cache; completed clips remove it. Allow about 20 GB staging space.
+Other evaluation paths use automatically cleaned system temporary files for bounded-RAM
+video scoring; this output I/O is separate from frozen prediction cache production.
+
+Image-fixed and clip-fixed baseline gauges are two distinct oracle objectives.
+Within each objective all candidates share the original DA gauge and common mask.
+The primary inverse-depth Smooth L1 checks the nested bound:
+refine oracle <= convex fusion oracle <= raw DA. Full-GT scores expose limited history
+coverage. Independently refitted image/video scores and ranking are secondary diagnostics;
+they are not strict bounds. A per-pixel conditional oracle does not prove that the
+lightweight model can learn the solution.
+
+Training and resume retain the same commands (Ctrl+C stops; rerun restores `last.pt`):
+
+```bash
+bash "$PWD/Proj/explore_a.sh" --config "$cfg" \
+  train --flow farneback --occlusion rule --fusion unet_guided
+```
+
+Use `mixed_h5_da2_refine.yaml` with `--fusion flow_refine`, or
+`mixed_h5_da2_final.yaml` with `--fusion final_flow`; replace flow with `raft` as needed.
+Comparison commands are unchanged; a fresh output directory separates the new score
+protocol from previous runs:
+
+```bash
+bash "$PWD/Proj/compare_models.sh" --config "$cfg" --checkpoint "$ckpt" \
+  --output "$out" --scope dev --model fusion
+bash "$PWD/Proj/compare_models.sh" --config "$cfg" --checkpoint "$ckpt" \
+  --output "$out" --scope benchmark --model fusion \
+  --benchmark-root "$HOME/Documents/ResourcesLow/Datasets"
+```
+
+
+## 按阶段的实测调度比例
+
+公共配置在 `execution.routing` 下分别控制 `train` 与 `evaluation`：
+
+```yaml
+execution:
+  backend: hybrid
+  routing:
+    train: {cache: 0.38, remote: 0.49}
+    evaluation: {cache: 0.42, remote: 0.46}
+```
+
+本机比例为剩余部分。`evaluation` 覆盖 dev/test/benchmark/NYU/oracle；它不改变
+指标协议。比例按任务提交时的阶段决定，不会被嵌套dev或异步解码时的全局阶段覆盖。
+缓存比例是尝试分配比例；缺项在提交前按剩余远端/本机比例分配，实际命中可能更低。
+`execution.backend: online` 强制全部本机；`cache` 强制缓存。`remote_online.enabled`
+仍是DGX总开关。全局旧概率可作未配置阶段策略的默认值，当前三份配置只通过上述
+公共配置管理比例，避免重复编辑。生成的hybrid consumer也保留阶段策略。
+
+这些策略只记录执行历史，保持原run与checkpoint，不重新训练或重划dev。
+运行中的进程不热更新；停止后用原命令恢复即可。冻结预测精度、模型与注意力不变。
+同时修复了解码乱序时后续完成结果占满外部名额的死锁：解码前登记顺序边界，
+按帧对及组件消费顺序提交，取消未启动的解码ticket；不增加队列容量或丢弃结果。
+
+### 公式与实测口径
+
+每帧对本机冻结成本L、缓存有效成本C、DGX有效成本R、头与评分等其余成本H：
+
+`t = max(H + p_host*L, p_cache*C, p_dgx*R)`，三者概率之和为1。
+
+C/R通过纯路径的饱和吞吐测量，含既有并发、解压/传输；不把重叠RPC耗时相加。
+计算器用容量约束求最小t，再根据缓存可用率把实际使用份额换成配置中的尝试比例。
+随机训练使用较慢缓存轮次，dev/test使用首次及重复读取的合并成本。
+这是流体吞吐近似；有界队列、逐对消费、batch屏障及冷热页缓存使理论预测偏乐观，
+必须用相同固定样本验证。实测没有更改模型选择或利用test精度调参。
+
+当前验证使用Farnebäck+rule，本机RTX4090D及DGX，FP16冻结/FP32输出，batch8；
+临时final_flow包含双向监督、反传、AdamW与训练指标；dev/test包含逐图与片段评分。
+排除模型加载/预热、正式TensorBoard/checkpoint/PNG写入，不作为论文单机模型延迟。
+RAFT、MFTIQ及原生视频benchmark并未分别调优；可用相同工具另测，不声称此比例全局最优。
+测速本机环境 `OMP_NUM_THREADS=1`，使用这一设置可更接近记录条件。
+
+### 无网格的重新测量
+
+以下命令仅写独立性能输出与临时CPU文件，不保存训练权重、不写预测缓存。
+所有比例最终仍须人工或经对照确认后写入配置，工具不会自动修改正式配置。
+
+```bash
+export PYTHONPATH="$PWD/Proj/src${PYTHONPATH:+:$PYTHONPATH}"
+export OMP_NUM_THREADS=1
+cfg="$PWD/Proj/configs/explore_a/mixed_h5_da2.yaml"
+perf="$PWD/Proj/outputs/explore_a/my_routing_measurement"
+# 完整纯本机任务，提供头/评分等开销H。
+python -m explore_a.audits.routing_benchmark --config "$cfg" \
+  --output "$perf/host_full" --candidates 0:0 --steps 16 --rounds 2 --balanced-sources
+# 新的固定性能样本；先检查缓存齐全子集，三条纯路径使用完全相同输入。
+python -m explore_a.audits.routing_benchmark --config "$cfg" \
+  --output "$perf/paths" --candidates 0:0 1:0 0:1 --steps 16 --rounds 2 \
+  --frozen-only --cache-available-only --sample-seed 2027 --balanced-sources
+python -m explore_a.audits.routing_balance --coarse "$perf/host_full/summary.json" \
+  --paths "$perf/paths/summary.json" --output "$perf/balance.json"
+# 对照当前示例计算出的训练比例；新机器按balance.json替换候选值。
+python -m explore_a.audits.routing_benchmark --config "$cfg" \
+  --output "$perf/confirm_train" --candidates 0.2:0.28 0.38:0.49 \
+  --phases train --steps 16 --rounds 2 --balanced-sources --sample-seed 2028
+python -m explore_a.audits.routing_benchmark --config "$cfg" \
+  --output "$perf/confirm_eval" --candidates 0.2:0.28 0.42:0.46 \
+  --phases dev test --steps 16 --rounds 2 --balanced-sources --sample-seed 2028
+```
+
+`--sample-seed`只选择性能样本，正式固定dev与训练采样均不改变。新dev性能样本
+始终来自公共固定dev内部。test只测吞吐，精度结果丢弃，不据此选择模型或损失。
+同一输出目录可恢复已提交完成的trial；改变配置/样本/协议应使用新的性能目录。

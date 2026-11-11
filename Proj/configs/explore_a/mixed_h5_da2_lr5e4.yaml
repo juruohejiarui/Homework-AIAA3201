@@ -1,0 +1,6 @@
+extends: mixed_h5_da2.yaml
+paths:
+  runs: outputs/explore_a/mixed_h5_balanced/runs_da2_guided_30k_lr5e4
+training:
+  seed: 2026
+  learning_rate: 0.0005

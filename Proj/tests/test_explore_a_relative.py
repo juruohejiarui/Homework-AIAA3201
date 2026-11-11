@@ -1,5 +1,6 @@
 """Relative-field semantics, conditional bounds and loss-only gauges; CPU synthetic data."""
 from dataclasses import replace
+from pathlib import Path
 
 import pytest
 import torch
@@ -147,13 +148,13 @@ def test_da_engine_online_training_resume_and_frozen_gradients(tmp_path, monkeyp
     assert not list(tmp_path.rglob('*.npz'))
 
 
+@pytest.mark.parametrize('flow', ['farneback', 'raft'])
 def test_complete_dev_oracle_resume_without_frozen_recompute(tmp_path, monkeypatch,
-                                                            fake_backbones):
+                                                            fake_backbones, flow):
     import numpy as np
     from test_explore_a_pipeline import online_experiment
     from explore_a.evaluation.relative_oracle import run
     config = online_experiment(tmp_path)
-    config['frontend'] = {'name':'da2'}
     config['frontend'] = {'name':'da2'}
     config['training']['dev_sample_fraction'] = .1
     class Frozen:
@@ -165,15 +166,31 @@ def test_complete_dev_oracle_resume_without_frozen_recompute(tmp_path, monkeypat
                 rgb.shape[:2])
     frozen = Frozen()
     monkeypatch.setattr('explore_a.frontend.make', lambda config: frozen)
+    from explore_a.online.factory import make_runtime
+    requested = []
+    def runtime(config, flows, teacher, device):
+        requested.append(flows)
+        return make_runtime(config, flows, teacher, device)
+    monkeypatch.setattr('explore_a.evaluation.relative_oracle.make_runtime', runtime)
     output = tmp_path/'oracle'
-    first = run(config, output, 'cpu')
+    first = run(config, output, 'cpu', flow=flow)
     calls = frozen.calls
-    second = run(config, output, 'cpu')
+    second = run(config, output, 'cpu', flow=flow)
+    assert requested == [[flow]]
+    assert first['protocol']['flow'] == flow
     assert first['branches'] == second['branches']
     assert frozen.calls == calls
     assert len(first['protocol']['sample_ids']) == 1
-    assert len(first['branches']) == 16
+    assert len(first['branches']) == 32
     assert not list(tmp_path.rglob('*.npz'))
+    with pytest.raises(ValueError, match='another input/score protocol'):
+        run(config, output, 'cpu', flow='raft' if flow == 'farneback' else 'farneback')
+    if flow == 'raft':
+        Path(config['weights']['raft']).write_bytes(b'changed RAFT weights')
+        with pytest.raises(ValueError, match='another input/score protocol'):
+            run(config, output, 'cpu', flow=flow)
+    assert requested == [[flow]]
+    assert frozen.calls == calls
 
 
 def test_shared_affine_change_preserves_normalized_model_inputs(relative_pair):

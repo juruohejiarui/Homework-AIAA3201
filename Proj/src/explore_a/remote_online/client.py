@@ -12,12 +12,14 @@ from explore_a.remote_online.wire import IdentityError, VERSION, receive, send
 
 class Client:
     def __init__(self, config, flows, teacher, policy, command=None):
+        self.config, self.auto_sync = config, command is None
         self.policy, self.spec = policy, specification(config, flows, teacher)
         self.hello = {"type": "hello", "version": VERSION, "spec": self.spec,
                       "config": portable_config(config, self.spec),
                       "flows": list(flows), "teacher": teacher,
                       "send_ahead": policy.get("send_ahead", 2)}
         environment = ["env", "XFORMERS_DISABLED=1",
+                       "OMP_NUM_THREADS=" + os.environ.get("OMP_NUM_THREADS", "1"),
                        "PYTHONPATH=" + policy["project"] + "/Proj/src", policy["python"],
                        "-u", "-m", "explore_a.remote_online.service"]
         self.command = command or ["ssh", "-T", "-o", "BatchMode=yes", "-o", "Compression=no",
@@ -101,6 +103,9 @@ class Client:
             raise OSError(message) from self.failure
         if self.ready:
             return
+        if self.auto_sync:
+            from explore_a.remote_online.sync import ensure_synchronized
+            ensure_synchronized(self.config)
         with self.lock:
             if self.closed:
                 raise OSError("Remote inference client is closed")

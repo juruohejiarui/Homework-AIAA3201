@@ -17,7 +17,10 @@ def field_scores(prediction, target, valid, config, dataset):
         from explore_a.training.relative import scoring_depth
         prediction = scoring_depth(prediction, target, valid)
     values = frame_scores(prediction, target, valid, limits=depth_range(dataset, config["data"]))
-    return {"ssi_"+k: v for k, v in values.items()} if relative(config) else values
+    if relative(config):
+        from explore_a.evaluation.alignment import named
+        return {**{"ssi_"+k: v for k, v in values.items()}, **named(values, "img")}
+    return values
 
 
 def frame_scores(prediction, target, valid, limits=None, all_metrics=True):
@@ -54,6 +57,10 @@ class MetricSummary:
             self.metrics[key].append(metrics)
             self.counts[key]["valid_frames"] += 1
             self.counts[key]["valid_pixels"] += int(valid_pixels)
+
+    def extend_metrics(self, row, metrics):
+        key = (row["dataset"], row["sequence"], row["camera"])
+        self.metrics[key].append(metrics)
 
     def finish(self):
         sequences = [{"dataset": key[0], "sequence": key[1], "camera": key[2],

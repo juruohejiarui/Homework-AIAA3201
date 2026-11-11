@@ -1,5 +1,6 @@
 """Train small heads while frozen models compute each sampled raw pair on demand."""
 from collections import Counter
+from contextlib import closing
 import copy
 import gc
 import math
@@ -62,6 +63,7 @@ def _run(config, flow, occlusion, fusion, device):
     root = Path(config["paths"]["runs"]) / name
     from explore_a.cache.read_policy import enabled, settings as cache_read_settings
     from explore_a.remote_online.policy import settings as remote_settings
+    from explore_a.online.routing import profiles
     message("TRAIN INPUT", {"config": config.get("config_path"),
                             "frontend": config.get("frontend", {"name": "da2"}),
                             "backend": config.get("execution", {}).get("backend", "online"),
@@ -70,12 +72,20 @@ def _run(config, flow, occlusion, fusion, device):
                             "cache_read": cache_read_settings(config) if enabled(config) else None,
                             "remote_online": remote_settings(config),
                             "evaluation_backend": "same",
+                            "routing": profiles(config),
                             "results": str(root)})
     seed_everything(settings["seed"])
     manifest = load_manifest(config)
     provenance = input_identity(config, flow)
     needs_teacher = occlusion == "mftiq"
-    runtime = make_runtime(config, [flow], needs_teacher, device)
+    with closing(make_runtime(config, [flow], needs_teacher, device)) as runtime:
+        _session(config, flow, occlusion, fusion, device, root, manifest, provenance, runtime)
+
+
+def _session(config, flow, occlusion, fusion, device, root, manifest, provenance, runtime):
+    settings = config["training"]
+    needs_teacher = occlusion == "mftiq"
+    from explore_a.online.routing import profiles
     # Random temporary initialization inside frozen libraries must not change head initialization.
     seed_everything(settings["seed"])
     selected_rows = {split: [r for r in manifest["samples"] if r["split"] == split]
@@ -92,10 +102,19 @@ def _run(config, flow, occlusion, fusion, device):
     # Observation frequency is not an optimization hyperparameter; online checkpoints can resume.
     training_identity = {k: v for k, v in settings.items()
                          if k not in {"microbatch", "workers", "heldout_every"}}
-    identity = {"input": provenance, "training": training_identity,
+    from explore_a.training.dev_subset import selection_record
+    dev_record = selection_record(selected_rows["dev"])
+    write_json(root / "dev_selection.json", dev_record)
+    identity = {"dev_selection": {k: dev_record[k] for k in ("protocol", "sha256", "pairs")},
+                "input": provenance, "training": training_identity,
                 "experiment": {"flow": flow,
                                "occlusion": occlusion,
                                "fusion": fusion}}
+    identity["evaluation_protocol"] = {
+        "schema": "shared-case-v1", "component_routing": "immutable-input-v1",
+        "case_routing": "weighted-cases-v1",
+        "execution": config.get("evaluation_execution", {}),
+        "routing": profiles(config)["evaluation"], "seed": config["data"]["seed"]}
     from explore_a.frontend import relative, metadata
     if relative(config):
         identity["frontend"] = metadata(config)
@@ -114,9 +133,40 @@ def _run(config, flow, occlusion, fusion, device):
         checkpoint = load_checkpoint(last, model, optimizer, scheduler, scaler, identity)
         start, best = checkpoint["step"], checkpoint["best"]
         old_fraction = checkpoint["identity"].get("training", {}).get("dev_sample_fraction", 1.)
-        if old_fraction != settings.get("dev_sample_fraction", 1.):
-            best = float("inf")
-            message("DEV subset changed; best score restarts with the next dev evaluation.")
+        if (old_fraction != settings.get("dev_sample_fraction", 1.) or
+                checkpoint["identity"].get("dev_selection") != identity["dev_selection"] or
+                checkpoint["identity"].get("evaluation_protocol") != identity["evaluation_protocol"]):
+            previous_best = root / "best.pt"
+            archives = list(root.glob(f"best-before-dev-{start}*.pt"))
+            historical_path = (previous_best if previous_best.exists() else
+                               max(archives, key=lambda p:p.stat().st_mtime_ns) if archives else None)
+            previous_state = (torch.load(historical_path, map_location="cpu", weights_only=False)
+                              if historical_path is not None else None)
+            if previous_best.exists():
+                from explore_a.training.checkpoint import archive_checkpoint
+                archive_checkpoint(previous_best, root/f"best-before-dev-{start}.pt")
+            message("DEV protocol changed; evaluating resumed weights on the fixed new cohort.")
+            from explore_a.online.lazy import preserve_rng
+            with preserve_rng(device):
+                best = validate(model, datasets["dev"], config, device, occlusion, step=start)
+            historical_score = float("inf")
+            if previous_state is not None:
+                with preserve_rng(device):
+                    historical = make_fusion(fusion, config).to(device)
+                    historical.load_state_dict(previous_state["model"])
+                    historical_score = validate(historical, datasets["dev"], config, device,
+                                                occlusion, step=previous_state["step"])
+                    del historical
+            if historical_score < best:
+                best = historical_score
+                previous_state.update(best=best, identity=identity)
+                pending = previous_best.with_suffix(".tmp")
+                torch.save(previous_state, pending)
+                pending.replace(previous_best)
+            else:
+                save_checkpoint(previous_best, model, optimizer, scheduler, scaler,
+                                start, best, identity)
+            save_checkpoint(last, model, optimizer, scheduler, scaler, start, best, identity)
         # Keep optimizer moments while applying the current config's LR and decay.
         scheduler.base_lrs = [settings["learning_rate"] for _ in optimizer.param_groups]
         for group in optimizer.param_groups:
@@ -135,8 +185,7 @@ def _run(config, flow, occlusion, fusion, device):
                                      device=device, observer=observer)
             monitor.maybe_run(model, start)
         if start >= settings["steps"]:
-            message(f"Already complete: {name}")
-            runtime.close()
+            message(f"Already complete: {root.name}")
             return
         _updates(config, datasets, model, optimizer, scheduler, scaler, identity,
                  root, start, best, amp, occlusion, device, monitor, observer)
@@ -158,11 +207,12 @@ def _updates(config, datasets, model, optimizer, scheduler, scaler, identity,
             _loop(config, datasets, model, optimizer, scheduler, scaler, identity,
                   root, start, best, amp, occlusion, device, monitor, observer,
                   iterator, accumulation, began, progress)
+    except BaseException:
+        # Abort owned RPCs before closing input generators that may still have readers.
+        datasets["train"].runtime.close()
+        raise
     finally:
-        try:
-            iterator.close()
-        finally:
-            datasets["train"].runtime.close()
+        iterator.close()
 
 
 def _loop(config, datasets, model, optimizer, scheduler, scaler, identity,

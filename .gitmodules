@@ -7,3 +7,6 @@
 [submodule "Proj/third_party/dinov2"]
 	path = Proj/third_party/dinov2
 	url = https://github.com/facebookresearch/dinov2.git
+[submodule "Proj/third_party/UniDepth"]
+	path = Proj/third_party/UniDepth
+	url = https://github.com/lpiccinelli-eth/UniDepth.git

@@ -26,6 +26,21 @@ def strings(value):
             yield from strings(child)
 
 
+def frozen_diagnostic(path, data):
+    """Only an explicit, matching per-result scope exempts frozen frontend diagnostics."""
+    scope_path = path.parent / "evaluation_scope.json"
+    if not isinstance(data, dict) or not scope_path.is_file():
+        return False
+    scope = read_json(scope_path)
+    return (scope.get("schema") == 1
+            and scope.get("role") == "frozen_frontend_diagnostic"
+            and scope.get("result") == path.name
+            and scope.get("uses_fusion_checkpoint") is False
+            and bool(scope.get("model")) and scope["model"] == data.get("model")
+            and bool(scope.get("weight_sha256"))
+            and scope["weight_sha256"] == data.get("weight_sha256"))
+
+
 def evaluation_history(roots=None):
     """Conservatively exclude every drive named in past evaluation identities/results."""
     sources = {}
@@ -44,6 +59,8 @@ def evaluation_history(roots=None):
             if path.name not in {"manifest.json", "run.json", "metrics.json", "complete.json"}:
                 continue
             data = read_json(path)
+            if frozen_diagnostic(path, data):
+                continue
             if isinstance(data, dict) and "experiment" in data and "temporal_note" in data:
                 continue  # This implementation's development evaluations are not old Part 1/2.
             for text in strings(data):

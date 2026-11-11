@@ -19,8 +19,8 @@ def make_fusion(name, config):
     raise ValueError(f"Unknown fusion model: {name}")
 
 
-def predict(model, data, config, occlusion):
-    geometry = fusion_geometry(data, config)
+def predict(model, data, config, occlusion, geometry=None):
+    geometry = fusion_geometry(data, config) if geometry is None else geometry
     if occlusion == "rule":
         visibility = torch.ones_like(data["current_depth"])
     elif occlusion == "mftiq":
@@ -28,7 +28,10 @@ def predict(model, data, config, occlusion):
     else:
         raise ValueError(f"Unknown occlusion strategy: {occlusion}")
     inputs = FusionInputs.from_pair(data, geometry, visibility)
-    return model(inputs), geometry
+    from depth_project.models.api import ModelInput, fusion_forward
+    result = fusion_forward(model, ModelInput(specific_in={"fusion_inputs": inputs}))
+    return {"depth": result.prediction, "prediction_kind": result.representation,
+            **result.specific_out}, geometry
 
 
 def fusion_geometry(data, config):

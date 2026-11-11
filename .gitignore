@@ -225,6 +225,12 @@ lab_week*/output/
 *_gpt/
 lab_week*/*.zip
 lab_week*/*.pdf
+# Rebuildable submission archives and validation masks (keep source inputs).
+/*_submission.zip
+/lab_week*/validation/*.npy
+
+# Local command-line leftovers and plotting scratch files.
+/.local_artifacts/
 
 # AIAA3201 Project 3 local artifacts
 /Proj/data
@@ -245,3 +251,5 @@ lab_week*/*.pdf
 /Proj/storage/nyuv2/*.aria2.txt
 /Proj/storage/nyuv2/*.verified.json
 /Proj/storage/nyuv2/*.metadata/
+/Proj/storage/eth3d/*_plan.json
+/Proj/storage/eth3d/archive_header_inventory.json

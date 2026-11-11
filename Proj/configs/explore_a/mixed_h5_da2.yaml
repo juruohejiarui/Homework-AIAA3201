@@ -1,14 +1,18 @@
 # Shared DA-V2-S training and frozen inference settings.
 execution:
   backend: hybrid
+  routing:
+    train: {cache: 0.38, remote: 0.49}
+    # Conditional among host-owned cases: global cache share is about 0.80 * 0.38.
+    evaluation: {cache: 0.30, remote: 0.40}
+evaluation_execution:
+  remote_cases: 0.20
 cache:
   root: ~/Documents/ResourcesLow/cache/Homework-AIAA3201
 cache_read:
-  probability: 0.2
   max_inflight: 4
 remote_online:
   enabled: true
-  probability: 0.28
   host: Dgx-e
   project: /home/hjr/Documents/Projects/Homework-AIAA3201
   python: /home/hjr/miniconda3/envs/aiaa3201/bin/python
@@ -50,14 +54,14 @@ geometry:
   raft_updates: 12
 training:
   steps: 30000
-  effective_batch: 8
-  microbatch: 8
+  effective_batch: 16
+  microbatch: 16
   learning_rate: 0.0001
   weight_decay: 0.0001
   warmup_steps: 500
   gradient_clip: 1.0
   validate_every: 2000
-  dev_sample_fraction: 0.1
+  dev_sample_fraction: 0.1  # Total budget; fixed 3:3:2 continuous clips, not sparse frames.
   heldout_every: 0
   save_every: 1000
   log_every: 1

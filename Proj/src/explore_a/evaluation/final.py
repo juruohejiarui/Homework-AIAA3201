@@ -47,4 +47,5 @@ def compare(config, guided, refine, final, split="test", output=None, device="cu
         spec = checkpoint_spec("final_flow", final, ablation=ablation)
         specs.append(spec)
     specs.append(specification("farneback", baseline="raw"))
-    return evaluate_specs(config, specs, split, device, output)
+    from explore_a.evaluation.comparison import cohort
+    return evaluate_specs(config, specs, split, device, output, rows=cohort(config, split))

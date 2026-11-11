@@ -1,24 +1,24 @@
-"""DA conditional bounds on the complete fixed dev subset, not a learned method result."""
+"""Complete fixed continuous-dev oracle with resumable per-clip inference staging."""
 import argparse
-from collections import Counter
-import copy
+from collections import Counter, defaultdict
 import json
 from pathlib import Path
 
+import numpy as np
 import torch
 
 from depth_project.io import read_json, write_json
-from depth_project.paths import OUTPUTS
 from explore_a.config import file_identity, load_config
 from explore_a.data.prepare import load_manifest
-from explore_a.evaluation.depth import MetricSummary, field_scores
-from explore_a.frontend import metadata, relative
+from explore_a.data.reading import depth_range
+from explore_a.evaluation.depth import MetricSummary
+from explore_a.evaluation.oracle_scoring import BRANCHES, score_clip
+from explore_a.frontend import metadata
 from explore_a.geometry.relative import affine
 from explore_a.online.factory import make_runtime
 from explore_a.online.loading import OnlinePairs
-from explore_a.training.dev_subset import select_dev
+from explore_a.training.dev_subset import select_dev, selection_record
 from explore_a.training.prediction import fusion_geometry
-from explore_a.training.relative import gauge, main_loss
 
 
 @torch.no_grad()
@@ -51,146 +51,178 @@ def candidates(data, geometry, fixed, fraction=.1):
     }
 
 
-def run(config, output, device="cuda"):
-    if not relative(config):
-        raise ValueError("DA oracle requires frontend.name: da2")
-    config = copy.deepcopy(config)
-    full = [r for r in load_manifest(config)["samples"] if r["split"] == "dev"]
-    rows = select_dev(full, config["training"]["dev_sample_fraction"], config["data"]["seed"])
-    output = Path(output)
-    protocol = {"schema": 1, "frontend": metadata(config), "sample_ids": [r["id"] for r in rows],
-                "counts": dict(Counter(r["dataset"] for r in rows)),
-                "manifest": file_identity(config["paths"]["manifest"]),
-                "weights": file_identity(config["weights"]["da2"]),
-                "data": config["data"], "geometry": config["geometry"],
-                "backend": "unified frozen pipeline; one shared pass; no prediction writes",
-                "score": "Fixed baseline->GT gauge, common GT/FB/aligned-history mask; "
-                         "secondary full-GT per-image SSI with exact fallback",
-                "fraction": .1}
-    path = output / "protocol.json"
-    if path.exists() and read_json(path) != protocol:
-        raise ValueError("Oracle output belongs to another input/score protocol")
-    write_json(path, protocol)
-    log, records = output / "frames.jsonl", {}
-    if log.exists():
-        with log.open("rb+") as reader:
-            while line := reader.readline():
-                try:
-                    record = json.loads(line)
-                except json.JSONDecodeError:
-                    if reader.read(1):
-                        raise ValueError("Corrupt oracle record before final line")
-                    reader.truncate(reader.tell()-len(line))
-                    break
-                records[record["id"]] = record
-    if set(records) - {r["id"] for r in rows}:
-        raise ValueError("Oracle log contains IDs outside the fixed dev cohort")
-    remaining = [r for r in rows if r["id"] not in records]
-    if remaining:
-        runtime = make_runtime(config, ["farneback"], False, device)
-        dataset = OnlinePairs(config, remaining, runtime, "farneback", phase="dev")
-        iterator = dataset.iter_batches()
-        from explore_a.observability.progress import Progress
-        try:
-            with log.open("a", buffering=1) as stream, torch.no_grad(), \
-                    Progress(config, "DA DEV ORACLE", len(rows), len(records)) as progress:
-                for indices, data in iterator:
-                    geometry, fixed = fusion_geometry(data, config), gauge(data)
-                    predictions = candidates(data, geometry, fixed)
-                    for local, index in enumerate(indices):
-                        row = remaining[index]
-                        valid = fixed["valid"][local]
-                        fixed_i = {k: v[local:local+1] for k, v in fixed.items()}
-                        common = valid & geometry["rule"][local]
-                        fixed_i["valid"] = common[None]
-                        primary, secondary = {}, {}
-                        for name, prediction in predictions.items():
-                            loss = main_loss(prediction[local:local+1], fixed_i)
-                            primary[name] = {"inverse_loss": float(loss)} if common.any() else None
-                            secondary[name] = field_scores(prediction[local], data["gt"][local],
-                                                           valid, config, row["dataset"])
-                        if common.any():
-                            values = {k: v["inverse_loss"] for k, v in primary.items()}
-                            if (values["oracle_aligned"] > values["raw"]+1e-6 or
-                                    values["oracle_additive10"] > values["oracle_aligned"]+1e-6):
-                                raise AssertionError("Oracle reachable-set nesting violated")
-                        use = valid & geometry["rule"][local]
-                        truth = fixed["target"][local]
-                        current = data["current_depth"][local]
-                        history = geometry["historical"][local]
-                        denom = use.sum().clamp_min(1)
-                        above, below = (current > truth) & (history > truth), (
-                            current < truth) & (history < truth)
-                        projected = predictions["oracle_additive10"][local]
-                        low, high = torch.minimum(current, history), torch.maximum(current, history)
-                        span = .1*geometry["field_scale"][local]
-                        touches = (projected <= (low-span).clamp_min(0)+1e-6) | (
-                            projected >= high+span-1e-6)
-                        diagnostics = {
-                            "rule_coverage": float(use.sum()/valid.sum().clamp_min(1)),
-                            "alignment_accepted": float(geometry["alignment_accepted"][local]),
-                            "alignment_scale": float(geometry["alignment_scale"][local]),
-                            "alignment_shift": float(geometry["alignment_shift"][local]),
-                            "both_high": float((use & above).sum()/denom),
-                            "both_low": float((use & below).sum()/denom),
-                            "inside_interval": float((use & ~(above | below)).sum()/denom),
-                            "correction_boundary": float((use & touches).sum()/denom)}
-                        record = {"id": row["id"], "primary": primary, "secondary": secondary,
-                                  "common_pixels": int(common.sum()),
-                                  "valid_pixels": int(valid.sum()), "diagnostics": diagnostics}
-                        stream.write(json.dumps(record, allow_nan=False)+"\n")
-                        records[row["id"]] = record
-                        progress.update()
-        finally:
-            iterator.close()
-            runtime.close()
+
+def stage_path(output, row):
+    from hashlib import sha256
+    return output / "staging" / (sha256(row["id"].encode()).hexdigest()+".npy")
+
+
+def summarize(rows, records, protocol, clips):
     summaries, diagnostics = {}, MetricSummary()
     for row in rows:
         record = records[row["id"]]
-        for category in ("primary", "secondary"):
+        for category in ("primary", "primary_video", "secondary", "secondary_video"):
             for name, metrics in record[category].items():
                 summary = summaries.setdefault(category+"/"+name, MetricSummary())
-                count = record["common_pixels"] if category == "primary" else record["valid_pixels"]
+                count = record["common_pixels"] if category.startswith("primary") else (
+                    record["valid_pixels"])
                 summary.add(row, metrics, count)
         diagnostics.add(row, record["diagnostics"], record["valid_pixels"])
     completed = {}
     for key, summary in summaries.items():
-        if any(value["valid_frames"] for value in summary.counts.values()):
-            completed[key] = summary.finish()
-        else:
-            completed[key] = {"by_dataset": {}, "macro_mean": {}, "unavailable": "empty mask"}
-    result = {"protocol": protocol, "branches": completed,
-              "diagnostics": diagnostics.finish(),
-              "notice": "Conditional oracle only; secondary refitted SSI is not a strict bound"}
-    raw = completed["primary/raw"]
+        has_frames = any(v["valid_frames"] for v in summary.counts.values())
+        completed[key] = (summary.finish() if has_frames
+                          else {"unavailable": "empty mask", "by_dataset": {}, "macro_mean": {}})
     gains = {}
-    if not raw.get("unavailable"):
-        base = {tuple(r[k] for k in ("dataset", "sequence", "camera")): r["metrics"]
-                for r in raw["sequences"]}
-        for name, summary in completed.items():
-            if not name.startswith("primary/") or summary.get("unavailable"):
-                continue
-            sequences = []
-            for row in summary["sequences"]:
-                key = tuple(row[k] for k in ("dataset", "sequence", "camera"))
-                if "inverse_loss" in row["metrics"] and "inverse_loss" in base[key]:
-                    sequences.append({"dataset": key[0], "sequence": key[1], "camera": key[2],
-                        "loss_reduction": base[key]["inverse_loss"]-row["metrics"]["inverse_loss"]})
-            gains[name] = {"sequences": sequences, "by_dataset": {
-                source: raw["by_dataset"][source]["inverse_loss"]-metrics["inverse_loss"]
-                for source, metrics in summary["by_dataset"].items() if "inverse_loss" in metrics}}
-    result["primary_gains"] = gains
-    write_json(output / "summary.json", result)
-    lines = ["# DA dev oracle", "", "Full fixed subset; conditional bounds, not learned results.",
-             "", "| Branch | KITTI | TUM | NYUv2 | Macro inverse loss |",
+    for scope in ("primary", "primary_video"):
+        raw = completed[scope+"/raw"]
+        for name in BRANCHES:
+            branch = completed[scope+"/"+name]
+            gains[scope+"/"+name] = {"by_dataset": {
+                source: values["inverse_loss"]-branch["by_dataset"][source]["inverse_loss"]
+                for source, values in raw["by_dataset"].items() if "inverse_loss" in values}}
+    for clip in clips:
+        selected = [records[sample] for sample in clip["sample_ids"]]
+        clip["branches"] = {}
+        for category in ("primary", "primary_video", "secondary", "secondary_video"):
+            for name in BRANCHES:
+                values = [record[category][name] for record in selected
+                          if record[category][name] is not None]
+                keys = {key for value in values for key in value}
+                clip["branches"][category+"/"+name] = {
+                    key: float(np.mean([v[key] for v in values if key in v])) for key in keys}
+    descriptions = {
+        "primary": "Image baseline-fixed gauge; per-pixel oracle targets in this gauge",
+        "primary_video": "Clip baseline-fixed gauge; per-pixel oracle targets in this gauge",
+        "secondary": "Image-gauge oracle predictions, independently refitted img/video scores",
+        "secondary_video": "Clip-gauge oracle predictions, independently refitted img/video scores"}
+    return {"protocol": protocol, "branches": completed, "primary_gains": gains,
+            "category_descriptions": descriptions,
+            "diagnostics": diagnostics.finish(), "clips": clips,
+            "notice": "Conditional output-range bounds, not network learnability; secondary "
+                      "refitted image/video scores are not strict bounds"}
+
+
+def markdown(result):
+    lines = ["# DA continuous dev oracle", "",
+             f"Flow: {result['protocol']['flow']}; occlusion: rule.", "", result["notice"], "",
+             "| Fixed gauge / branch | KITTI | NYUv2 | TUM | Macro inverse loss |",
              "|---|---:|---:|---:|---:|"]
     for key, value in result["branches"].items():
-        if key.startswith("primary/") and not value.get("unavailable"):
+        if key.startswith("primary") and not value.get("unavailable"):
             columns = [value["by_dataset"].get(s, {}).get("inverse_loss", float("nan"))
-                       for s in ("kitti", "tum", "nyuv2")]
+                       for s in ("kitti", "nyuv2", "tum")]
             lines.append(f"| {key} | " + " | ".join(f"{v:.6f}" for v in columns)
-                         + f" | {value['macro_mean']['inverse_loss']:.6f} |")
-    (output / "summary.md").write_text("\n".join(lines)+"\n")
+                         + f" | {value['macro_mean'].get('inverse_loss', float('nan')):.6f} |")
+    lines += ["", "Full fixed-map depth metrics, secondary dual alignment, ordinal scores,",
+              "per-sequence/per-clip metrics and coverage are in summary.json and clips/*.json."]
+    return "\n".join(lines)+"\n"
+
+
+@torch.no_grad()
+def run(config, output, device="cuda", flow="farneback"):
+    if flow not in ("farneback", "raft"):
+        raise ValueError(f"Unsupported oracle flow: {flow}")
+    rows = select_dev([r for r in load_manifest(config)["samples"] if r["split"] == "dev"],
+                      config["training"]["dev_sample_fraction"], config["data"]["seed"])
+    output = Path(output)
+    cohort = selection_record(rows)
+    protocol = {"schema": 2, "frontend": metadata(config), **cohort,
+                "counts": dict(Counter(r["dataset"] for r in rows)),
+                "manifest": file_identity(config["paths"]["manifest"]),
+                "weights": file_identity(config["weights"]["da2"]),
+                "data": config["data"], "geometry": config["geometry"],
+                "flow": flow, "occlusion": "rule", "fraction": .1,
+                "score": "baseline-fixed image and clip gauges; common mask + full GT; "
+                         "secondary independently refitted image/video SSI + raw ordinal"}
+    if flow == "raft":
+        protocol["flow_weights"] = file_identity(config["weights"]["raft"])
+    path = output / "protocol.json"
+    if path.exists() and read_json(path) != protocol:
+        raise ValueError("Oracle output belongs to another input/score protocol")
+    write_json(path, protocol)
+    groups = defaultdict(list)
+    for row in rows:
+        groups[row.get("evaluation_clip", row["sequence"])].append(row)
+    records, receipts, pending = {}, [], []
+    for i, (clip, selected) in enumerate(groups.items()):
+        receipt = output / "clips" / f"{i:04d}.json"
+        if receipt.exists():
+            saved = read_json(receipt)
+            if saved["sample_ids"] != [r["id"] for r in selected]:
+                raise ValueError("Oracle clip IDs differ")
+            records.update({r["id"]: r for r in saved["records"]})
+            receipts.append({k: v for k, v in saved.items() if k != "records"})
+            for row in selected:
+                stage_path(output, row).unlink(missing_ok=True)
+                stage_path(output, row).with_suffix(".json").unlink(missing_ok=True)
+        else:
+            pending.append((i, clip, selected))
+    remaining = [r for _, _, selected in pending for r in selected
+                 if not (stage_path(output, r).exists() and
+                         stage_path(output, r).with_suffix(".json").exists())]
+    runtime, iterator = None, None
+    from explore_a.observability.progress import Progress
+    try:
+        if remaining:
+            runtime = make_runtime(config, [flow], False, device)
+            dataset = OnlinePairs(config, remaining, runtime, flow, phase="dev")
+            iterator = dataset.iter_batches()
+        with Progress(config, "DA DEV ORACLE", len(rows), len(rows)-len(remaining)) as progress:
+            if iterator is not None:
+                for indices, data in iterator:
+                    geometry = fusion_geometry(data, config)
+                    for local, index in enumerate(indices):
+                        row = remaining[index]
+                        packed = torch.cat((data["current_depth"][local],
+                                            geometry["historical"][local],
+                                            geometry["unaligned_historical"][local],
+                                            data["gt"][local], data["gt_valid"][local].float(),
+                                            geometry["rule"][local].float(),
+                                            torch.ones_like(data["gt"][local])*
+                                            geometry["field_scale"][local]), dim=0)
+                        path = stage_path(output, row)
+                        path.parent.mkdir(parents=True, exist_ok=True)
+                        temporary = path.with_suffix(".part")
+                        with temporary.open("wb") as stream:
+                            np.save(stream, packed.float().cpu().numpy(), allow_pickle=False)
+                        temporary.replace(path)
+                        write_json(path.with_suffix(".json"), {
+                            "alignment_accepted": float(geometry["alignment_accepted"][local]),
+                            "alignment_scale": float(geometry["alignment_scale"][local]),
+                            "alignment_shift": float(geometry["alignment_shift"][local])})
+                        progress.update()
+        # Frozen inference is complete before CPU scoring; staging permits interruption recovery.
+        if iterator is not None:
+            iterator.close()
+            iterator = None
+        if runtime is not None:
+            runtime.close()
+            runtime = None
+        for i, clip, selected in pending:
+            paths = [stage_path(output, r) for r in selected]
+            measured, mapping = score_clip(selected, paths,
+                depth_range(selected[0]["dataset"], config["data"]))
+            for record, stage in zip(measured, paths):
+                record["diagnostics"].update(read_json(stage.with_suffix(".json")))
+            saved = {"clip": clip, "sample_ids": [r["id"] for r in selected],
+                     "video_gauge": mapping, "records": measured}
+            # Commit a complete clip before removing its resumable CPU staging.
+            write_json(output / "clips" / f"{i:04d}.json", saved)
+            receipts.append({k: v for k, v in saved.items() if k != "records"})
+            records.update({r["id"]: r for r in measured})
+            for stage in paths:
+                stage.unlink()
+                stage.with_suffix(".json").unlink(missing_ok=True)
+            print("ORACLE CLIP", i+1, "/", len(groups), selected[0]["dataset"], flush=True)
+    finally:
+        if iterator is not None:
+            iterator.close()
+        if runtime is not None:
+            runtime.close()
+    result = summarize(rows, records, protocol, sorted(receipts, key=lambda r: r["clip"]))
+    write_json(output / "summary.json", result)
+    (output / "summary.md").write_text(markdown(result))
     return result
 
 
@@ -199,8 +231,9 @@ def main():
     parser.add_argument("--config", required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--device", choices=("cpu", "cuda"), default="cuda")
+    parser.add_argument("--flow", choices=("farneback", "raft"), default="farneback")
     args = parser.parse_args()
-    run(load_config(args.config), args.output, args.device)
+    run(load_config(args.config), args.output, args.device, flow=args.flow)
 
 
 if __name__ == "__main__":

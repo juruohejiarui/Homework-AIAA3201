@@ -117,11 +117,12 @@ class RunObserver:
 
     def __exit__(self, kind, value, traceback):
         try:
-            with evaluation_state():
-                if self.options["plots"]:
-                    plot_history(self.root, self.history)
-                else:
-                    export_csv(self.root, self.history)
+            if kind is not KeyboardInterrupt:
+                with evaluation_state():
+                    if self.options["plots"]:
+                        plot_history(self.root, self.history)
+                    else:
+                        export_csv(self.root, self.history)
         finally:
             try:
                 if self.writer is not None:
