@@ -1,0 +1,4 @@
+PASS: RNN random rectangular weights match scalar reference.
+PASS: Attention batch/unequal lengths/value widths, probabilities and scalar reference.
+PASS: Positional encoding nonzero positions, odd/even widths, broadcast, addition and buffer.
+All 3 additional check groups passed.

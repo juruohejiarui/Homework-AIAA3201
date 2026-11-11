@@ -1,0 +1,23 @@
+{
+  "original_backup_hashes_verified": true,
+  "unchanged_provided_files_verified": true,
+  "all_original_comments_preserved": true,
+  "todo_blocks": 6,
+  "real_output_checks_passed": true,
+  "report_pages": 1,
+  "report_text_checked": true,
+  "report_visually_reviewed": true,
+  "three_outputs_visually_reviewed": true,
+  "final_zip_extracted_rerun_passed": true,
+  "archive_members": [
+    "task1_detection.py",
+    "task2_segmentation.py",
+    "task3_sam.py",
+    "report.pdf",
+    "output/task1_detection_result.jpg",
+    "output/task2_segmentation_result.jpg",
+    "output/task3_sam_real_result.jpg"
+  ],
+  "archive_sha256": "208bbedb7f41f6b8cd422172330d4b6969fbb371a8c3ef3d5bac904141a026e1",
+  "ready_for_submission": true
+}

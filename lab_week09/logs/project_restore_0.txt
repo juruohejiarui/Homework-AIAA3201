@@ -1,0 +1,21 @@
+Found existing installation: transformers 4.57.1
+Uninstalling transformers-4.57.1:
+  Successfully uninstalled transformers-4.57.1
+Found existing installation: tokenizers 0.22.2
+Uninstalling tokenizers-0.22.2:
+  Successfully uninstalled tokenizers-0.22.2
+Found existing installation: regex 2026.11.9
+Uninstalling regex-2026.11.9:
+  Successfully uninstalled regex-2026.11.9
+Found existing installation: requests 2.34.2
+Uninstalling requests-2.34.2:
+  Successfully uninstalled requests-2.34.2
+Found existing installation: urllib3 2.8.0
+Uninstalling urllib3-2.8.0:
+  Successfully uninstalled urllib3-2.8.0
+Found existing installation: charset-normalizer 3.5.2
+Uninstalling charset-normalizer-3.5.2:
+  Successfully uninstalled charset-normalizer-3.5.2
+Found existing installation: certifi 2026.10.23
+Uninstalling certifi-2026.10.23:
+  Successfully uninstalled certifi-2026.10.23

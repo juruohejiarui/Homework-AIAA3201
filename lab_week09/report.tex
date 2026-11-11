@@ -1,0 +1,80 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[margin=17mm]{geometry}
+\usepackage{fontspec,amsmath,graphicx,xcolor}
+\setmainfont{TeX Gyre Termes}
+\definecolor{ink}{HTML}{173C58}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\begin{document}
+\begin{center}
+{\Large\bfseries\color{ink} AIAA3201 Lab Week 09}\\[3pt]
+{\normalsize Real Inference: Detection, Semantic Segmentation and SAM}
+\end{center}
+
+\textbf{1. Why normalize with ImageNet statistics before segmentation?}
+The supplied FCN-ResNet50 uses a pretrained ResNet backbone and weights that
+expect RGB inputs with the same channel normalization used during training.
+After converting the image from unsigned bytes to a floating-point tensor in
+$[0,1]$, preprocessing applies
+\[
+z_c=\frac{x_c-\mu_c}{\sigma_c},\qquad
+\boldsymbol\mu=(0.485,0.456,0.406),\quad
+\boldsymbol\sigma=(0.229,0.224,0.225).
+\]
+This fixed channel-wise transformation matches the input scale and offset
+expected by the learned filters and evaluation-time batch-normalization
+statistics. It is not normalization by the current image's own mean.
+Skipping it feeds an altered distribution into the network: intermediate
+activations and class logits change, so pixelwise argmax can select incorrect
+classes, miss objects or produce poorer boundaries and excessive background.
+The program may still run and return a correctly shaped mask, so shape checks
+alone cannot establish correct preprocessing. Here the provided Compose
+pipeline is preserved, and the class mask is obtained by argmax over the
+21 class channels. These are Pascal VOC categories; the street scene's
+road and buildings need not be separate foreground classes.
+
+\textbf{2. Why does SAM need a prompt, and where does it come from?}
+A scene contains many possible objects and object parts. SAM is trained for
+promptable segmentation: a point or box specifies which region is wanted,
+while the image encoder provides visual features and the mask decoder
+produces a corresponding instance mask. SAM does not receive a semantic
+class label in this pipeline. For Task 3, Faster R-CNN runs on
+\texttt{SAM\_simulation.png}; the detector's highest-confidence box is selected
+and passed automatically to SAM, rather than reusing Task 1's cat box or
+manually choosing coordinates. The processor receives the nested structure
+\texttt{[[[xmin, ymin, xmax, ymax]]]} in original-image pixel coordinates,
+transforms the prompt with the image, and post-processes predicted masks back
+to the original resolution. As required by the lab, the implementation
+extracts batch 0, box 0, candidate 0 and converts it to a Boolean NumPy mask;
+it does not compare all candidate IoU scores. No task-specific training or
+manual mask annotation is performed.
+
+\begin{center}
+\begin{minipage}[t]{0.32\linewidth}\vspace{0pt}\centering
+\includegraphics[width=\linewidth]{output/task1_detection_result.jpg}\\[2pt]
+{\footnotesize Task 1: highest-score detection.}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.32\linewidth}\vspace{0pt}\centering
+\includegraphics[width=\linewidth]{output/task2_segmentation_result.jpg}\\[2pt]
+{\footnotesize Task 2: semantic class overlay.}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.32\linewidth}\vspace{0pt}\centering
+\includegraphics[width=\linewidth]{output/task3_sam_real_result.jpg}\\[2pt]
+{\footnotesize Task 3: dynamic box and SAM mask.}
+\end{minipage}
+\end{center}
+
+\textbf{Observed results and verification.}
+\input{validation/result_summary.tex}
+All three figures come from real inference on the supplied images. The
+unchanged runner completed all tasks; additional checks verified array shapes,
+class ranges, finite detection coordinates, the dynamic SAM prompt and a
+nonempty Boolean instance mask. A separate selection check covered unsorted
+confidence scores and the empty-detection branch. The semantic overlay uses
+the template's random palette, so colors can change between runs.
+
+{\footnotesize Tested in the isolated \texttt{aiaa3201-lab} environment:
+Python 3.13.16, PyTorch 2.12.0, torchvision 0.27.0 and transformers 4.57.1.
+All six original TODO comments and the provided runner were preserved.}
+\end{document}

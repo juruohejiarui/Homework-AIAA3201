@@ -1,0 +1,34 @@
+{
+  "original_backup_sha256": {
+    "lab_week08_slides.pdf": "03b6a1c14f57b1b4e9105b68a82a14d4ca7fecce931deab44ac3b11fca470823",
+    "student_lab.py": "5921f20ce3d64d8548d95888bcb3256542afcb0e1a5b0d0edbdaf482f2294b22",
+    "README.md": "23b5f876e198c5bdc7cf1dcac653459b8fee2c398c082a2001ec88031eb35734"
+  },
+  "all_original_comments_preserved": true,
+  "todo_count": 8,
+  "changes_confined_to_8_blocks": true,
+  "python38_syntax": true,
+  "official_tests_passed": 3,
+  "extra_check_groups_passed": 3,
+  "official_stderr_empty": true,
+  "draft_pdf_pages": 1,
+  "draft_pdf_visually_reviewed": true,
+  "plots_visually_reviewed": true,
+  "temporary_draft_archive_rerun_passed": true,
+  "rerun_pngs_byte_identical": true,
+  "pending": [],
+  "genuine_terminal_screenshot": "User supplied /tmp/codex-clipboard-94faf87e-f8a3-488a-b9d4-9d08a6acfd76.png; copied unchanged to screenshots/verification.png",
+  "final_pdf_pages": 1,
+  "final_pdf_visually_reviewed": true,
+  "final_pdf_no_overfull_boxes": true,
+  "final_zip_members": [
+    "student_lab.py",
+    "report.pdf",
+    "output/positional_encoding.png",
+    "output/attention_weights.png"
+  ],
+  "final_zip_sha256": "37ff49b63ec215128bf5d5e9e40cdd1c921fd490923c7d84265f4b97910b2043",
+  "final_zip_extracted_rerun_passed": true,
+  "final_zip_rerun_pngs_byte_identical": true,
+  "submission_ready": true
+}

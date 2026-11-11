@@ -1,0 +1,16 @@
+--- Running Lab Assignments (Real Inference) ---
+
+=> Starting Task 1: Object Detection
+[Task 1] Output saved to output/task1_detection_result.jpg
+
+=> Starting Task 2: Semantic Segmentation
+[Task 2] Output saved to output/task2_segmentation_result.jpg
+
+=> Starting Task 3: SAM Zero-Shot Transfer
+[Pipeline] Step 2: Found object with score 1.00. Passing BBox to SAM...
+Loading SAM model (this might take a minute for the first run)...
+[Task 3] Output saved to output/task3_sam_real_result.jpg
+
+🎉 All tasks completed successfully! Check the 'output' directory.
+PASS: all real output types, dimensions, values and dynamic SAM prompt verified.
+PASS: highest-score selection with unsorted scores and the empty-detection branch.

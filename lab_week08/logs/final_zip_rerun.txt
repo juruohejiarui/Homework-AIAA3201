@@ -1,0 +1,14 @@
+Running mathematical tests...
+
+✅ Task 1 (Vanilla RNN) Passed!
+✅ Task 2 (Scaled Dot-Product Attention) Passed!
+✅ Task 3 (Positional Encoding) Passed!
+
+----------------------------------
+All mathematical tests passed! Generating visualizations...
+Saving Positional Encoding plot to ./output ...
+Saved to ./output/positional_encoding.png
+Saving Attention Weights plot to ./output ...
+Saved to ./output/attention_weights.png
+
+🎉 All tests passed and plots are saved in the ./output directory!

@@ -1,0 +1,18 @@
+TEMPORARY DRAFT PACKAGE ONLY: final report/screenshot and final ZIP remain pending.
+Archive integrity, exact member list and byte equality passed.
+Extracted official run: 3/3 tests; PNG outputs byte-identical to formal outputs.
+
+Running mathematical tests...
+
+✅ Task 1 (Vanilla RNN) Passed!
+✅ Task 2 (Scaled Dot-Product Attention) Passed!
+✅ Task 3 (Positional Encoding) Passed!
+
+----------------------------------
+All mathematical tests passed! Generating visualizations...
+Saving Positional Encoding plot to ./output ...
+Saved to ./output/positional_encoding.png
+Saving Attention Weights plot to ./output ...
+Saved to ./output/attention_weights.png
+
+🎉 All tests passed and plots are saved in the ./output directory!

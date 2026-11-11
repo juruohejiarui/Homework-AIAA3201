@@ -1,0 +1,25 @@
+usage: evaluate_trained_models.py [-h] [--registry REGISTRY] [--output OUTPUT]
+                                  [--models MODELS [MODELS ...]]
+                                  [--scopes {dev,test,benchmark,tum-validation} [{dev,test,benchmark,tum-validation} ...]]
+                                  [--full-dev] [--setting {short,long}]
+                                  [--datasets {kitti,sintel,bonn} [{kitti,sintel,bonn} ...]]
+                                  [--benchmark-root BENCHMARK_ROOT]
+                                  [--tum-root TUM_ROOT]
+                                  {run,report}
+
+Evaluate registered models by case, sharing frozen inputs and baseline scores.
+
+positional arguments:
+  {run,report}
+
+options:
+  -h, --help            show this help message and exit
+  --registry REGISTRY
+  --output OUTPUT
+  --models MODELS [MODELS ...]
+  --scopes {dev,test,benchmark,tum-validation} [{dev,test,benchmark,tum-validation} ...]
+  --full-dev
+  --setting {short,long}
+  --datasets {kitti,sintel,bonn} [{kitti,sintel,bonn} ...]
+  --benchmark-root BENCHMARK_ROOT
+  --tum-root TUM_ROOT

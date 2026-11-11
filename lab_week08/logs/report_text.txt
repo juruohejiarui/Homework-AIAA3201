@@ -1,0 +1,40 @@
+AIAA3201 Lab Week 08
+Sequence Models and Attention Mechanisms
+1. Why divide attention scores by
+
+√
+
+dk ? Scaled dot-product attention computes
+(
+)
+QK ⊤
+A = softmax √
+,
+Y = AV,
+dk
+
+where softmax is applied along the key dimension, so each query’s weights sum to one. If the query
+√ and key components are
+independent, zero-mean and unit-variance, then Var(q · k) = dk : the standard deviation grows as dk . Dividing by this factor
+keeps the score variance at approximately one. Without scaling, increasing the key dimension tends to produce larger score
+differences and nearly one-hot softmax distributions. The softmax Jacobian ∂ai /∂ej = ai (δij − aj ) then becomes small,
+weakening gradient flow. Scaling mitigates this saturation and stabilizes the attention calculation as the dimension changes.
+2. What pattern appears in the positional encoding heatmap? For pair index k, ωk = exp[−2k log(10000)/dmodel ], with
+PE(p, 2k) = sin(pωk ) and PE(p, 2k + 1) = cos(pωk ). In the actual 100 × 128 heatmap below, low-index dimensions oscillate
+rapidly as sequence position changes. Higher-index dimensions have lower frequencies and longer wavelengths, so their colors
+vary slowly over the 100 positions. Adjacent dimensions form sine/cosine pairs with the same frequency and a phase offset. At
+position zero they alternate between zero and one; far to the right, the sine channels stay near zero and the cosine channels near
+one, producing nearly constant vertical stripes. This multiscale encoding is added to the input embeddings without changing
+their shape. The separate attention heatmap shows row-wise probability mass; independent random Q and K do not imply a
+diagonal pattern.
+
+Positional encoding: positions 0–99, 128 dimensions.
+
+Attention: 10 queries and keys, dk = 64, seed 42.
+
+Verification. The unchanged oﬀicial script passed all three mathematical tests and saved both heatmaps. Independent checks
+also passed: random rectangular RNN weights against a scalar reference; attention with multiple batches, unequal query/key
+lengths and different value widths; and positional encoding at nonzero positions, odd/even dimensions, batch broadcasting,
+input addition and buffer registration.
+
+

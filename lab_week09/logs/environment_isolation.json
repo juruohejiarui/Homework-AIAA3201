@@ -1,0 +1,10 @@
+{
+  "project_environment_restored_and_unchanged": true,
+  "project_huggingface_hub": "2.2.0",
+  "project_transformers_installed": false,
+  "lab_environment": "/home/hjr/miniconda3/envs/aiaa3201-lab",
+  "lab_huggingface_hub": "0.36.2",
+  "lab_transformers": "4.57.1",
+  "both_pip_checks_passed": true,
+  "cloned_before_lab_dependencies": true
+}

@@ -1,0 +1,10 @@
+Environment: aiaa3201-lab
+Interpreter: /home/hjr/miniconda3/envs/aiaa3201-lab/bin/python
+Python: 3.13.16 | packaged by Anaconda, Inc. | (main, Oct  1 2026, 20:24:22) [GCC 14.3.0]
+torch: 2.12.0+cu130
+torchvision: 0.27.0+cu130
+transformers: 4.57.1
+huggingface_hub: 0.36.2
+opencv: 5.0.0
+numpy: 2.5.4
+matplotlib: 3.11.2

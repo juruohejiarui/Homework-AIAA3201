@@ -1,0 +1,12 @@
+{
+  "task3_sam.py": "5fa72d3534a1e665ae4747709d458bb321b45b5338c31c61cc15a636639cfc24",
+  "main.py": "9d34a19269d2d436d556c4770d87b18d14cddf4ca309c6adf706e2b3ae0ebb9f",
+  "task2_segmentation.py": "945d61a6e485b8fd052df3fddc0f77613cb9d7e755c82802d32840629bd2ae6a",
+  "task1_detection.py": "0ee2a0fd5719621ff4fa134d17346fc8afedd11eda1e698be0e8ccbff38c93bc",
+  "utils.py": "8b5f5cb7aaa5f1579b9bb31c22f97e4f7805be8a88c107296af057ab2df90957",
+  "README.md": "9188f5f7505ec0828ccebf2bf93587ed52a4ce0ed2b3637daf1d6ec06dca04d8",
+  "input/SAM_simulation.png": "d22ddde5be1c33614c11f017df801b815ba9609666bf125ba4eb1ffd7f4a5b1d",
+  "input/semantic_segmentation.png": "5dc84b89013fff5ec5685d305be51b4e95de4a86624fa81cfc05a05b55f5a451",
+  "input/single_object_detection.png": "9bd8a3dba9d2d6ed16ab0bd4b17aa33921e313fb495f07ee1cb78e6aa35a15d1",
+  "output/.gitkeep": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}
