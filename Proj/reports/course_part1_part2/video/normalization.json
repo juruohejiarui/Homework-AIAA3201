@@ -1,0 +1,15 @@
+{
+  "method_ranges": {
+    "da2": [
+      0.0,
+      2.6860742831230158
+    ],
+    "vda": [
+      0.0,
+      5.27710633277893
+    ]
+  },
+  "colormap": "INFERNO",
+  "per_frame_normalization": false,
+  "units": "relative inverse; no shared metric color scale"
+}

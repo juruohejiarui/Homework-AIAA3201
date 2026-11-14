@@ -38,7 +38,7 @@ def match_scene(scene, method):
     valid = (disparity >= 0) & inside & (sampled > minimum_right - 1)
     consistent = valid & (np.abs(disparity + sampled) <= 1)
     ground_truth = read_pfm(scene / "disp0GT.pfm")
-    gt_valid = np.isfinite(ground_truth) & (ground_truth >= 0) & (ground_truth + offset > 0)
+    gt_valid = np.isfinite(ground_truth) & (ground_truth > 0)
     error = np.abs(disparity - ground_truth)
     evaluated = gt_valid & (disparity >= 0)
     metrics = {

@@ -1,0 +1,37 @@
+{
+  "base_git_commit": "c64874cc8d6b83346c8faf3b23f22f1d1dd7a50b",
+  "official_submodule_commits": {
+    "Depth-Anything-V2": "a561b849ebae10a6f5ef49e26c83cbbcd36c71bf",
+    "Video-Depth-Anything": "d9ea51a1d7e830d189945d3245ec5c7cffcf2a32",
+    "UniDepth": "8d8cfe4c7ee15297099983607febf0d4f32eb3d6",
+    "dinov2": "7764ea0f912e53c92e82eb78a2a1631e92725fc8"
+  },
+  "python": "3.13.16",
+  "torch": "2.12.0+cu130",
+  "cuda": "13.0",
+  "gpu": "NVIDIA GeForce RTX 4090 D",
+  "opencv": "5.0.0",
+  "source_files": {
+    "Proj/src/depth_project/course/__init__.py": "fbfee05255575c14249ab29a710ccdd3463d791e79738c3256da87c6810a6b02",
+    "Proj/src/depth_project/course/__main__.py": "17b8e0bfad5970529677d8427cabec8fcf9ccbd09ab43395b8c1827c75d01d49",
+    "Proj/src/depth_project/course/common.py": "f17010546099dea4b251518698191604c502ec4f339a0a86ed2da830c481e6ec",
+    "Proj/src/depth_project/course/delivery.py": "bfacf800cf7de2932b353f3a11fe263a801f47f977329839b8b0793ecd4927d9",
+    "Proj/src/depth_project/course/efficiency.py": "942b34d16d55c8cf85502a8ef2f88375d73cdf3543d277117d00ae38e2a88863",
+    "Proj/src/depth_project/course/experiments.py": "c7bd73e1f5fdbb0cbf773e3de8f2f2aa71e9e3fde8ac3ce73f8e37e930c8d8db",
+    "Proj/src/depth_project/models/__init__.py": "f8d6600cb0f64bfbd195be6c364ceeff4de571cc56267c7b5bb41b3461aa03e6",
+    "Proj/src/depth_project/models/api.py": "d910b740b47d4cb41a785d95a54eb334f97891f4d68569f35f0b264697ede075",
+    "Proj/src/depth_project/models/attention.py": "3a91911544c4a96a38f8a13aad7094371c099b2327668ec40b257e6a36af9c8d",
+    "Proj/src/depth_project/models/da2.py": "a5fd03909d9b1e41e1bec1be26a6056d072acdbc1af3dcd94f7b517d912fbf5b",
+    "Proj/src/depth_project/models/provenance.py": "446fb67912265988cd46353be111d7f4e21adf47a0e5b6ba593c7b1c331cc8af",
+    "Proj/src/depth_project/models/serialization.py": "93ea6f5986bc4aee68292fe3dbfbe1424428331f8cd0adb9966cc39ff2779784",
+    "Proj/src/depth_project/models/unidepth.py": "a38fcb9f6384d12a4230c04e1a730324d2639afc423b4f0b7d046f0e52d7906f",
+    "Proj/src/depth_project/models/vda.py": "83a08ba1737b4c8c8d7b69c6578e8c7bf6562ff5177f3efe0bec106eb6bf8eb0",
+    "Proj/src/depth_project/models/video_stream.py": "39a5afe421aaac0de2914b8421e867507af03d2291cdce0796dacbd0e48206c3",
+    "Proj/src/depth_project/stereo/__init__.py": "d5d98ebe6668d3e4931e7eb6e9cd66fa7b4e7f008d2f9b4fbce15fb1f0fa465c",
+    "Proj/src/depth_project/stereo/__main__.py": "3c2020760aa8e375d19012b6304a5cee715317394476ca5e4f300c89ecf3640c",
+    "Proj/src/depth_project/stereo/geometry.py": "7bbee50fa1a134cea72fae2d352b745df28b853a16d99a01b3e919271d543e9e",
+    "Proj/src/depth_project/stereo/matching.py": "bd8ebebff805d1432fc95c80e0ac536db2f665911433dca38dda9e8f5131a884"
+  },
+  "course_pdf_sha256": "ea65076917e87febb0c3c67773b9fc6edf304e2821a74266a03f22ef33abc226",
+  "video_redownloaded_from_pdf_link": true
+}

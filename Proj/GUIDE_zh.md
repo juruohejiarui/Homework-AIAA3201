@@ -3,6 +3,32 @@
 
 # 独立模块运行指南
 
+## 正式课程实验入口
+
+课程使用 `depth_project.course` 完整执行 Part 1 / Part 2。以下在仓库根目录、
+现有 `aiaa3201` 环境运行：
+
+```bash
+export PYTHONPATH="$PWD/Proj/src${PYTHONPATH:+:$PYTHONPATH}"
+python -m depth_project.course run
+python -m depth_project.course verify
+python -m depth_project.course report
+```
+
+`run` 执行所有正式数据、预测保存、效率测量和交付生成；`verify` 从保存数组重新评分，
+检查654张覆盖、30组立体输出、视频对应关系和ZIP完整性；`report` 重新生成可视化和成果包。
+默认输出 `Proj/outputs/course_part1_part2/`，可通过 `--output` 指定新的目录。
+正式 NYU 使用 UniDepthV2 原始米制结果，禁止 GT 尺度对齐；本指南下方的 SSI 工具仅用于额外研究。
+
+实际数据位置：`Proj/data/middlebury/MiddEval3/trainingQ`（15个带GT场景），
+`Proj/data/nyuv2/nyu_depth_v2_labeled.mat`、`splits.mat` 和 `test/`。
+模型使用 `Proj/checkpoints/depth_anything_v2_vits.pth`、`video_depth_anything_vits.pth`
+和 `unidepth-v2-vits14/`。官方权重来源：
+[DA-V2-S](https://huggingface.co/depth-anything/Depth-Anything-V2-Small)、
+[VDA-S](https://huggingface.co/depth-anything/Video-Depth-Anything-Small)、
+[UniDepthV2 ViT-S](https://huggingface.co/lpiccinelli/unidepth-v2-vits14)。
+现有数据或权重缺失时报错，不擅自替换数据集或模型。
+
 以下命令在仓库根目录执行，环境使用现有 `aiaa3201`。完整下载步骤见 [下载交接](download_data_zh.md)。本指南提供运行方式，不表示所有课程实验已经完成。
 
 ## 1. 数据准备
@@ -16,7 +42,8 @@ conda run -n aiaa3201 python -m depth_project.data.nyuv2 \
   --output Proj/data/nyuv2/test
 ```
 
-课程自录视频应分别覆盖静态相机、移动相机和困难场景。统一抽帧后供所有模型使用：
+课程必需视频是指定的 davis_rollercoaster.mp4；自录视频属于可选研究。
+以下抽帧命令仅供额外视频使用，不是课程指定视频的正式准备命令：
 
 ```bash
 conda run -n aiaa3201 python -m depth_project.data.video \
@@ -113,4 +140,5 @@ conda run -n aiaa3201 python -m depth_project.visualization.curves \
   --metrics Proj/outputs/vda_demo/flow.json --output Proj/outputs/vda_demo/curves.png
 ```
 
-报告直接编辑 Markdown，不存在自动写报告的命令。首轮历史结果保留；Part 3 的实现、消融、失败案例、自录视频和真实应用评价仍需独立完成。
+正式 Part 1 / Part 2 的结果说明、图表和成果包由 `depth_project.course report` 生成。
+方向 A 已有实现和扩展评价；课程应用及最终 CVPR 报告单独完成。自录视频不属于必交要求。

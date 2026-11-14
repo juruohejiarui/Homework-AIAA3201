@@ -1,0 +1,23 @@
+{
+  "passed": true,
+  "actual_extraction_to_new_temp_directory": true,
+  "nyu_arrays_checked": 654,
+  "stereo_arrays": 30,
+  "videos": {
+    "rgb_da2.mp4": {
+      "frames": 70,
+      "fps": 24.0
+    },
+    "rgb_vda.mp4": {
+      "frames": 70,
+      "fps": 24.0
+    },
+    "rgb_da2_vda.mp4": {
+      "frames": 70,
+      "fps": 24.0
+    }
+  },
+  "analysis_and_three_zooms_present": true,
+  "archive_sha256": "d57b4fd6616de83571c30b3006b09b8797efcc2d94617a643fcddd6993f299de",
+  "archive_bytes": 805743776
+}

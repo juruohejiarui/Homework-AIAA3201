@@ -1,0 +1,34 @@
+{
+  "passed": true,
+  "stereo_outputs": 30,
+  "nyu_images": 654,
+  "nyu_mean_recomputed": {
+    "abs_rel": 0.12942543999766723,
+    "rmse_m": 0.42372886972649454,
+    "delta1": 0.8756533082285762
+  },
+  "videos": {
+    "rgb_da2": {
+      "frames": 70,
+      "fps": 24.0,
+      "max_rgb_compression_mae": 3.4756293402777776
+    },
+    "rgb_vda": {
+      "frames": 70,
+      "fps": 24.0,
+      "max_rgb_compression_mae": 3.472238136574074
+    },
+    "rgb_da2_vda": {
+      "frames": 70,
+      "fps": 24.0,
+      "max_rgb_compression_mae": 3.4776432291666666
+    }
+  },
+  "scope": "Complete Part 1 and Part 2; not full course submission",
+  "archive": {
+    "path": "/home/hjr/Documents/Projects/Homework-AIAA3201/Proj/outputs/part1_part2_results.zip",
+    "bytes": 805743776,
+    "sha256": "d57b4fd6616de83571c30b3006b09b8797efcc2d94617a643fcddd6993f299de",
+    "all_entries_crc_checked": true
+  }
+}

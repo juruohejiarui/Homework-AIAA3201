@@ -1,0 +1,22 @@
+{
+  "stereo": {
+    "scene": "PianoL",
+    "mae_px": 6.810661717796238,
+    "selection": "largest SGBM scene MAE; not tuning"
+  },
+  "nyu": {
+    "image_id": 469,
+    "abs_rel": 0.6745194141029675,
+    "selection": "largest per-image metric AbsRel; not tuning"
+  },
+  "video": {
+    "frames": [
+      33,
+      34,
+      35,
+      36,
+      37
+    ],
+    "selection": "central 5 consecutive source frames; no depth GT"
+  }
+}

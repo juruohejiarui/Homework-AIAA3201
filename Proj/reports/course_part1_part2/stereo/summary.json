@@ -1,0 +1,20 @@
+[
+  {
+    "method": "bm",
+    "scenes": 15,
+    "mae_px_pixel_weighted": 1.8118671005973466,
+    "coverage_pixel_weighted": 0.5995673799228524,
+    "mae_px_scene_mean": 1.9312146688607237,
+    "coverage_scene_mean": 0.5967851222464058,
+    "seconds_matching_total": 0.34225634199538035
+  },
+  {
+    "method": "sgbm",
+    "scenes": 15,
+    "mae_px_pixel_weighted": 1.9559481786067403,
+    "coverage_pixel_weighted": 0.7595696476893857,
+    "mae_px_scene_mean": 2.1188289138724907,
+    "coverage_scene_mean": 0.7548009838918012,
+    "seconds_matching_total": 0.901935982008581
+  }
+]

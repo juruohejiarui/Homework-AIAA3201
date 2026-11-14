@@ -1,5 +1,7 @@
 # 实验结果分析
 
+- [Part 1 / Part 2：完整课程实验、正式结果与效率记录](course_part1_part2/README.md)
+- [课程素材难例、连续帧与局部对照](course_part1_part2/analysis.md)
 - [2026-11-11：全部评估结果与 Sintel 诊断](SINTEL_RESULTS_ANALYSIS_20261111_zh.md)
 - [本次诊断的图片、动图、结果快照与脚本](sintel_20261111/)
 

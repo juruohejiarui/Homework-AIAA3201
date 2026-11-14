@@ -1,0 +1,26 @@
+{
+  "ids": [
+    1,
+    88,
+    202,
+    469,
+    471,
+    517,
+    676,
+    851,
+    970,
+    1104,
+    1195,
+    1262,
+    1449
+  ],
+  "selection": "8 evenly spaced official test positions + 2 best and 3 worst AbsRel; descriptive only",
+  "metric_color_range_m": [
+    0.001,
+    10
+  ],
+  "error_color_range": [
+    0,
+    1
+  ]
+}
