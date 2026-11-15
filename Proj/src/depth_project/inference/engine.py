@@ -1,5 +1,6 @@
 """Shared model execution. Timing excludes model loading and disk output."""
-import fcntl
+import errno
+import os
 import time
 from contextlib import contextmanager
 
@@ -12,9 +13,30 @@ from depth_project.paths import OUTPUTS
 @contextmanager
 def gpu_session():
     OUTPUTS.mkdir(exist_ok=True)
-    with (OUTPUTS / ".gpu.lock").open("a") as lock:
-        fcntl.flock(lock, fcntl.LOCK_EX)
-        yield
+    with (OUTPUTS / ".gpu.lock").open("a+b") as lock:
+        if os.name != "nt":
+            import fcntl
+
+            fcntl.flock(lock, fcntl.LOCK_EX)
+            yield
+            return
+
+        import msvcrt
+
+        lock.seek(0)
+        while True:
+            try:
+                msvcrt.locking(lock.fileno(), msvcrt.LK_NBLCK, 1)
+                break
+            except OSError as error:
+                if error.errno not in (errno.EACCES, errno.EAGAIN, errno.EDEADLK):
+                    raise
+                time.sleep(0.25)
+        try:
+            yield
+        finally:
+            lock.seek(0)
+            msvcrt.locking(lock.fileno(), msvcrt.LK_UNLCK, 1)
 
 
 def predict(adapter, frames, fps=1):

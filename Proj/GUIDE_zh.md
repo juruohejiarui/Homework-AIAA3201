@@ -97,6 +97,43 @@ conda run -n aiaa3201 python -m depth_project.evaluation.images \
 
 DA-V2 可用 `--alignment inverse-ssi` 或 `inverse-median` 作为 oracle 对照。开发 SSI 使用非负斜率约束，不能冒充论文整段无约束 inverse-depth SSI。图像评价保存逐图精度和自定义边界指标。
 
+### 方向 B：NYUv2 全局米制尺度标定
+
+准备清单中固定的 NYUv2 labeled MAT 和 `splits.mat`，并在可运行 UniDepthV2 的
+CUDA Python 环境中从仓库根目录执行下列命令。已有权重或导出的数据可以复用。
+
+```bash
+export PYTHONPATH="Proj/src:${PYTHONPATH:-}"
+python -m depth_project.inference.download_unidepth
+for subset in development test; do
+  python -m depth_project.data.nyuv2 \
+    --mat Proj/data/nyuv2/nyu_depth_v2_labeled.mat --split Proj/data/nyuv2/splits.mat \
+    --subset "$subset" --output "Proj/data/nyuv2/$subset"
+  python -m depth_project.inference --model unidepthv2 --precision fp32 \
+    --images "Proj/data/nyuv2/$subset/rgb" --output "Proj/outputs/part3_b/${subset}_predictions"
+done
+python -m depth_project.evaluation.metric_scale \
+  --split Proj/data/nyuv2/splits.mat \
+  --dev-predictions Proj/outputs/part3_b/development_predictions \
+  --dev-gt Proj/data/nyuv2/development/gt \
+  --test-predictions Proj/outputs/part3_b/test_predictions \
+  --test-gt Proj/data/nyuv2/test/gt --output Proj/outputs/part3_b
+```
+
+评估程序校验完整的 795／654 图像 ID。它先用开发集拟合一个全局倍率并保存
+`scale.json`。拟合时先计算每张开发图有效像素的 GT／预测倍率中位数，再取这些
+逐图倍率的中位数。随后读取测试深度，比较原始米制预测和乘以冻结倍率的预测。
+两组使用相同的 Eigen 裁剪、GT 有效范围、预测截断和逐图平均，输出的
+`comparison.json` 包含总体及逐图 AbsRel、RMSE（米）和 δ1。
+
+2026-11-12 实测使用 UniDepthV2 ViT-S/14、FP32、`resolution_level=9`。冻结倍率
+为 `0.9340532609`。在 654 张测试图上，AbsRel 从 0.129425 降至 0.103003，
+RMSE 从 0.423729 m 降至 0.388024 m，δ1 从 87.5653% 升至 90.0662%。
+参见 [方向 B 实测结果](reports/part3_b/README.md)，其中包含报告、逐图指标、运行版本、
+文件哈希和全量预测下载。方向 B 的标定结果是独立实验，不替代 Part 1 的原始米制结果。
+
+### 光流诊断
+
 ```bash
 conda run -n aiaa3201 python -m depth_project.evaluation.flow \
   --frames Proj/data/videos/official_demo_frames.npz \

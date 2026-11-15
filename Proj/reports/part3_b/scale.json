@@ -1,0 +1,20 @@
+{
+  "scale": 0.9340532609417376,
+  "fit": "median of per-image median ground-truth / raw prediction ratios",
+  "development_count": 795,
+  "split_sha256": "6e081404491a8bfba2f066beaa9713ef6046f9007aa5f799f2a350506a580cee",
+  "crop_rows_columns": [
+    [
+      45,
+      471
+    ],
+    [
+      41,
+      601
+    ]
+  ],
+  "depth_bounds_m": [
+    0.001,
+    10.0
+  ]
+}

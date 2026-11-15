@@ -8,24 +8,36 @@ from depth_project.evaluation.metrics import align_inverse_depth, boundary_score
 from depth_project.io import write_json
 
 
-def evaluate_images(predictions, ground_truth, alignment="none", crop="eigen", minimum=0.001, maximum=10):
+def evaluation_mask(target, crop, minimum, maximum):
+    mask = np.isfinite(target) & (target > minimum) & (target < maximum)
+    if crop == "eigen":
+        cropped = np.zeros_like(mask)
+        cropped[45:471, 41:601] = True
+        mask &= cropped
+    return mask
+
+
+def evaluate_images(
+    predictions, ground_truth, alignment="none", crop="eigen", minimum=0.001, maximum=10,
+    *, scale=1.0,
+):
+    if not np.isfinite(scale) or scale <= 0 or (scale != 1 and alignment != "none"):
+        raise ValueError("A fixed positive scale requires evaluation without test alignment")
     rows = []
     for path in sorted(Path(ground_truth).glob("*.npy")):
         target = np.load(path).astype(np.float64)
         prediction = np.load(Path(predictions) / path.name).astype(np.float64)
         if target.shape != prediction.shape:
             raise ValueError(f"RGB/GT resolution mismatch: {path.name}")
-        mask = np.isfinite(target) & (target > minimum) & (target < maximum)
-        if crop == "eigen":
-            cropped = np.zeros_like(mask)
-            cropped[45:471, 41:601] = True
-            mask &= cropped
+        mask = evaluation_mask(target, crop, minimum, maximum)
         diagnostic = None
         if alignment == "inverse-ssi":
             prediction, diagnostic = align_inverse_depth(prediction, target, mask)
         elif alignment == "inverse-median":
             prediction = 1 / np.maximum(prediction, 1e-6)
             prediction *= np.median(target[mask]) / np.median(prediction[mask])
+        if scale != 1:
+            prediction *= scale
         if not np.isfinite(prediction[mask]).all() or np.any(prediction[mask] <= 0):
             raise ValueError(f"Invalid depth prediction: {path.name}")
         prediction = np.clip(prediction, minimum, maximum)
