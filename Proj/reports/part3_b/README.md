@@ -14,11 +14,12 @@ RMSE fell from **0.423729 m to 0.388024 m**, and δ1 rose from **87.5653% to
 
 The [prediction archives](https://github.com/juruohejiarui/Homework-AIAA3201/releases/tag/part3-b-nyuv2-v1)
 contain the original FP32 depth arrays in meters. Each archive contains a single
-directory named `development_predictions` or `test_predictions`. Extract both
+directory named `development_predictions` or `test_predictions`. Extract all three ZIPs
 under `Proj/outputs/part3_b/` and follow the evaluation command in the guide to
 recompute the scores without running model inference. The evaluator applies
 the frozen multiplier before clipping for scoring. Obtain ground truth and
 the split file from the [official NYUv2 source](https://cs.nyu.edu/~fergus/datasets/nyu_depth_v2.html).
 
-- Development (795 maps) SHA-256: `7cdbd9cad73e0cb3b44bfdd80169b7fc7106838f7af77da936499e701119bfea`
+- Development, part 1 (398 maps) SHA-256: `3e7bc0a8f275b9b6c7f50be90acdb79e51c935083e9dc4aa9083d01e7f0e7db7`
+- Development, part 2 (397 maps) SHA-256: `9013ce13d3baee1803fe9ffd74fd894a384b5b234fa1971de7d2acc21827a1c9`
 - Test (654 maps) SHA-256: `2dd841c5080990ad228a1b01b489129d0700fb20903d887b7ee30a5c2836faf5`
