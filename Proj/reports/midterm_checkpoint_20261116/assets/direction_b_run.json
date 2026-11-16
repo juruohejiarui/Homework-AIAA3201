@@ -1,0 +1,31 @@
+{
+  "model": {
+    "repository": "lpiccinelli/unidepth-v2-vits14",
+    "revision": "038c238f06c87b6c2f5b3749fd51fbf442b1f218",
+    "precision": "fp32",
+    "resolution_level": 9,
+    "rgb_shape_hw": [
+      480,
+      640
+    ]
+  },
+  "environment": {
+    "os": "Windows",
+    "python": "3.12.8",
+    "torch": "2.11.0+cu128",
+    "torchvision": "0.26.0+cu128",
+    "opencv": "4.11.0",
+    "gpu": "NVIDIA GeForce RTX 4070 Ti SUPER"
+  },
+  "file_hashes": {
+    "data/nyuv2/splits.mat": "6e081404491a8bfba2f066beaa9713ef6046f9007aa5f799f2a350506a580cee",
+    "checkpoints/unidepth-v2-vits14/model.safetensors": "93705cb3295dd7476b44911b8a55f5215bf74e8d5eccd27cecdb1b338270a648",
+    "checkpoints/unidepth-v2-vits14/config.json": "ecc1f898690debe387d10329cca5d9d66a0a447ce83c3a2a7ae3673c7ce43cfe"
+  },
+  "dataset_mat_sha256_verified_at_download": "2d724b0c0ab358aa1ce5df855e5bd14a2279ab7202efe22f32a30d612dcb86aa",
+  "independent_recalculation": {
+    "development_count": 795,
+    "test_count": 654,
+    "absolute_tolerance": 1e-12
+  }
+}

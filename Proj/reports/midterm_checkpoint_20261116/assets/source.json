@@ -1,0 +1,7 @@
+{
+  "direction_b_branch": "origin/part3-b-metric-scale",
+  "direction_b_commit": "ad24f94ac0ac9985f9c863f20d69dbcdf74e1cf6",
+  "baseline_main_commit": "50411a2475dbcc37a9b853844ac300f8d3ea9ec2",
+  "copied_report_only_no_branch_merge": true,
+  "numeric_checks": "654 unique IDs equal official testNdxs; means recomputed from all stored per-image records; scale fit and split tests 2 passed"
+}
